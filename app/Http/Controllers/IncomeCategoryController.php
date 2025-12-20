@@ -12,7 +12,7 @@ class IncomeCategoryController extends Controller
     public function index()
     {
         $categories = IncomeCategory::visibleTo(Auth::user())
-            ->orderByRaw('user_id IS NULL DESC') // show global first (NULL comes first)
+            ->orderByRaw('user_id IS NULL DESC') // mostrar globales primero (NULL va primero)
             ->orderBy('name')
             ->get();
 
@@ -27,17 +27,17 @@ class IncomeCategoryController extends Controller
 
     $ownerId = IncomeCategory::ownerIdFor(Auth::user());
 
-    // 🔹 Check for duplicate name for this owner or global
+    // 🔹 Comprobar nombre duplicado para este propietario o global
     $exists = IncomeCategory::where('name', $data['name'])
         ->where(function ($q) use ($ownerId) {
             $q->where('user_id', $ownerId)
-              ->orWhereNull('user_id'); // if you also want to block same name as global
+              ->orWhereNull('user_id'); // si también quieres bloquear el mismo nombre que el global
         })
         ->exists();
 
     if ($exists) {
         return back()
-            ->withErrors(['name' => 'Questa categoria esiste già.'])
+            ->withErrors(['name' => 'Esta categoría ya existe.'])
             ->withInput();
     }
 
@@ -46,15 +46,15 @@ class IncomeCategoryController extends Controller
         'user_id' => $ownerId,
     ]);
 
-    return back()->with('success', 'Categoria salvata.');
+    return back()->with('success', 'Categoría guardada.');
 }
 
     public function edit(IncomeCategory $income_category)
     {
-        // Only allow editing if it belongs to this tenant owner or it's global and you want to allow it.
-        // Here: global rows (user_id NULL) are read-only for non-super users.
+        // Solo permitir edición si pertenece al propietario del tenant o es global y quieres permitirlo.
+        // Aquí: las filas globales (user_id NULL) son de solo lectura para usuarios no super.
         if (is_null($income_category->user_id)) {
-            abort(Response::HTTP_FORBIDDEN, 'Questa categoria globale non è modificabile.');
+            abort(Response::HTTP_FORBIDDEN, 'Esta categoría global no se puede modificar.');
         }
 
         $ownerId = IncomeCategory::ownerIdFor(Auth::user());
@@ -81,12 +81,12 @@ class IncomeCategoryController extends Controller
 
     $ownerId = IncomeCategory::ownerIdFor(Auth::user());
 
-    // Only tenant owner can edit their own category
+    // Solo el propietario del tenant puede editar su propia categoría
     if ((int) $income_category->user_id !== $ownerId) {
         abort(Response::HTTP_FORBIDDEN);
     }
 
-    // 🔹 Check for duplicate name excluding this category
+    // 🔹 Comprobar nombre duplicado excluyendo esta categoría
     $exists = IncomeCategory::where('name', $data['name'])
         ->where('id', '<>', $income_category->id)
         ->where(function ($q) use ($ownerId) {
@@ -97,21 +97,21 @@ class IncomeCategoryController extends Controller
 
     if ($exists) {
         return back()
-            ->withErrors(['name' => 'Questa categoria esiste già.'])
+            ->withErrors(['name' => 'Esta categoría ya existe.'])
             ->withInput();
     }
 
     $income_category->update(['name' => $data['name']]);
 
-    return back()->with('success', 'Categoria aggiornata.');
+    return back()->with('success', 'Categoría actualizada.');
 }
 
 
     public function destroy(IncomeCategory $income_category)
     {
-        // Block deleting global categories (user_id NULL)
+        // Bloquear eliminación de categorías globales (user_id NULL)
         if (is_null($income_category->user_id)) {
-            abort(Response::HTTP_FORBIDDEN, 'Non puoi eliminare categorie globali.');
+            abort(Response::HTTP_FORBIDDEN, 'No puedes eliminar categorías globales.');
         }
 
         $ownerId = IncomeCategory::ownerIdFor(Auth::user());
@@ -120,6 +120,6 @@ class IncomeCategoryController extends Controller
         }
 
         $income_category->delete();
-        return back()->with('success', 'Categoria rimossa.');
+        return back()->with('success', 'Categoría eliminada.');
     }
 }

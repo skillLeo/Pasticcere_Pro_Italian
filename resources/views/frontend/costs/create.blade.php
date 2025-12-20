@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-@section('title', isset($cost) ? 'Modifica Costo' : 'Aggiungi Costo')
+@section('title', isset($cost) ? 'Modificar costo' : 'Añadir costo')
 
 @section('content')
 <div class="container py-5">
@@ -7,7 +7,7 @@
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-currency-dollar fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($cost) ? 'Modifica Costo' : 'Aggiungi Costo' }}
+        {{ isset($cost) ? 'Modificar costo' : 'Añadir costo' }}
       </h5>
     </div>
     <div class="card-body">
@@ -20,31 +20,31 @@
 
         <div class="col-md-6">
           <label for="cost_identifier" class="form-label fw-semibold">
-            Identificatore Costo <small class="text-muted">(facoltativo)</small>
+            Identificador de costo <small class="text-muted">(opcional)</small>
           </label>
           <input type="text" name="cost_identifier" id="cost_identifier"
                  class="form-control form-control-lg"
-                 placeholder="es. INV-2025-04-001"
+                 placeholder="ej. INV-2025-04-001"
                  value="{{ old('cost_identifier', $cost->cost_identifier ?? '') }}">
         </div>
 
         <div class="col-md-6">
-          <label for="supplier" class="form-label fw-semibold">Fornitore</label>
+          <label for="supplier" class="form-label fw-semibold">Proveedor</label>
           <input type="text" name="supplier" id="supplier"
                  class="form-control form-control-lg"
-                 placeholder="es. ABC Srl"
+                 placeholder="ej. ABC Srl"
                  value="{{ old('supplier', $cost->supplier ?? '') }}" required>
-          <div class="invalid-feedback">Inserisci un fornitore.</div>
+          <div class="invalid-feedback">Introduce un proveedor.</div>
         </div>
 
         <div class="col-md-6">
-          <label for="amount" class="form-label fw-semibold">Importo</label>
+          <label for="amount" class="form-label fw-semibold">Importe</label>
           <div class="input-group input-group-lg has-validation">
             <span class="input-group-text">€</span>
             <input type="number" step="0.01" name="amount" id="amount"
                    class="form-control"
                    value="{{ old('amount', $cost->amount ?? '') }}" required>
-            <div class="invalid-feedback">Inserisci un importo valido.</div>
+            <div class="invalid-feedback">Introduce un importe válido.</div>
           </div>
         </div>
 
@@ -53,18 +53,18 @@
         ?: (isset($cost) && $cost->due_date ? $cost->due_date->format('Y-m-d') : '');
 @endphp
 <div class="col-md-6">
-  <label for="due_date" class="form-label fw-semibold">Data di scadenza</label>
+  <label for="due_date" class="form-label fw-semibold">Fecha de vencimiento</label>
   <input type="date" name="due_date" id="due_date"
          class="form-control form-control-lg"
          value="{{ $dueDate }}" required>
-  <div class="invalid-feedback">Seleziona una data.</div>
+  <div class="invalid-feedback">Selecciona una fecha.</div>
 </div>
 
         <div class="col-md-6">
-          <label for="category_id" class="form-label fw-semibold">Categoria</label>
+          <label for="category_id" class="form-label fw-semibold">Categoría</label>
           <select name="category_id" id="category_id"
                   class="form-select form-select-lg" required>
-            <option value="">Seleziona…</option>
+            <option value="">Selecciona…</option>
             @foreach($categories as $c)
               <option value="{{ $c->id }}"
                 {{ old('category_id', $cost->category_id ?? '') == $c->id ? 'selected' : '' }}>
@@ -72,13 +72,13 @@
               </option>
             @endforeach
           </select>
-          <div class="invalid-feedback">Seleziona una categoria.</div>
+          <div class="invalid-feedback">Selecciona una categoría.</div>
         </div>
 
         <div class="col-12 text-end">
           <button type="submit" class="btn btn-gold-filled btn-lg">
             <i class="bi bi-save2 me-2"></i>
-            {{ isset($cost) ? 'Aggiorna Costo' : 'Salva Costo' }}
+            {{ isset($cost) ? 'Actualizar costo' : 'Guardar costo' }}
           </button>
         </div>
       </form>

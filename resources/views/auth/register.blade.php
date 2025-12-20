@@ -1,11 +1,11 @@
-<!-- meta tags and other links -->
+<!-- meta tags y otros enlaces -->
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="es" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Registro</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.ico') }}" sizes="16x16">
     <!-- remix icon font css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
@@ -53,21 +53,20 @@
                     <a href="{{ url('/') }}" class="mb-40 max-w-290-px">
                         <img src="{{ asset('assets/images/logo.png') }}" alt="">
                     </a>
-                    <h4 class="mb-12">Sign Up to your Account</h4>
-                    <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
+                    <h4 class="mb-12">Regístrate en tu cuenta</h4>
+                    <p class="mb-32 text-secondary-light text-lg">¡Bienvenido de nuevo! Por favor introduce tus datos</p>
                 </div>
                 {{-- resources/views/auth/register.blade.php --}}
                 <form action="{{ route('register.submit') }}" method="POST">
                     @csrf
                
-
                     <div class="icon-field mb-16">
                         <span class="icon top-50 translate-middle-y">
                             <iconify-icon icon="f7:person"></iconify-icon>
                         </span>
                         <input type="text"
                             class="form-control h-56-px bg-neutral-50 radius-12 @error('name') is-invalid @enderror"
-                            placeholder="name" name="name" value="{{ old('name') }}" required>
+                            placeholder="Nombre" name="name" value="{{ old('name') }}" required>
                         @error('name')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
@@ -79,7 +78,7 @@
                         </span>
                         <input type="email"
                             class="form-control h-56-px bg-neutral-50 radius-12 @error('email') is-invalid @enderror"
-                            placeholder="Email" name="email" value="{{ old('email') }}" required>
+                            placeholder="Correo electrónico" name="email" value="{{ old('email') }}" required>
                         @error('email')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
@@ -93,7 +92,7 @@
                                 </span>
                                 <input type="password"
                                     class="form-control h-56-px bg-neutral-50 radius-12 @error('password') is-invalid @enderror"
-                                    id="your-password" placeholder="Password" name="password" required>
+                                    id="your-password" placeholder="Contraseña" name="password" required>
                             </div>
                             <span
                                 class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
@@ -103,7 +102,7 @@
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                         <span class="mt-12 text-sm text-secondary-light">
-                            Your password must have at least 8 characters
+                            Tu contraseña debe tener al menos 8 caracteres
                         </span>
                     </div>
 
@@ -115,10 +114,10 @@
                                     type="checkbox" value="1" id="condition" name="terms"
                                     {{ old('terms') ? 'checked' : '' }}>
                                 <label class="form-check-label text-sm" for="condition">
-                                    By creating an account you agree to the
-                                    <a href="#" class="text-primary-600 fw-semibold">Terms & Conditions</a>
-                                    and our
-                                    <a href="#" class="text-primary-600 fw-semibold">Privacy Policy</a>
+                                    Al crear una cuenta aceptas los
+                                    <a href="#" class="text-primary-600 fw-semibold">Términos y Condiciones</a>
+                                    y nuestra
+                                    <a href="#" class="text-primary-600 fw-semibold">Política de Privacidad</a>
                                 </label>
                             </div>
                         </div>
@@ -128,11 +127,11 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32">
-                        Sign Up
+                        Registrarse
                     </button>
 
                     <div class="mt-32 center-border-horizontal text-center">
-                        <span class="bg-base z-1 px-4">Or sign up with</span>
+                        <span class="bg-base z-1 px-4">O regístrate con</span>
                     </div>
 
                     <div class="mt-32 d-flex align-items-center gap-3">
@@ -152,8 +151,8 @@
 
                     <div class="mt-32 text-center text-sm">
                         <p class="mb-0">
-                            Already have an account?
-                            <a href="{{ route('login') }}" class="text-primary-600 fw-semibold">Sign In</a>
+                            ¿Ya tienes una cuenta?
+                            <a href="{{ route('login') }}" class="text-primary-600 fw-semibold">Inicia sesión</a>
                         </p>
                     </div>
                 </form>
@@ -192,7 +191,7 @@
     <script src="{{ asset('assets/js/app.js') }}"></script>
 
     <script>
-        // ================== Password Show Hide Js Start ==========
+        // ================== Mostrar/Ocultar contraseña Inicio ==========
         function initializePasswordToggle(toggleSelector) {
             $(toggleSelector).on('click', function() {
                 $(this).toggleClass("ri-eye-off-line");
@@ -204,9 +203,9 @@
                 }
             });
         }
-        // Call the function
+        // Llamar a la función
         initializePasswordToggle('.toggle-password');
-        // ========================= Password Show Hide Js End ===========================
+        // ========================= Mostrar/Ocultar contraseña Fin ===========================
     </script>
 
 

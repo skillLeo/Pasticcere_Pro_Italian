@@ -9,9 +9,9 @@ use App\Models\Recipe;
 class ManageRecipeController extends Controller
 {
     /**
-     * Display the manage recipe form.
+     * Muestra el formulario de gestión de receta.
      *
-     * @param  int  $id  Recipe ID.
+     * @param  int  $id  ID de la receta.
      * @return \Illuminate\View\View
      */
     public function index($id)
@@ -20,10 +20,10 @@ class ManageRecipeController extends Controller
     }
 
     /**
-     * Update a recipe with calculated totals.
+     * Actualiza una receta con los totales calculados.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id  Recipe ID.
+     * @param  int  $id  ID de la receta.
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
@@ -38,22 +38,22 @@ class ManageRecipeController extends Controller
 
         $recipe = Recipe::findOrFail($id);
 
-        // piece weight in grams → kg
+        // peso de la pieza en gramos → kg
         $pieceWeightKg = $recipe->piece_weight / 1000;
 
-        // inputs
+        // entradas
         $soldPieces    = $request->input('sold_pieces');
         $soldKgManual  = $request->input('sold_kg');
         $wastePieces   = $request->input('waste_pieces');
         $wasteKgManual = $request->input('waste_kg');
 
-        // compute totals
+        // calcular totales
         $computedSoldKg  = ($soldPieces * $pieceWeightKg) + $soldKgManual;
         $computedWasteKg = ($wastePieces * $pieceWeightKg) + $wasteKgManual;
         $totalUsedKg     = $computedSoldKg + $computedWasteKg;
         $reuseTotalKg    = $recipe->recipe_weight - $totalUsedKg;
 
-        // apply updates
+        // aplicar actualizaciones
         $recipe->display_quantity  = $request->input('display_quantity');
         $recipe->sold_pieces       = $soldPieces;
         $recipe->sold_kg           = $soldKgManual;
@@ -63,11 +63,11 @@ class ManageRecipeController extends Controller
         $recipe->total_waste_kg    = round($computedWasteKg, 2);
         $recipe->reuse_total_kg    = round($reuseTotalKg, 2);
 
-        // stamp with the current user's ID
+        // asignar el ID del usuario actual
         $recipe->user_id = Auth::id();
 
         $recipe->save();
 
-        return redirect()->back()->with('status', 'Recipe updated successfully!');
+        return redirect()->back()->with('status', '¡Receta actualizada correctamente!');
     }
 }

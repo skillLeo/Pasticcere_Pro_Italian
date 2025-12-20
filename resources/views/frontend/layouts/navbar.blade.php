@@ -18,7 +18,7 @@
                     class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>
 
                 @php
-                // Ensure notifications are passed from the controller
+                // Asegúrate de que las notificaciones se pasen desde el controlador
                 $notifications = \App\Models\Notification::with('news')
                                                           ->where('is_read', false)
                                                           ->where('user_id', Auth::id())
@@ -41,8 +41,8 @@
                 
                     <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 380px;">
                         <div class="px-4 py-3 bg-primary-light text-white rounded-top">
-                            <h6 class="mb-0">Notifiche</h6>
-                            <small class="badge bg-dark">{{ $notifications->count() }} Non lette</small>
+                            <h6 class="mb-0">Notificaciones</h6>
+                            <small class="badge bg-dark">{{ $notifications->count() }} Sin leer</small>
                         </div>
                         <div class="max-h-400px overflow-auto p-3">
                             @foreach($notifications as $n)
@@ -66,7 +66,7 @@
                             <form action="{{ route('notifications.markAllAsRead') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-primary btn-sm px-4 py-2 rounded-pill">
-                                    Segna tutte come lette
+                                    Marcar todas como leídas
                                 </button>
                             </form>
                         </div>
@@ -77,19 +77,17 @@
                     <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
                         data-bs-toggle="dropdown">
                         @php
-                            
-                                    $user = Auth::user()->load('roles');
-
+                            $user = Auth::user()->load('roles');
                         @endphp
-             @if(!empty(Storage::url('photos/'.$user->photo )))
-    <img src="{{ Storage::url('photos/'.$user->photo) }}"
-         alt="Profile Photo"
-         class="w-40-px h-40-px object-fit-cover rounded-circle">
-@else
-    <img src="{{ asset('assets/images/asset/profile.jpg') }}"
-         alt="Default Profile"
-         class="w-40-px h-40-px object-fit-cover rounded-circle">
-@endif
+                        @if(!empty(Storage::url('photos/'.$user->photo )))
+                            <img src="{{ Storage::url('photos/'.$user->photo) }}"
+                                alt="Foto de perfil"
+                                class="w-40-px h-40-px object-fit-cover rounded-circle">
+                        @else
+                            <img src="{{ asset('assets/images/asset/profile.jpg') }}"
+                                alt="Perfil por defecto"
+                                class="w-40-px h-40-px object-fit-cover rounded-circle">
+                        @endif
 
                     </button>
                     <div class="dropdown-menu to-top dropdown-menu-sm">
@@ -97,7 +95,7 @@
                             class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
                             <div>
                                 <h6 class="text-lg text-primary-light fw-semibold mb-2">{{ auth()->user()->name }}</h6>
-                                <span class="text-secondary-light fw-medium text-sm">Admin</span>
+                                <span class="text-secondary-light fw-medium text-sm">Administrador</span>
                             </div>
                             <button type="button" class="hover-text-danger">
                                 <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
@@ -107,18 +105,18 @@
                             <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
                                     href="{{ route('profile') }}">
-                                    <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> Il mio profilo</a>
+                                    <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> Mi perfil</a>
                             </li>
                  
                             <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
                                     href="javascript:void(0)" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon>
-                                    Esci
+                                    Cerrar sesión
                                 </a>
                             </li>
                             
-                            <!-- Hidden Logout Form -->
+                            <!-- Formulario de cierre de sesión oculto -->
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>

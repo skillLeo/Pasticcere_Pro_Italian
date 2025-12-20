@@ -1,77 +1,77 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Recipe Sales by Date')
+@section('title', 'Ventas de recetas por fecha')
 
 @section('content')
 <div class="container py-5">
 
-  {{-- Filter Form Section --}}
+  {{-- Sección del formulario de filtro --}}
   <div class="card mb-4 shadow-sm">
     <div class="card-body">
       <form method="GET" class="row g-3 align-items-center">
-        {{-- Product Filter --}}
+        {{-- Filtro producto --}}
         <div class="col-md-3">
-          <label class="form-label">Product</label>
+          <label class="form-label">Producto</label>
           <select name="recipe_id" class="form-select">
-            <option value="">All products</option>
+            <option value="">Todos los productos</option>
             @foreach($recipes as $id => $name)
               <option value="{{ $id }}" @selected($id == $recipeId)>{{ $name }}</option>
             @endforeach
           </select>
         </div>
 
-        {{-- Category Filter --}}
+        {{-- Filtro categoría --}}
         <div class="col-md-3">
-          <label class="form-label">Category</label>
+          <label class="form-label">Categoría</label>
           <select name="category_id" class="form-select">
-            <option value="">All categories</option>
+            <option value="">Todas las categorías</option>
             @foreach($categories as $cat)
               <option value="{{ $cat->id }}" @selected($cat->id == $categoryId)>{{ $cat->name }}</option>
             @endforeach
           </select>
         </div>
 
-        {{-- Department Filter --}}
+        {{-- Filtro departamento --}}
         <div class="col-md-3">
-          <label class="form-label">Department</label>
+          <label class="form-label">Departamento</label>
           <select name="department_id" class="form-select">
-            <option value="">All departments</option>
+            <option value="">Todos los departamentos</option>
             @foreach($departments as $dept)
               <option value="{{ $dept->id }}" @selected($dept->id == $departmentId)>{{ $dept->name }}</option>
             @endforeach
           </select>
         </div>
 
-        {{-- Date Range --}}
+        {{-- Rango de fechas --}}
         <div class="col-md-2">
-          <label class="form-label">From</label>
+          <label class="form-label">Desde</label>
           <input type="date" name="start_date" class="form-control" value="{{ $startDate }}">
         </div>
         <div class="col-md-2">
-          <label class="form-label">To</label>
+          <label class="form-label">Hasta</label>
           <input type="date" name="end_date" class="form-control" value="{{ $endDate }}">
         </div>
 
-        {{-- Submit Button --}}
+        {{-- Botón aplicar filtros --}}
         <div class="col-md-2 text-end">
-          <button class="btn btn-primary w-100">Filter</button>
+          <button class="btn btn-primary w-100">Filtrar</button>
         </div>
       </form>
     </div>
   </div>
 
-  {{-- Results Table --}}
+  {{-- Tabla de resultados --}}
   <div class="card shadow-sm">
     <div class="table-responsive">
       <table  data-page-length="25"class="table table-striped table-bordered mb-0">
         <thead class="table-light">
           <tr>
-            <th>Product</th>
-            <th>Category</th>
-            <th>Department</th>
-            <th class="text-end">Pieces Sold</th>
-            <th class="text-end">Waste</th>
-            <th class="text-end">Total Revenue (€)</th>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Departamento</th>
+            <th class="text-end">Piezas vendidas</th>
+            <th class="text-end">Desperdicio</th>
+            <th class="text-end">Ingresos totales (€)</th>
           </tr>
         </thead>
         <tbody>
@@ -94,7 +94,7 @@
               $grandRevenue += $revenue;
             @endphp
 
-            {{-- Parent Row --}}
+            {{-- Fila padre --}}
             <tr class="accordion-toggle" 
                 data-bs-toggle="collapse"
                 data-bs-target="#details-{{ $rId }}"
@@ -112,16 +112,16 @@
               <td class="text-end">{{ number_format($revenue, 2) }}</td>
             </tr>
 
-            {{-- Detailed Row --}}
+            {{-- Fila detallada --}}
             <tr class="collapse" id="details-{{ $rId }}">
               <td colspan="6" class="p-0">
                 <table  data-page-length="25"class="table table-sm mb-0">
                   <thead>
                     <tr class="table-light">
-                      <th>Date</th>
-                      <th class="text-end">Sold</th>
-                      <th class="text-end">Waste</th>
-                      <th class="text-end">Revenue (€)</th>
+                      <th>Fecha</th>
+                      <th class="text-end">Vendido</th>
+                      <th class="text-end">Desperdicio</th>
+                      <th class="text-end">Ingresos (€)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -141,7 +141,7 @@
           @empty
             <tr>
               <td colspan="6" class="text-center text-muted py-3">
-                No data for that selection.
+                No hay datos para esa selección.
               </td>
             </tr>
           @endforelse
@@ -164,25 +164,25 @@
 </div>
 @endsection
 
-{{-- Include Bootstrap's JS bundle --}}
+{{-- Incluir el paquete JS de Bootstrap --}}
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    // Get all collapsible elements (the table rows)
+    // Obtener todos los elementos colapsables (las filas de la tabla)
     const collapsibleElements = document.querySelectorAll('.accordion-toggle');
     
     collapsibleElements.forEach(item => {
       item.addEventListener('click', function () {
-        // Get target ID and icon
-        const targetId = item.getAttribute('data-bs-target').substring(1); // Remove the '#' character
+        // Obtener el ID de destino y el icono
+        const targetId = item.getAttribute('data-bs-target').substring(1); // Quitar el carácter '#'
         const icon = document.getElementById('icon-' + targetId);
 
-        // Toggle the collapse
+        // Alternar el colapso
         const collapseElement = document.getElementById(targetId);
 
-        // Check if collapse is open or closed and toggle icon accordingly
+        // Comprobar si el colapso está abierto o cerrado y alternar el icono en consecuencia
         if (collapseElement.classList.contains('show')) {
           icon.classList.remove('bi-caret-up-fill');
           icon.classList.add('bi-caret-down-fill');

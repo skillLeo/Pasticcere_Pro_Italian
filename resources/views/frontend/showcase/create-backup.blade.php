@@ -1,7 +1,7 @@
 {{-- resources/views/frontend/showcase/create.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', $isEdit ? 'Modifica Vetrina Giornaliera' : 'Crea Vetrina Giornaliera')
+@section('title', $isEdit ? 'Modificar escaparate diario' : 'Crear escaparate diario')
 
 @section('content')
 @php
@@ -17,7 +17,7 @@
     <div class="card-header d-flex align-items-center" style="background-color:#041930;">
       <i class="bi bi-calendar-day fs-2 me-3" style="color:#e2ae76;"></i>
       <h4 class="mb-0 fw-bold" style="color:#e2ae76;">
-        {{ $isEdit ? 'Modifica Vetrina Giornaliera' : 'Crea Vetrina Giornaliera' }}
+        {{ $isEdit ? 'Modificar escaparate diario' : 'Crear escaparate diario' }}
       </h4>
     </div>
 
@@ -27,19 +27,19 @@
         @if($isEdit) @method('PUT') @endif
 
         <div class="row g-4 mb-4">
-          {{-- Name / Model --}}
+          {{-- Nombre / Modelo --}}
           <div class="col-md-4">
-            <label for="showcase_name" class="form-label fw-semibold" id="showcaseNameLabel">Nome Vetrina</label>
+            <label for="showcase_name" class="form-label fw-semibold" id="showcaseNameLabel">Nombre escaparate</label>
             <input type="text" id="showcase_name" name="showcase_name" class="form-control form-control-lg" value="{{ old('showcase_name', $isEdit ? $showcase->showcase_name : '') }}">
-            <div class="invalid-feedback">Inserisci un nome valido.</div>
+            <div class="invalid-feedback">Introduce un nombre válido.</div>
           </div>
 
-          {{-- Template selector (create only) --}}
+          {{-- Selector de MODELO (solo creación) --}}
           @unless($isEdit)
             <div class="col-md-4">
-              <label for="template_select" class="form-label fw-semibold">Scegli Modello</label>
+              <label for="template_select" class="form-label fw-semibold">Elegir MODELO</label>
               <select id="template_select" name="template_id" class="form-select">
-                <option value="">-- Seleziona Modello --</option>
+                <option value="">-- Seleccionar MODELO --</option>
                 @foreach($templates as $id => $name)
                   <option value="{{ $id }}">{{ $name }}</option>
                 @endforeach
@@ -47,43 +47,43 @@
             </div>
           @endunless
 
-          {{-- Date --}}
+          {{-- Fecha --}}
           <div class="col-md-2">
-            <label for="showcase_date" class="form-label fw-semibold">Seleziona Data</label>
+            <label for="showcase_date" class="form-label fw-semibold">Seleccionar fecha</label>
             <input type="date" id="showcase_date" name="showcase_date" class="form-control form-control-lg" value="{{ old('showcase_date', $isEdit ? $showcase->showcase_date->format('Y-m-d') : '') }}" required>
-            <div class="invalid-feedback">Seleziona una data.</div>
+            <div class="invalid-feedback">Selecciona una fecha.</div>
           </div>
 
-          {{-- Save-as --}}
+          {{-- Guardar como --}}
           <div class="col-md-2">
-            <label for="template_action" class="form-label fw-semibold">Salva come</label>
+            <label for="template_action" class="form-label fw-semibold">Guardar como</label>
             <select id="template_action" name="template_action" class="form-select form-select-lg">
-              <option value="none" @selected(old('template_action', $isEdit ? ($showcase->template_action ?? 'none') : 'none')==='none')>Solo Salva</option>
-              <option value="template" @selected(old('template_action', $isEdit ? ($showcase->template_action ?? '') : '')==='template')>Salva come Modello</option>
+              <option value="none" @selected(old('template_action', $isEdit ? ($showcase->template_action ?? 'none') : 'none')==='none')>Solo guardar</option>
+              <option value="template" @selected(old('template_action', $isEdit ? ($showcase->template_action ?? '') : '')==='template')>Guardar como MODELO</option>
             </select>
           </div>
         </div>
 
-        {{-- Products table --}}
+        {{-- Tabla de productos --}}
         <div class="card border-secondary shadow-sm mb-4">
           <div class="card-header" style="background-color:#041930;">
-            <strong style="color:#e2ae76;">Prodotti in Vetrina</strong>
+            <strong style="color:#e2ae76;">Productos en escaparate</strong>
           </div>
 
           <div class="card-body p-0">
             <table  data-page-length="25"class="table mb-0" id="showcaseTable">
               <thead class="table-light">
                 <tr>
-                  <th>Ricetta</th>
-                  <th>Prezzo</th>
-                  <th class="d-none">Costo ingr.</th>
-                  <th class="text-center">Qtà</th>
-                  <th class="text-center">Venduto</th>
-                  <th class="text-center">Riutilizzo</th>
-                  <th class="text-center">Scarti</th>
-                  <th>Potenziale</th>
-                  <th>Reale</th>
-                  <th class="text-center">Azione</th>
+                  <th>Receta</th>
+                  <th>Precio</th>
+                  <th class="d-none">Coste ingr.</th>
+                  <th class="text-center">Cant.</th>
+                  <th class="text-center">Vendido</th>
+                  <th class="text-center">Reutilización</th>
+                  <th class="text-center">Desperdicios</th>
+                  <th>Potencial</th>
+                  <th>Real</th>
+                  <th class="text-center">Acción</th>
                 </tr>
               </thead>
               <tbody>
@@ -94,7 +94,7 @@
                   <tr class="showcase-row">
                     <td>
                       <select name="items[{{ $i }}][recipe_id]" class="form-select form-select-sm recipe-select" style="min-width:250px;" required>
-                        <option value="">Seleziona Ricetta</option>
+                        <option value="">Seleccionar receta</option>
                         @foreach($recipes as $rec)
                           <option value="{{ $rec->id }}"
                                   data-price="{{ $rec->sell_mode==='kg' ? $rec->selling_price_per_kg : $rec->selling_price_per_piece }}"
@@ -156,24 +156,24 @@
                       onmouseover="this.style.backgroundColor='#e2ae76';this.style.color='#fff';this.querySelector('i').style.color='#fff';"
                       onmouseout="this.style.backgroundColor='transparent';this.style.color='#041930';this.querySelector('i').style.color='#041930';">
                 <i class="bi bi-plus-circle me-1" style="color:#041930;"></i>
-                Aggiungi Ricetta
+                Añadir receta
               </button>
             </div>
           </div>
         </div>
 
-        {{-- Totals --}}
+        {{-- Totales --}}
         <div class="d-flex align-items-end justify-content-between flex-wrap mb-4 gap-3">
           <div class="d-flex flex-column">
-            <label class="form-label fw-semibold">Punto di pareggio giornaliero (€)</label>
+            <label class="form-label fw-semibold">Punto de equilibrio diario (€)</label>
             <input type="number" id="break_even" name="break_even" class="form-control form-control-sm" style="width:140px;" value="{{ old('break_even', $isEdit ? $showcase->break_even : ($laborCost?->daily_bep ?? 0)) }}" readonly>
           </div>
           <div class="d-flex flex-column">
-            <label class="form-label fw-semibold">Potenziale Totale (€)</label>
+            <label class="form-label fw-semibold">Potencial total (€)</label>
             <input type="text" id="totalPotential" name="total_potential" class="form-control form-control-sm" style="width:140px;" readonly>
           </div>
           <div class="d-flex flex-column">
-            <label class="form-label fw-semibold">Ricavo Totale (€)</label>
+            <label class="form-label fw-semibold">Ingresos totales (€)</label>
             <input type="text" id="totalRevenue" name="total_revenue" class="form-control form-control-sm" style="width:140px;" readonly>
           </div>
           <div class="d-flex flex-column">
@@ -181,13 +181,13 @@
             <input type="text" id="plusAmount" name="plus" class="form-control form-control-sm" style="width:140px;" readonly>
           </div>
           <div class="d-flex flex-column">
-            <label class="form-label fw-semibold">Margine Reale (€)</label>
+            <label class="form-label fw-semibold">Margen real (€)</label>
             <input type="text" id="realMargin" name="real_margin" class="form-control form-control-sm" style="width:140px;" readonly>
           </div>
           <div class="d-flex align-items-end">
             <button type="submit" class="btn btn-gold-filled px-5 py-3" style="background-color:#e2ae76;color:#041930;">
               <i class="bi bi-save2 me-1" style="color:#041930;"></i>
-              {{ $isEdit ? 'Aggiorna Vetrina' : 'Salva Vetrina' }}
+              {{ $isEdit ? 'Actualizar escaparate' : 'Guardar escaparate' }}
             </button>
           </div>
         </div>
@@ -216,16 +216,16 @@ document.addEventListener('DOMContentLoaded', function () {
   let rowIndex = tbody.querySelectorAll('.showcase-row').length;
   const baseRow = tbody.querySelector('.showcase-row').cloneNode(true);
 
-  // Require name only when saving as template
+  // Requerir nombre solo al guardar como MODELO
   function toggleNameRequirement() {
     const isTemplate = (actionSelect?.value === 'template');
-    if (showcaseNameLabel) showcaseNameLabel.textContent = isTemplate ? 'Nome Modello' : 'Nome Vetrina';
+    if (showcaseNameLabel) showcaseNameLabel.textContent = isTemplate ? 'Nombre MODELO' : 'Nombre escaparate';
     if (showcaseNameInput) showcaseNameInput.required = !!isTemplate;
   }
   toggleNameRequirement();
   actionSelect?.addEventListener('change', toggleNameRequirement);
 
-  // Make a blank row
+  // Crear una fila en blanco
   function blankRow() {
     const clone = baseRow.cloneNode(true);
     clone.querySelectorAll('input,select').forEach(el => {
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return clone;
   }
 
-  // Wire events for a row
+  // Conectar eventos para una fila
   function wireRowEvents(row) {
     row.querySelector('.recipe-select')?.addEventListener('change', () => recalcRow(row));
     row.querySelector('.qty-field')?.addEventListener('input',   () => recalcRow(row));
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
     recalcRow(row);
   }
 
-  // Recalculate a single row (unit cost computed like OLD code)
+  // Recalcular una sola fila (coste unitario calculado como el CÓDIGO ANTIGUO)
   function recalcRow(row) {
     const opt      = row.querySelector('.recipe-select')?.selectedOptions[0];
     const price    = parseFloat(opt?.dataset.price || 0) || 0;
@@ -267,13 +267,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const grams    = parseFloat(opt?.dataset.ingredientsGrams || 0);
     const totalPcs = parseFloat(opt?.dataset.totalPieces || 0);
 
-    // === EXACT OLD UNIT COST ===
+    // === COSTE UNITARIO ANTIGUO EXACTO ===
     const unitCost = mode === 'piece'
       ? (batch / (totalPcs || 1))
       : (batch / (((weight || grams) / 1000) || 1));
 
     row.querySelector('.price-field').value      = price.toFixed(2);
-    row.querySelector('.unit-field').textContent = mode === 'kg' ? '€/kg' : '€/pz';
+    row.querySelector('.unit-field').textContent = mode === 'kg' ? '€/kg' : '€/ud';
     row.querySelector('.unit-ing-field').value   = (isFinite(unitCost) ? unitCost : 0).toFixed(2);
     row.querySelector('.potential-field').value  = (price * qty ).toFixed(2);
     row.querySelector('.revenue-field').value    = (price * sold).toFixed(2);
@@ -281,12 +281,12 @@ document.addEventListener('DOMContentLoaded', function () {
     recalcSummary();
   }
 
-  // === EXACT OLD SUMMARY FORMULA ===
+  // === FÓRMULA DE RESUMEN ANTIGUA EXACTA ===
   // 1) rev  = Σ(price * sold)
   // 2) plus = rev - breakEven
   // 3) ingCost = Σ(unitCost * sold) + Σ(unitCost * waste)
   // 4) pct = rev>0 ? (ingCost / rev) * 100 : 0
-  // 5) real = plus - (plus * pct / 100) ; if (plus < 0) real = 0
+  // 5) real = plus - (plus * pct / 100) ; si (plus < 0) real = 0
   function recalcSummary() {
     let pot = 0, rev = 0, ingSold = 0, ingWaste = 0;
     const bep = parseFloat(breakEvenInput?.value || 0);
@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function () {
     realMargin.value     = real.toFixed(2);
   }
 
-  // Add row
+  // Añadir fila
   addBtn?.addEventListener('click', () => {
     const newRow = blankRow();
     newRow.querySelectorAll('input[name],select[name]').forEach(el => {
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
     rowIndex++;
   });
 
-  // Load template (sold/reuse/waste zeroed)
+  // Cargar MODELO (vendido/reutilización/desperdicio a cero)
   templateSelect?.addEventListener('change', function () {
     const id = this.value;
     if (!id) return;
@@ -365,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(console.error);
   });
 
-  // Initial bind
+  // Enlace inicial
   tbody.querySelectorAll('.showcase-row').forEach(r => wireRowEvents(r));
 });
 </script>

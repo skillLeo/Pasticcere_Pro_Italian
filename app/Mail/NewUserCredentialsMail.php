@@ -23,7 +23,7 @@ class NewUserCredentialsMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Benvenuto in Pasticcere Pro – Le tue credenziali')
+        return $this->subject('Bienvenido a Pasticcere Pro – Tus credenciales')
             ->view('emails.users.credentials')
             ->with([
                 'name'      => $this->user->name,

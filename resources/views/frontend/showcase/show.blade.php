@@ -6,25 +6,25 @@
 @section('content')
 <div class="container py-5">
   <div class="card border-primary shadow-lg rounded-3 overflow-hidden">
-    <!-- Header with icon and date -->
+    <!-- Encabezado con icono y fecha -->
     <div class="card-header d-flex align-items-center"
          style="background-color: #041930; color: #e2ae76;">
       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
            viewBox="0 0 512 512"
            style="width: 30px; height: 30px; margin-right: 8px; fill: #e2ae76;">
-        <!-- (SVG paths omitted for brevity) -->
+        <!-- (Rutas SVG omitidas por brevedad) -->
       </svg>
       <h4 class="mb-0" style="font-size: 16px; color: #e2ae76;">
-        Vetrina: {{ $showcase->showcase_date->format('Y-m-d') }}
+        Escaparate: {{ $showcase->showcase_date->format('Y-m-d') }}
       </h4>
     </div>
 
     <div class="card-body">
-      <!-- Showcase details grid -->
+      <!-- Cuadrícula de detalles del escaparate -->
       <div class="row row-cols-1 row-cols-md-2 g-4 mb-3" style="width: 50%">
         <div class="col">
           <p class="text-uppercase text-muted small mb-1" style="font-size: 14px;">
-            Punto di Pareggio (€)
+            Punto de equilibrio (€)
           </p>
           <p class="fs-5 fw-bold mb-0" style="font-size: 16px;">
             €{{ number_format($showcase->break_even, 2) }}
@@ -32,7 +32,7 @@
         </div>
         <div class="col">
           <p class="text-uppercase text-muted small mb-1" style="font-size: 14px;">
-            Ricavo Totale (€)
+            Ingresos totales (€)
           </p>
           <p class="fs-5 fw-bold mb-0" style="font-size: 16px;">
             €{{ number_format($showcase->total_revenue, 2) }}
@@ -48,7 +48,7 @@
         </div>
         <div class="col">
           <p class="text-uppercase text-muted small mb-1" style="font-size: 14px;">
-            Margine Reale (€)
+            Margen real (€)
           </p>
           <p class="fs-5 fw-bold mb-0" style="font-size: 16px;">
             @if($showcase->real_margin >= 0)
@@ -60,7 +60,7 @@
         </div>
         <div class="col">
           <p class="text-uppercase text-muted small mb-1" style="font-size: 14px;">
-            Ultimo Aggiornamento
+            Última actualización
           </p>
           <p class="fs-5 mb-0" style="font-size: 16px;">
             {{ optional($showcase->updated_at)->format('Y-m-d H:i') ?? '—' }}
@@ -70,21 +70,21 @@
 
       <hr class="border-secondary">
 
-      <!-- Showcase Products Breakdown Table -->
-      <h5 class="mt-4" style="font-size: 16px;">Dettaglio Prodotti Vetrina</h5>
+      <!-- Tabla de desglose de productos del escaparate -->
+      <h5 class="mt-4" style="font-size: 16px;">Detalle de productos del escaparate</h5>
       <div class="table-responsive">
         <table  data-page-length="25"class="table table-striped table-bordered mb-0">
           <thead class="table-light">
             <tr>
-              <th style="font-size: 14px;">Ricetta</th>
-              <th style="font-size: 14px;">Reparto</th>
-              <th style="font-size: 14px;">Prezzo</th>
-              <th style="font-size: 14px;">Quantità</th>
-              <th style="font-size: 14px;">Venduti</th>
-              <th style="font-size: 14px;">Riutilizzo</th>
-              <th style="font-size: 14px;">Scarti</th>
-              <th style="font-size: 14px;">Introiti Potenziali</th>
-              <th style="font-size: 14px;">Ricavo Effettivo</th>
+              <th style="font-size: 14px;">Receta</th>
+              <th style="font-size: 14px;">Departamento</th>
+              <th style="font-size: 14px;">Precio</th>
+              <th style="font-size: 14px;">Cantidad</th>
+              <th style="font-size: 14px;">Vendidos</th>
+              <th style="font-size: 14px;">Reutilización</th>
+              <th style="font-size: 14px;">Desperdicios</th>
+              <th style="font-size: 14px;">Ingresos potenciales</th>
+              <th style="font-size: 14px;">Ingresos efectivos</th>
             </tr>
           </thead>
           <tbody>
@@ -142,7 +142,7 @@
           <tfoot>
             <tr class="table-warning">
               <td colspan="3" class="text-end" style="font-size: 14px;">
-                <strong>Totale:</strong>
+                <strong>Total:</strong>
               </td>
               <td style="font-size: 14px;">{{ $totals['quantity'] }}</td>
               <td style="font-size: 14px;">{{ $totals['sold'] }}</td>
@@ -159,21 +159,21 @@
         </table>
       </div>
 
-      <!-- Azioni -->
+      <!-- Acciones -->
       <div class="mt-4 text-end">
         <a href="{{ route('showcase.edit', $showcase) }}" class="btn btn-gold me-2">
-          <i class="bi bi-pencil me-1"></i> Modifica
+          <i class="bi bi-pencil me-1"></i> Editar
         </a>
         <a href="{{ route('showcase.index') }}" class="btn btn-deepblue me-2">
-          <i class="bi bi-arrow-left me-1"></i> Indietro alla lista
+          <i class="bi bi-arrow-left me-1"></i> Volver a la lista
         </a>
         <form action="{{ route('showcase.destroy', $showcase) }}"
               method="POST" class="d-inline"
-              onsubmit="return confirm('Eliminare questa vetrina?');">
+              onsubmit="return confirm('¿Eliminar este escaparate?');">
           @csrf
           @method('DELETE')
           <button class="btn btn-red" type="submit">
-            <i class="bi bi-trash me-1"></i> Elimina
+            <i class="bi bi-trash me-1"></i> Eliminar
           </button>
         </form>
       </div>

@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\DB;
 
 class ExternalSuppliesController extends Controller
 {
-    /* ---------------------------- LIST (INDEX) ---------------------------- */
+    /* ---------------------------- LISTA (INDEX) ---------------------------- */
     public function index()
     {
         $user = Auth::user();
 
-        // two-level visibility group (root + children, or child + root)
+        // grupo de visibilidad de dos niveles (root + hijos, o hijo + root)
         if (is_null($user->created_by)) {
             $visibleUserIds = User::where('created_by', $user->id)
                                   ->pluck('id')
@@ -29,7 +29,7 @@ class ExternalSuppliesController extends Controller
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 🟢 show ONLY real records (hide templates)
+        // 🟢 mostrar SOLO registros reales (ocultar MODELOs)
         $supplies = ExternalSupply::with(['client','recipes.recipe','user'])
             ->whereIn('user_id', $visibleUserIds)
             ->where('save_template', false)
@@ -107,7 +107,7 @@ class ExternalSuppliesController extends Controller
         $groupRootId = $user->created_by ?? $user->id;
         $laborCost   = LaborCost::where('user_id', $groupRootId)->first();
 
-        // clients in group (or global)
+        // clientes en el grupo (o globales)
         $clients = Client::with('user')
             ->where(function($q) use ($groupUserIds) {
                 $q->whereIn('user_id', $groupUserIds)
@@ -116,7 +116,7 @@ class ExternalSuppliesController extends Controller
             ->latest()
             ->get();
 
-        // external labor-mode recipes within group
+        // recetas con modo de coste laboral externo dentro del grupo
         $recipes   = Recipe::where('labor_cost_mode', 'external')
                         ->whereIn('user_id', $groupUserIds)
                         ->get();
@@ -134,17 +134,17 @@ class ExternalSuppliesController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'supply_name.required_if'          => 'Il nome della fornitura è obbligatorio quando si salva come modello.',
-            'client_id.required'               => 'Devi selezionare un cliente.',
-            'client_id.exists'                 => 'Il cliente selezionato non esiste.',
-            'supply_date.required'             => 'La data della fornitura è obbligatoria.',
-            'supply_date.date'                 => 'Inserisci una data valida.',
-            'recipes.required'                 => 'Devi aggiungere almeno una ricetta.',
-            'recipes.*.id.required'            => 'Seleziona una ricetta per ogni riga.',
-            'recipes.*.id.exists'              => 'La ricetta selezionata non esiste.',
-            'recipes.*.price.required'         => 'Il prezzo è obbligatorio e deve essere un numero.',
-            'recipes.*.qty.required'           => 'La quantità è obbligatoria e deve essere un numero intero.',
-            'recipes.*.total_amount.required'  => 'L\'importo totale è obbligatorio e deve essere un numero.',
+            'supply_name.required_if'          => 'El nombre del suministro es obligatorio cuando se guarda como MODELO.',
+            'client_id.required'               => 'Debes seleccionar un cliente.',
+            'client_id.exists'                 => 'El cliente seleccionado no existe.',
+            'supply_date.required'             => 'La fecha del suministro es obligatoria.',
+            'supply_date.date'                 => 'Introduce una fecha válida.',
+            'recipes.required'                 => 'Debes añadir al menos una receta.',
+            'recipes.*.id.required'            => 'Selecciona una receta para cada fila.',
+            'recipes.*.id.exists'              => 'La receta seleccionada no existe.',
+            'recipes.*.price.required'         => 'El precio es obligatorio y debe ser un número.',
+            'recipes.*.qty.required'           => 'La cantidad es obligatoria y debe ser un número entero.',
+            'recipes.*.total_amount.required'  => 'El importe total es obligatorio y debe ser un número.',
         ];
 
         $data = $request->validate([
@@ -165,7 +165,7 @@ class ExternalSuppliesController extends Controller
 
         return DB::transaction(function () use ($data, $userId, $totalAmount, $saveAsTpl) {
 
-            // 🟢 1) ALWAYS create the RECORD (save_template = false)
+            // 🟢 1) SIEMPRE crear el REGISTRO (save_template = false)
             $record = ExternalSupply::create([
                 'client_id'     => $data['client_id'],
                 'supply_name'   => $data['supply_name'] ?? null,
@@ -186,19 +186,19 @@ class ExternalSuppliesController extends Controller
                 ]);
             }
 
-            // 🟡 2) Optionally create a TEMPLATE (separate row, save_template = true)
+            // 🟡 2) Opcionalmente crear una MODELO (fila separada, save_template = true)
             if ($saveAsTpl) {
                 $tpl = ExternalSupply::create([
                     'client_id'     => $data['client_id'],
                     'supply_name'   => $data['supply_name'],
                     'supply_date'   => $data['supply_date'],
-                    'total_amount'  => $totalAmount, // keep precomputed totals
+                    'total_amount'  => $totalAmount, // mantener totales precalculados
                     'save_template' => true,
                     'user_id'       => $userId,
                 ]);
 
                 foreach ($data['recipes'] as $row) {
-                    // keep qty/price in template; totals precomputed as price*qty
+                    // mantener qty/precio en la MODELO; totales precalculados como precio*qty
                     $tpl->recipes()->create([
                         'recipe_id'    => $row['id'],
                         'category'     => $row['category'] ?? '',
@@ -213,8 +213,8 @@ class ExternalSuppliesController extends Controller
             return redirect()
                 ->route('external-supplies.create')
                 ->with('success', $saveAsTpl
-                    ? 'Fornitura salvata + modello aggiornato.'
-                    : 'Fornitura esterna salvata con successo!');
+                    ? 'Suministro guardado + MODELO actualizada.'
+                    : '¡Suministro externo guardado correctamente!');
         });
     }
 
@@ -223,7 +223,7 @@ class ExternalSuppliesController extends Controller
     {
         $user = Auth::user();
 
-        // allow loading any template owned by user or its group
+        // permitir cargar cualquier MODELO propiedad del usuario o de su grupo
         if (is_null($user->created_by)) {
             $groupUserIds = User::where('created_by', $user->id)
                                 ->pluck('id')
@@ -296,17 +296,17 @@ class ExternalSuppliesController extends Controller
     public function update(Request $request, ExternalSupply $externalSupply)
     {
         $messages = [
-            'supply_name.required_if'          => 'Il nome della fornitura è obbligatorio quando si salva come modello.',
-            'client_id.required'               => 'Devi selezionare un cliente.',
-            'client_id.exists'                 => 'Il cliente selezionato non esiste.',
-            'supply_date.required'             => 'La data della fornitura è obbligatoria.',
-            'supply_date.date'                 => 'Inserisci una data valida.',
-            'recipes.required'                 => 'Devi aggiungere almeno una ricetta.',
-            'recipes.*.id.required'            => 'Seleziona una ricetta per ogni riga.',
-            'recipes.*.id.exists'              => 'La ricetta selezionata non esiste.',
-            'recipes.*.price.required'         => 'Il prezzo è obbligatorio e deve essere un numero.',
-            'recipes.*.qty.required'           => 'La quantità è obbligatoria e deve essere un numero intero.',
-            'recipes.*.total_amount.required'  => 'L\'importo totale è obbligatorio e deve essere un numero.',
+            'supply_name.required_if'          => 'El nombre del suministro es obligatorio cuando se guarda como MODELO.',
+            'client_id.required'               => 'Debes seleccionar un cliente.',
+            'client_id.exists'                 => 'El cliente seleccionado no existe.',
+            'supply_date.required'             => 'La fecha del suministro es obligatoria.',
+            'supply_date.date'                 => 'Introduce una fecha válida.',
+            'recipes.required'                 => 'Debes añadir al menos una receta.',
+            'recipes.*.id.required'            => 'Selecciona una receta para cada fila.',
+            'recipes.*.id.exists'              => 'La receta seleccionada no existe.',
+            'recipes.*.price.required'         => 'El precio es obligatorio y debe ser un número.',
+            'recipes.*.qty.required'           => 'La cantidad es obligatoria y debe ser un número entero.',
+            'recipes.*.total_amount.required'  => 'El importe total es obligatorio y debe ser un número.',
         ];
 
         $data = $request->validate([
@@ -326,13 +326,13 @@ class ExternalSuppliesController extends Controller
         $totalAmount  = array_sum(array_column($data['recipes'], 'total_amount'));
 
         return DB::transaction(function () use ($externalSupply, $data, $saveAsTpl, $userId, $totalAmount) {
-            // 🟢 1) Update the RECORD (do NOT flip save_template)
+            // 🟢 1) Actualizar el REGISTRO (NO cambiar save_template)
             $externalSupply->update([
                 'client_id'     => $data['client_id'],
                 'supply_name'   => $data['supply_name'] ?? $externalSupply->supply_name,
                 'supply_date'   => $data['supply_date'],
                 'total_amount'  => $totalAmount,
-                'save_template' => $externalSupply->save_template, // keep as-is (records stay false)
+                'save_template' => $externalSupply->save_template, // mantener tal cual (registros siguen en false)
                 'user_id'       => $userId,
             ]);
 
@@ -348,7 +348,7 @@ class ExternalSuppliesController extends Controller
                 ]);
             }
 
-            // 🟡 2) Optionally UPSERT a TEMPLATE (by name for this user)
+            // 🟡 2) Opcionalmente HACER UPSERT de una MODELO (por nombre para este usuario)
             if ($saveAsTpl) {
                 $template = ExternalSupply::where('user_id', $userId)
                     ->where('save_template', true)
@@ -390,8 +390,8 @@ class ExternalSuppliesController extends Controller
             return redirect()
                 ->route('external-supplies.index')
                 ->with('success', $saveAsTpl
-                    ? 'Fornitura aggiornata e modello sincronizzato.'
-                    : 'Fornitura esterna aggiornata con successo!');
+                    ? 'Suministro actualizado y MODELO sincronizada.'
+                    : '¡Suministro externo actualizado correctamente!');
         });
     }
 
@@ -403,6 +403,6 @@ class ExternalSuppliesController extends Controller
 
         return redirect()
             ->route('external-supplies.index')
-            ->with('success', 'Fornitura esterna eliminata con successo!');
+            ->with('success', '¡Suministro externo eliminado correctamente!');
     }
 }

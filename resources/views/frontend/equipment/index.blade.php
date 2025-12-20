@@ -1,46 +1,46 @@
 {{-- resources/views/frontend/equipment/index.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Vetrina delle Attrezzature')
+@section('title', 'Vitrina de Equipos')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Aggiungi Attrezzatura -->
+  <!-- Agregar Equipo -->
   <div class="card mb-5 border-primary shadow-sm">
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-tools fs-4 me-2" style="color: #e2ae76;"></i>
-      <h5 class="mb-0 fw-bold" style="color: #e2ae76;">Aggiungi Nuova Attrezzatura</h5>
+      <h5 class="mb-0 fw-bold" style="color: #e2ae76;">Agregar Nuevo Equipo</h5>
     </div>
     <div class="card-body">
       <form action="{{ route('equipment.store') }}" method="POST" class="row g-3 needs-validation" novalidate>
         @csrf
         <div class="col-md-8">
-          <label for="Name" class="form-label fw-semibold">Nome Attrezzatura</label>
+          <label for="Name" class="form-label fw-semibold">Nombre del Equipo</label>
           <input
             type="text"
             id="Name"
             name="name"
             class="form-control form-control-lg"
-            placeholder="es. Planetaria, Forno"
+            placeholder="ej. Amasadora, Horno"
             required
             value="{{ old('name') }}">
-          <div class="invalid-feedback">Inserisci un nome per l'attrezzatura.</div>
+          <div class="invalid-feedback">Introduce un nombre para el equipo.</div>
         </div>
         <div class="col-md-4 text-end align-self-end">
           <button type="submit" class="btn btn-gold-filled btn-lg">
-            <i class="bi bi-save2 me-1"></i> Salva Attrezzatura
+            <i class="bi bi-save2 me-1"></i> Guardar Equipo
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Elenco Attrezzature -->
+  <!-- Lista de Equipos -->
   <div class="card border-primary shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #041930;">
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        <i class="bi bi-list-ul me-2" style="color: #e2ae76;"></i> Elenco Attrezzature
+        <i class="bi bi-list-ul me-2" style="color: #e2ae76;"></i> Listado de Equipos
       </h5>
     </div>
     <div class="card-body table-responsive">
@@ -50,8 +50,8 @@
         data-page-length="25">
         <thead>
           <tr>
-            <th class="text-center sortable">Nome <span class="sort-indicator"></span></th>
-            <th class="text-center">Azioni</th>
+            <th class="text-center sortable">Nombre <span class="sort-indicator"></span></th>
+            <th class="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -59,20 +59,20 @@
             <tr>
               <td>{{ $equ->name }}</td>
               <td>
-                <a href="{{ route('equipment.show', $equ) }}" class="btn btn-sm btn-deepblue me-1" title="Visualizza">
+                <a href="{{ route('equipment.show', $equ) }}" class="btn btn-sm btn-deepblue me-1" title="Ver">
                   <i class="bi bi-eye"></i>
                 </a>
-                <a href="{{ route('equipment.edit', $equ) }}" class="btn btn-sm btn-gold me-1" title="Modifica">
+                <a href="{{ route('equipment.edit', $equ) }}" class="btn btn-sm btn-gold me-1" title="Editar">
                   <i class="bi bi-pencil-square"></i>
                 </a>
                 <form
                   action="{{ route('equipment.destroy', $equ) }}"
                   method="POST"
                   class="d-inline"
-                  onsubmit="return confirm('Eliminare questa attrezzatura?');">
+                  onsubmit="return confirm('¿Eliminar este equipo?');">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-red" title="Elimina">
+                  <button type="submit" class="btn btn-sm btn-red" title="Eliminar">
                     <i class="bi bi-trash"></i>
                   </button>
                 </form>
@@ -80,7 +80,7 @@
             </tr>
           @empty
             <tr>
-              <td colspan="2" class="text-muted">Nessuna attrezzatura trovata.</td>
+              <td colspan="2" class="text-muted">No se ha encontrado ningún equipo.</td>
             </tr>
           @endforelse
         </tbody>
@@ -143,7 +143,7 @@
     vertical-align: middle;
   }
 
-  /* Custom 2‑state sorting indicators */
+  /* Indicadores personalizados de orden de 2 estados */
   #equipmentTable thead th.sortable {
     cursor: pointer;
     user-select: none;
@@ -163,7 +163,7 @@
   }
   #equipmentTable thead th[data-sort-dir] .sort-indicator { opacity: 1; }
 
-  /* Remove DataTables default arrow icons */
+  /* Eliminar iconos de flecha por defecto de DataTables */
   table.dataTable thead .sorting:after,
   table.dataTable thead .sorting_asc:after,
   table.dataTable thead .sorting_desc:after,
@@ -187,29 +187,29 @@
       const table = $('#equipmentTable').DataTable({
         paging:      true,
         ordering:    true,
-        orderMulti:  false,          // single column only
+        orderMulti:  false,          // solo una columna
         responsive:  true,
         pageLength:  $('#equipmentTable').data('page-length') || 10,
         order:       [[0,'asc']],
         columnDefs: [
-          { orderable: false, targets: -1 } // Azioni non ordinabile
+          { orderable: false, targets: -1 } // Acciones no ordenables
         ],
         language: {
-          search:        "Cerca:",
-          lengthMenu:    "Mostra _MENU_ voci",
-          info:          "Mostra _START_ di _END_ di _TOTAL_ elementi",
-          infoEmpty:     "Nessun elemento disponibile",
-          zeroRecords:   "Nessuna corrispondenza trovata",
+          search:        "Buscar:",
+          lengthMenu:    "Mostrar _MENU_ elementos",
+          info:          "Mostrando de _START_ a _END_ de _TOTAL_ elementos",
+          infoEmpty:     "No hay elementos disponibles",
+          zeroRecords:   "No se encontraron coincidencias",
           paginate: {
-            first:    "Primo",
-            last:     "Ultimo",
-            next:     "Successivo",
-            previous: "Precedente"
+            first:    "Primero",
+            last:     "Último",
+            next:     "Siguiente",
+            previous: "Anterior"
           }
         }
       });
 
-      // Restore saved sort
+      // Restaurar orden guardado
       try {
         const sc = sessionStorage.getItem(STORAGE_COL);
         const sd = sessionStorage.getItem(STORAGE_DIR);
@@ -232,7 +232,7 @@
 
       updateIndicators();
 
-      // 2‑state toggle (asc <-> desc only, no neutral third state)
+      // Toggle de 2 estados (asc <-> desc)
       $('#equipmentTable thead').on('click', 'th.sortable', function() {
         const idx = $(this).index();
         const colSettings = table.settings()[0].aoColumns[idx];
@@ -253,13 +253,13 @@
         } catch(e){}
       });
 
-      // Prevent multi-column shift ordering
+      // Evitar orden por múltiples columnas con Shift
       $('#equipmentTable thead').on('mousedown', 'th', function(e){
         if (e.shiftKey) e.preventDefault();
       });
     }
 
-    // Validazione Bootstrap
+    // Validación Bootstrap
     const forms = document.querySelectorAll('.needs-validation');
     Array.from(forms).forEach(form => {
       form.addEventListener('submit', function(e) {

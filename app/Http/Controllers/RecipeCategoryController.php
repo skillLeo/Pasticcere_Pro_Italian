@@ -16,19 +16,19 @@ class RecipeCategoryController extends Controller
     {
         $user = Auth::user();
 
-        // 1) Build the “group” of IDs you should see
+        // 1) Construir el “grupo” de IDs que debes ver
         if (is_null($user->created_by)) {
-            // You’re a root user: see yourself + anyone you created
+            // Eres un usuario raíz: ves a ti mismo + a cualquiera que hayas creado
             $visibleUserIds = \App\Models\User::where('created_by', $user->id)
                 ->pluck('id')
                 ->push($user->id)
                 ->unique();
         } else {
-            // You’re a child: see yourself + your creator
+            // Eres un hijo: te ves a ti mismo + a tu creador
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 2) Fetch categories in your group OR with status = 'Default'
+        // 2) Obtener categorías de tu grupo O con status = 'Default'
         $categories = RecipeCategory::with('user')
             ->where(function ($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds)
@@ -41,7 +41,7 @@ class RecipeCategoryController extends Controller
     }
 
     /**
-     * Store a new category for this user.
+     * Guardar una nueva categoría para este usuario.
      */
 
 
@@ -75,16 +75,16 @@ public function store(Request $request)
 
     RecipeCategory::create($data);
 
-    return back()->with('success', 'Categoria aggiunta con successo!');
+    return back()->with('success', '¡Categoría añadida con éxito!');
 }
 
 public function update(Request $request, RecipeCategory $recipeCategory)
 {
     $user = Auth::user();
 
-    // guard: only own records
+    // guardia: solo registros propios
     if ($recipeCategory->user_id !== $user->id) {
-        abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata');
+        abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada');
     }
 
     if (is_null($user->created_by)) {
@@ -112,28 +112,28 @@ public function update(Request $request, RecipeCategory $recipeCategory)
 
     $recipeCategory->update([
         'name' => $data['name'],
-        // user_id unchanged
+        // user_id sin cambios
     ]);
 
     return redirect()
         ->route('recipe-categories.index')
-        ->with('success', 'Categoria aggiornata con successo!');
+        ->with('success', '¡Categoría actualizada con éxito!');
 }
 
 
     /**
-     * Show the edit form (same view, but with $category pre-filled).
+     * Mostrar el formulario de edición (la misma vista, pero con $category precargada).
      */
     public function edit(RecipeCategory $recipeCategory)
     {
         $userId = Auth::id();
 
-        // guard: only own records
+        // guardia: solo registros propios
         if ($recipeCategory->user_id !== $userId) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada');
         }
 
-        // only this user’s categories
+        // solo categorías de este usuario
         $categories = RecipeCategory::where('user_id', $userId)
             ->orderBy('name')
             ->get();
@@ -145,11 +145,11 @@ public function update(Request $request, RecipeCategory $recipeCategory)
     }
 
     /**
-     * Update an existing category, scoped to the user.
+     * Actualizar una categoría existente, limitada al usuario.
      */
 
     /**
-     * Display a single category.
+     * Mostrar una sola categoría.
      */
     public function show(RecipeCategory $recipeCategory)
     {
@@ -157,19 +157,19 @@ public function update(Request $request, RecipeCategory $recipeCategory)
     }
 
     /**
-     * Delete a category—only if it belongs to the user.
+     * Eliminar una categoría — solo si pertenece al usuario.
      */
     public function destroy(RecipeCategory $recipeCategory)
     {
         $userId = Auth::id();
 
-        // guard: only own records
+        // guardia: solo registros propios
         if ($recipeCategory->user_id !== $userId) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada');
         }
 
         $recipeCategory->delete();
 
-        return back()->with('success', 'Categoria eliminata con successo!');
+        return back()->with('success', '¡Categoría eliminada con éxito!');
     }
 }

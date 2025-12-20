@@ -1,7 +1,7 @@
 {{-- resources/views/frontend/production/index.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Tutti i Record di Produzione')
+@section('title', 'Todos los registros de producción')
 
 <style>
     .filter-chip .remove-filter {
@@ -83,10 +83,7 @@
     .production-table thead th.sort-disabled {
         cursor: default;
     }
-    .production-table thead th[data-sort-dir="asc"]::after,
-    .production-table thead th[data-sort-dir="desc"]::after {
-        content: attr(data-sort-dir) == 'asc' ? '▲' : '';
-    }
+
     .production-table thead th[data-sort-dir="asc"]::after,
     .production-table thead th[data-sort-dir="desc"]::after {
         font-size: .65rem;
@@ -116,21 +113,21 @@
     @endphp
 
     <div class="container py-5">
-        {{-- Page Header --}}
+        {{-- Encabezado de página --}}
         <div class="page-header mb-4">
             <i class="bi bi-gear-fill"></i>
-            <span>Record di Produzione</span>
+            <span>Registros de producción</span>
         </div>
 
-        {{-- Filters Card --}}
+        {{-- Tarjeta de filtros --}}
         <div class="card filter-card mb-4 shadow-sm p-3">
             <div class="row g-3 align-items-end">
-                {{-- Recipe Filter --}}
+                {{-- Filtro por receta --}}
                 <div class="col-md-3">
-                    <label class="form-label small">Ricetta</label>
+                    <label class="form-label small">Receta</label>
                     <div class="dropdown" data-bs-auto-close="outside">
                         <button class="btn btn-outline-primary w-100 text-start dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="bi bi-journal-bookmark me-1"></i> Ricette
+                            <i class="bi bi-journal-bookmark me-1"></i> Recetas
                         </button>
                         <div class="dropdown-menu p-3">
                             @foreach ($allRecipes as $r)
@@ -146,12 +143,12 @@
                     </div>
                 </div>
 
-                {{-- Chef Filter --}}
+                {{-- Filtro por pastelero --}}
                 <div class="col-md-3">
-                    <label class="form-label small">Pasticcere</label>
+                    <label class="form-label small">Pastelero</label>
                     <div class="dropdown" data-bs-auto-close="outside">
                         <button class="btn btn-outline-success w-100 text-start dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-lines-fill me-1"></i> Pasticcere
+                            <i class="bi bi-person-lines-fill me-1"></i> Pasteleros
                         </button>
                         <div class="dropdown-menu p-3">
                             @foreach ($allChefs as $c)
@@ -167,22 +164,22 @@
                     </div>
                 </div>
 
-                {{-- Date Range Filter --}}
+                {{-- Filtro rango de fechas --}}
                 <div class="col-md-2">
-                    <label class="form-label small">Da</label>
+                    <label class="form-label small">Desde</label>
                     <input type="date" id="filterStartDate" class="form-control">
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label small">A</label>
+                    <label class="form-label small">Hasta</label>
                     <input type="date" id="filterEndDate" class="form-control">
                 </div>
             </div>
         </div>
 
-        {{-- Active Filters Chips --}}
+        {{-- Chips de filtros activos --}}
         <div id="activeFilters" class="mb-4"></div>
 
-        {{-- Total Revenue Card --}}
+        {{-- Tarjeta de ingresos totales --}}
         <div class="row mb-4">
             <div class="col-12">
                 <div class="card revenue-card shadow-sm">
@@ -190,8 +187,8 @@
                         <div class="d-flex align-items-center">
                             <i class="bi bi-cash-stack fs-2 me-3"></i>
                             <div>
-                                <div class="small text-white">Potenziale Totale</div>
-                                <div class="h5 fw-bold text-white mb-0">Ricavi</div>
+                                <div class="small text-white">Potencial total</div>
+                                <div class="h5 fw-bold text-white mb-0">Ingresos</div>
                             </div>
                         </div>
                         <div id="totalRevenue" class="h3 fw-bold text-white">€0.00</div>
@@ -200,17 +197,17 @@
             </div>
         </div>
 
-        {{-- Production Table --}}
+        {{-- Tabla de producción --}}
         <div class="card production-table shadow-sm">
             <div class="card-body p-0">
-                <table  data-page-length="25"class="table mb-0" id="productionTable">
+                <table data-page-length="25" class="table mb-0" id="productionTable">
                     <thead>
                         <tr>
                             <th class="sort-disabled" style="width:48px"></th>
-                            <th class="sortable">Data</th>
-                            <th class="sortable">Voci</th>
-                            <th class="sortable">Potenziale</th>
-                            <th class="text-center sort-disabled">Azioni</th>
+                            <th class="sortable">Fecha</th>
+                            <th class="sortable">Líneas</th>
+                            <th class="sortable">Potencial</th>
+                            <th class="text-center sort-disabled">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -226,7 +223,7 @@
                                 $rowChefs   = strtolower($p->details->pluck('chef.name')->join(' '));
                             @endphp
 
-                            {{-- Main Row --}}
+                            {{-- Fila principal --}}
                             <tr class="prod-row"
                                 data-recipes="{{ $rowRecipes }}"
                                 data-chefs="{{ $rowChefs }}"
@@ -252,14 +249,14 @@
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('production.destroy', $p) }}" method="POST" class="d-inline"
-                                        onsubmit="return confirm('Eliminare?');">
+                                        onsubmit="return confirm('¿Eliminar?');">
                                         @csrf @method('DELETE')
                                         <button class="btn btn-sm btn-red"><i class="bi bi-trash"></i></button>
                                     </form>
                                 </td>
                             </tr>
 
-                            {{-- Detail Row --}}
+                            {{-- Fila de detalle --}}
                             <tr id="detail-{{ $p->id }}" class="detail-row collapse">
                                 <td colspan="5" class="p-3">
                                     <ul class="mb-0 ps-3">
@@ -296,13 +293,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const recipeCBs    = Array.from(document.querySelectorAll('.recipe-checkbox'));
     const chefCBs      = Array.from(document.querySelectorAll('.chef-checkbox'));
     const rows         = Array.from(document.querySelectorAll('.prod-row'));
-    const detailRows   = Array.from(document.querySelectorAll('.detail-row'));
     const totalRevElem = document.getElementById('totalRevenue');
     const activeTags   = document.getElementById('activeFilters');
     const startInput   = document.getElementById('filterStartDate');
     const endInput     = document.getElementById('filterEndDate');
 
-    // Toggle caret icons
+    // Alternar iconos de caret
     document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(btn => {
         btn.addEventListener('click', () => {
             const icon = btn.querySelector('i');
@@ -310,6 +306,14 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.classList.toggle('bi-caret-down-fill');
         });
     });
+
+    function getDetailRowFor(mainRow) {
+        const btn = mainRow.querySelector('[data-bs-target]');
+        if (!btn) return null;
+        const selector = btn.getAttribute('data-bs-target');
+        if (!selector) return null;
+        return document.querySelector(selector);
+    }
 
     function updateActiveFilters(recipes, chefs) {
         activeTags.innerHTML = '';
@@ -346,9 +350,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let grandTotal = 0;
 
-        rows.forEach((row, i) => {
-            const recs    = row.dataset.recipes;
-            const chefs   = row.dataset.chefs;
+        rows.forEach(row => {
+            const recs    = row.dataset.recipes || '';
+            const chefs   = row.dataset.chefs   || '';
             const rowDate = new Date(row.dataset.date);
 
             const recipeMatch = !selRecipes.length || selRecipes.some(r => recs.includes(r));
@@ -359,16 +363,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const showRow = recipeMatch && chefMatch && dateMatch;
 
-            row.style.display           = showRow ? '' : 'none';
-            detailRows[i].style.display = showRow ? '' : 'none';
+            const detailRow = getDetailRowFor(row);
 
-            if (!showRow) return;
+            row.style.display = showRow ? '' : 'none';
+            if (detailRow) detailRow.style.display = showRow ? '' : 'none';
 
-            // Recalculate potentials
+            if (!showRow || !detailRow) return;
+
             let rowSum = 0;
-            detailRows[i].querySelectorAll('li').forEach(li => {
-                const recipe    = li.dataset.recipe;
-                const chef      = li.dataset.chef;
+            detailRow.querySelectorAll('li').forEach(li => {
+                const recipe    = li.dataset.recipe || '';
+                const chef      = li.dataset.chef   || '';
                 const potential = parseFloat(li.dataset.potential) || 0;
 
                 const recOk  = !selRecipes.length || selRecipes.includes(recipe);
@@ -389,7 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
         totalRevElem.textContent = `€${grandTotal.toFixed(2)}`;
     }
 
-    // Wire up filter inputs
     [...recipeCBs, ...chefCBs].forEach(cb => {
         cb.addEventListener('change', filterTable);
     });
@@ -398,22 +402,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     filterTable();
 
-    // ===== 2-STATE SORTING + SESSION PERSISTENCE =====
+    // ===== Orden de 2 estados + persistencia en sesión =====
     const prodTable = document.getElementById('productionTable');
     const sortableHeaders = prodTable.querySelectorAll('thead th.sortable');
     const STORAGE_KEY = 'production_sort_state';
 
     function parseValue(colIndex, cellText) {
         let text = cellText.trim();
-        if (colIndex === 1) { // Data
-            // Expect YYYY-MM-DD
+        if (colIndex === 1) { // Fecha
             return new Date(text).getTime() || 0;
         }
-        if (colIndex === 2) { // Voci (count)
+        if (colIndex === 2) { // Líneas
             return parseFloat(text) || 0;
         }
-        if (colIndex === 3) { // Potenziale "€123.45"
-            text = text.replace(/[€,\s]/g,'');
+        if (colIndex === 3) { // Potencial "€123.45"
+            text = text.replace(/[€,\s]/g, '');
             return parseFloat(text) || 0;
         }
         return text.toLowerCase();
@@ -421,10 +424,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applySort(colIndex, dir) {
         const tbody = prodTable.querySelector('tbody');
-        const rowsArr = Array.from(tbody.querySelectorAll('tr'))
-            .filter(tr => tr.classList.contains('prod-row')); // only main rows
+        const mainRows = Array.from(tbody.querySelectorAll('tr.prod-row'));
 
-        rowsArr.sort((a,b) => {
+        mainRows.sort((a,b) => {
             const aCell = a.children[colIndex].textContent;
             const bCell = b.children[colIndex].textContent;
             const A = parseValue(colIndex, aCell);
@@ -438,10 +440,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return 0;
         });
 
-        // Re-append rows and their detail rows right after each main row
-        rowsArr.forEach(main => {
-            const id = main.querySelector('[data-bs-target]')?.getAttribute('data-bs-target');
-            const detail = id ? document.querySelector(id) : null;
+        mainRows.forEach(main => {
+            const detail = getDetailRowFor(main);
             tbody.appendChild(main);
             if (detail) tbody.appendChild(detail);
         });
@@ -453,15 +453,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Restore previous sort
     try {
         const saved = sessionStorage.getItem(STORAGE_KEY);
         if (saved) {
             const { col, dir } = JSON.parse(saved);
             const header = sortableHeaders[col];
             if (header && (dir === 'asc' || dir === 'desc')) {
+                clearHeaderDirs(header);
                 header.setAttribute('data-sort-dir', dir);
-                applySort(col + 1, dir); // +1 because first column (expand) is non-sortable
+                applySort(col + 1, dir);
             }
         }
     } catch(e){}
@@ -473,12 +473,13 @@ document.addEventListener('DOMContentLoaded', () => {
             clearHeaderDirs(th);
             th.setAttribute('data-sort-dir', newDir);
 
-            // visibleIndex maps: Data=0, Voci=1, Potenziale=2
-            // actual table column index: skip expand (0) => add 1
             applySort(visibleIndex + 1, newDir);
 
             try {
-                sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ col: visibleIndex, dir: newDir }));
+                sessionStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify({ col: visibleIndex, dir: newDir })
+                );
             } catch(e){}
         });
     });

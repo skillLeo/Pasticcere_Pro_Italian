@@ -1,7 +1,7 @@
 {{-- resources/views/frontend/external-supplies/show.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Fornitura Esterna — ' . $externalSupply->client->name)
+@section('title', 'Suministro externo — ' . $externalSupply->client->name)
 
 @section('content')
 <div class="container py-5 px-md-5">
@@ -11,27 +11,27 @@
       <div class="d-flex align-items-center gap-2">
         <i class="bi bi-box-seam fs-4" style="color: #e2ae76;"></i>
         <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-          Fornitura Esterna — {{ $externalSupply->client->name }}
+          Suministro externo — {{ $externalSupply->client->name }}
         </h5>
       </div>
       <small class="text-muted" style="font-size: 0.85rem;">
-        Data: {{ $externalSupply->supply_date->format('Y-m-d') }}
+        Fecha: {{ $externalSupply->supply_date->format('Y-m-d') }}
       </small>
     </div>
 
     <div class="card-body">
-      {{-- Riepilogo --}}
+      {{-- Resumen --}}
       <dl class="row mb-4">
         <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Cliente:</dt>
         <dd class="col-sm-8" style="font-size: 1.1rem;">{{ $externalSupply->client->name }}</dd>
 
-        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Nome Fornitura:</dt>
+        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Nombre del suministro:</dt>
         <dd class="col-sm-8" style="font-size: 1.1rem;">{{ $externalSupply->supply_name }}</dd>
 
-        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Data:</dt>
+        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Fecha:</dt>
         <dd class="col-sm-8" style="font-size: 1.1rem;">{{ $externalSupply->supply_date->format('Y-m-d') }}</dd>
 
-        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Ricavo (€):</dt>
+        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Ingresos (€):</dt>
         <dd class="col-sm-8" style="font-size: 1.1rem;">€{{ number_format($externalSupply->total_amount, 2) }}</dd>
 
         @php
@@ -41,10 +41,10 @@
           $profit = $externalSupply->total_amount - $cost;
         @endphp
 
-        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Costo (€):</dt>
+        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Coste (€):</dt>
         <dd class="col-sm-8" style="font-size: 1.1rem;">€{{ number_format($cost, 2) }}</dd>
 
-        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Profitto (€):</dt>
+        <dt class="col-sm-4 fw-semibold" style="font-size: 1.1rem;">Beneficio (€):</dt>
         <dd class="col-sm-8" style="font-size: 1.1rem;">
           <span class="{{ $profit >= 0 ? 'text-success' : 'text-danger' }}">
             €{{ number_format($profit, 2) }}
@@ -52,16 +52,16 @@
         </dd>
       </dl>
 
-      {{-- Linee Ricette --}}
-      <h6 class="fw-semibold mb-3">Ricette Fornite</h6>
+      {{-- Líneas de recetas --}}
+      <h6 class="fw-semibold mb-3">Recetas suministradas</h6>
       <div class="table-responsive">
-        <table  data-page-length="25"class="table table-bordered table-striped align-middle text-center">
+        <table class="table table-bordered table-striped align-middle text-center" data-page-length="25">
           <thead>
             <tr>
-              <th>Ricetta</th>
-              <th>Qtà</th>
-              <th>Ricavo Riga (€)</th>
-              <th>Costo Riga (€)</th>
+              <th>Receta</th>
+              <th>Cant.</th>
+              <th>Ingresos línea (€)</th>
+              <th>Coste línea (€)</th>
             </tr>
           </thead>
           <tbody>
@@ -98,21 +98,21 @@
         </table>
       </div>
 
-      {{-- Azioni --}}
+      {{-- Acciones --}}
       <div class="mt-4 text-end">
         <a href="{{ route('external-supplies.edit', $externalSupply) }}" class="btn btn-gold me-2">
-          <i class="bi bi-pencil me-1"></i> Modifica
+          <i class="bi bi-pencil me-1"></i> Editar
         </a>
         <a href="{{ route('external-supplies.index') }}" class="btn btn-deepblue me-2">
-          <i class="bi bi-arrow-left me-1"></i> Indietro alla lista
+          <i class="bi bi-arrow-left me-1"></i> Volver al listado
         </a>
         <form action="{{ route('external-supplies.destroy', $externalSupply) }}"
               method="POST" class="d-inline"
-              onsubmit="return confirm('Eliminare questa fornitura?');">
+              onsubmit="return confirm('¿Eliminar este suministro?');">
           @csrf
           @method('DELETE')
           <button class="btn btn-red" type="submit">
-            <i class="bi bi-trash me-1"></i> Elimina
+            <i class="bi bi-trash me-1"></i> Eliminar
           </button>
         </form>
       </div>

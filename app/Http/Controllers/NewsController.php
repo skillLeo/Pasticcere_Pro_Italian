@@ -12,11 +12,11 @@ use App\Events\NewsNotificationCreated;
 class NewsController extends Controller
 {
     /**
-     * Display all active news on the “news” page.
+     * Muestra todas las noticias activas en la página de “news”.
      */
     public function index()
     {
-        // Recupera tutte le news attive, in ordine decrescente
+        // Recupera todas las noticias activas, en orden descendente
         $news = News::latest()
             ->where('is_active', true)
             ->get();
@@ -25,7 +25,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Same as index(), but renders the “blogs” view.
+     * Igual que index(), pero renderiza la vista “blogs”.
      */
     public function blogs()
     {
@@ -37,7 +37,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Show the form to create a new news item.
+     * Muestra el formulario para crear una nueva noticia.
      */
     public function create()
     {
@@ -45,7 +45,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Store a newly created news item.
+     * Guarda una nueva noticia.
      */
     public function store(Request $request)
     {
@@ -53,7 +53,7 @@ class NewsController extends Controller
             'title'      => 'required|string|max:255',
             'content'    => 'required|string',
             'event_date' => 'required|date',
-            'image'      => 'nullable|image|max:95120', // circa 95 MB
+            'image'      => 'nullable|image|max:95120', // aproximadamente 95 MB
         ]);
 
         if ($request->hasFile('image')) {
@@ -63,16 +63,16 @@ class NewsController extends Controller
 
         $news = News::create($data);
 
-        // (eventuale broadcast notifiche)
+        // (difusión de notificaciones opcional)
         // event(new NewsNotificationCreated($news));
 
         return redirect()
             ->route('news.index')
-            ->with('success', 'Notizia creata con successo.');
+            ->with('success', 'Noticia creada con éxito.');
     }
 
     /**
-     * Display a single news item.
+     * Muestra una noticia individual.
      */
     public function show($id)
     {
@@ -81,7 +81,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Show the form to edit an existing news item.
+     * Muestra el formulario para editar una noticia existente.
      */
     public function edit(News $news)
     {
@@ -89,7 +89,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Update the specified news item.
+     * Actualiza la noticia especificada.
      */
     public function update(Request $request, News $news)
     {
@@ -101,7 +101,7 @@ class NewsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Se desideri cancellare la vecchia: Storage::disk('public')->delete($news->image);
+            // Si deseas borrar la imagen anterior: Storage::disk('public')->delete($news->image);
             $data['image'] = $request->file('image')
                                      ->store('news_images', 'public');
         }
@@ -110,22 +110,22 @@ class NewsController extends Controller
 
         return redirect()
             ->route('news.index')
-            ->with('success', 'Notizia aggiornata con successo.');
+            ->with('success', 'Noticia actualizada con éxito.');
     }
 
     /**
-     * Remove the specified news item and its notifications.
+     * Elimina la noticia especificada y sus notificaciones.
      */
     public function destroy(News $news)
     {
-        // 1) Rimuovi tutte le notifiche correlate
+        // 1) Elimina todas las notificaciones relacionadas
         $news->notifications()->delete();
 
-        // 2) Elimina la news
+        // 2) Elimina la noticia
         $news->delete();
 
         return redirect()
             ->route('news.index')
-            ->with('success', 'Notizia e notifiche correlate eliminate con successo.');
+            ->with('success', 'Noticia y notificaciones relacionadas eliminadas con éxito.');
     }
 }

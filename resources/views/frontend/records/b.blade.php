@@ -1,13 +1,12 @@
-resources/views/frontend/records/index.blade.php
-@extends('frontend.layouts.app') @section('title', 'Filter Records')
+@extends('frontend.layouts.app') @section('title', 'Filtrar registros')
 @section('content')
 <div class="container py-5">
-    <h2 class="mb-5 text-center">Showcase &amp; External Supply Records</h2>
+    <h2 class="mb-5 text-center">Registros de exhibición y suministro externo</h2>
 
-    {{-- Filters --}}
+    {{-- Filtros --}}
     <div class="row justify-content-center g-4 mb-5">
         <div class="col-sm-6 col-md-4">
-            <label class="form-label text-center d-block">From</label>
+            <label class="form-label text-center d-block">Desde</label>
             <input
                 type="date"
                 id="filter_from"
@@ -16,7 +15,7 @@ resources/views/frontend/records/index.blade.php
             />
         </div>
         <div class="col-sm-6 col-md-4">
-            <label class="form-label text-center d-block">To</label>
+            <label class="form-label text-center d-block">Hasta</label>
             <input
                 type="date"
                 id="filter_to"
@@ -25,12 +24,12 @@ resources/views/frontend/records/index.blade.php
             />
         </div>
         <div class="col-sm-8 col-md-6 col-lg-4">
-            <label class="form-label text-center d-block">Recipe Name</label>
+            <label class="form-label text-center d-block">Nombre de la receta</label>
             <input
                 type="text"
                 id="filter_recipe"
                 class="form-control mx-auto"
-                placeholder="Enter recipe..."
+                placeholder="Escriba la receta..."
             />
         </div>
     </div>
@@ -40,10 +39,10 @@ resources/views/frontend/records/index.blade.php
         class="alert alert-info text-center"
         style="display: none"
     >
-        No records found for the selected filters.
+        No se encontraron registros para los filtros seleccionados.
     </div>
 
-    {{-- Summary Cards --}}
+    {{-- Tarjetas de resumen --}}
     <div
         id="summary"
         class="row justify-content-center mb-5 g-4"
@@ -53,7 +52,7 @@ resources/views/frontend/records/index.blade.php
             <div class="card border-primary h-100">
                 <div class="card-body text-center">
                     <i class="bi bi-graph-up display-4 text-primary mb-3"></i>
-                    <h5 class="card-title">Total Showcase Revenue</h5>
+                    <h5 class="card-title">Ingresos totales de exhibición</h5>
                     <p class="display-5 fw-bold mb-1" id="totalShowRevenue">
                         0.00
                     </p>
@@ -67,7 +66,7 @@ resources/views/frontend/records/index.blade.php
                     <i
                         class="bi bi-currency-dollar display-4 text-danger mb-3"
                     ></i>
-                    <h5 class="card-title">Total External Cost</h5>
+                    <h5 class="card-title">Costo externo total</h5>
                     <p class="display-5 fw-bold mb-1" id="totalExternalCost">
                         0.00
                     </p>
@@ -77,13 +76,13 @@ resources/views/frontend/records/index.blade.php
         </div>
     </div>
 
-    {{-- Tables --}}
+    {{-- Tablas --}}
     <div class="row gx-4 gy-5">
-        {{-- Showcase --}}
+        {{-- Exhibición --}}
         <div class="col-lg-6">
             <div class="card shadow-sm h-100">
                 <div class="card-header bg-primary text-white">
-                    <i class="bi bi-list-ul me-2"></i> Showcase Records
+                    <i class="bi bi-list-ul me-2"></i> Registros de exhibición
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -92,13 +91,13 @@ resources/views/frontend/records/index.blade.php
                         >
                             <thead class="table-light text-center">
                                 <tr>
-                                    <th>Date</th>
-                                    <th class="text-start">Recipe</th>
-                                    <th>Qty</th>
-                                    <th>Sold</th>
-                                    <th>Reuse</th>
-                                    <th>Waste</th>
-                                    <th>Revenue</th>
+                                    <th>Fecha</th>
+                                    <th class="text-start">Receta</th>
+                                    <th>Cant.</th>
+                                    <th>Vendidos</th>
+                                    <th>Reutilizado</th>
+                                    <th>Desperdicio</th>
+                                    <th>Ingresos</th>
                                 </tr>
                             </thead>
                             <tbody
@@ -108,7 +107,7 @@ resources/views/frontend/records/index.blade.php
                             <tfoot class="table-light text-center">
                                 <tr>
                                     <th colspan="2" class="text-end">
-                                        Grand Total:
+                                        Total general:
                                     </th>
                                     <th id="showcaseQtyFooter">0</th>
                                     <th id="showcaseSoldFooter">0</th>
@@ -123,11 +122,11 @@ resources/views/frontend/records/index.blade.php
             </div>
         </div>
 
-        {{-- External Supply --}}
+        {{-- Suministro externo --}}
         <div class="col-lg-6">
             <div class="card shadow-sm h-100">
                 <div class="card-header bg-dark text-white">
-                    <i class="bi bi-box-seam me-2"></i> External Supply Records
+                    <i class="bi bi-box-seam me-2"></i> Registros de suministro externo
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -136,11 +135,11 @@ resources/views/frontend/records/index.blade.php
                         >
                             <thead class="table-light text-center">
                                 <tr>
-                                    <th>Date</th>
-                                    <th class="text-start">Client</th>
-                                    <th class="text-start">Recipe</th>
-                                    <th>Returns</th>
-                                    <th>Qty</th>
+                                    <th>Fecha</th>
+                                    <th class="text-start">Cliente</th>
+                                    <th class="text-start">Receta</th>
+                                    <th>Devoluciones</th>
+                                    <th>Cant.</th>
                                     <th>Total ($)</th>
                                 </tr>
                             </thead>
@@ -151,7 +150,7 @@ resources/views/frontend/records/index.blade.php
                             <tfoot class="table-light text-center">
                                 <tr>
                                     <th colspan="3" class="text-end">
-                                        Grand Total:
+                                        Total general:
                                     </th>
                                     <th id="externalReturnsFooter">0</th>
                                     <th id="externalQtyFooter">0</th>
@@ -168,7 +167,7 @@ resources/views/frontend/records/index.blade.php
 @endsection @section('scripts')
 <script>
     @php
-      // Prepare JS data arrays, including recipe‐level and return qty.
+      // Preparar matrices de datos JS, incluyendo nivel de receta y cantidad devuelta.
       $showData = $showcaseRecords->flatMap(fn($sc) =>
         $sc->recipes->map(fn($line) => [
           'date'        => $sc->showcase_date->format('Y-m-d'),
@@ -205,11 +204,11 @@ resources/views/frontend/records/index.blade.php
       const to     = document.getElementById('filter_to').value;
       const recipe = document.getElementById('filter_recipe').value.trim().toLowerCase();
 
-      // filter helpers
+      // ayudas de filtrado
       const inRange = (d,valA,valB) => (!valA||d>=valA) && (!valB||d<=valB);
       const matchRec = r => !recipe || r.recipe_name.toLowerCase().includes(recipe);
 
-      // filtered lists
+      // listas filtradas
       const fShow = showcaseData.filter(r => inRange(r.date,from,to) && matchRec(r));
       const fExt  = externalData.filter(r => inRange(r.date,from,to) && matchRec(r));
 
@@ -217,7 +216,7 @@ resources/views/frontend/records/index.blade.php
       document.getElementById('noRecords').style.display = has?'none':'';
       document.getElementById('summary').style.display   = has?'flex':'none';
 
-      // group by date
+      // agrupar por fecha
       function groupByDate(arr){
         return arr.reduce((acc,r)=>{
           (acc[r.date]||(acc[r.date]={ date:r.date, items:[], sums:{}})).items.push(r);
@@ -225,7 +224,7 @@ resources/views/frontend/records/index.blade.php
         },{});
       }
 
-      // compute per‐day sums
+      // calcular sumas por día
       function summarizeShow(group){
         group.sums = group.items.reduce((S,r)=>{
           S.quantity = (S.quantity||0)+ +r.quantity;
@@ -251,28 +250,28 @@ resources/views/frontend/records/index.blade.php
       const eGroups = Object.values(groupByDate(fExt));
       eGroups.forEach(summarizeExt);
 
-      // grand totals
+      // totales generales
       const grandShow = sGroups.reduce((s,g)=>s+g.sums.revenue,0);
       const grandExt  = eGroups.reduce((s,g)=>s+g.sums.total,0);
       const gross    = grandShow+grandExt;
       const pctShow  = gross?((grandShow/gross)*100).toFixed(0):0;
       const pctExt   = gross?((grandExt /gross)*100).toFixed(0):0;
 
-      // populate summary cards
+      // rellenar tarjetas de resumen
       document.getElementById('totalShowRevenue').textContent   = grandShow.toFixed(2);
       document.getElementById('pctShow').textContent           = pctShow+'%';
       document.getElementById('totalExternalCost').textContent = grandExt.toFixed(2);
       document.getElementById('pctExt').textContent            = pctExt+'%';
 
-      // populate show table
+      // rellenar tabla de exhibición
       let outShow = '';
       sGroups.forEach(g=>{
-        // header row
+        // fila de encabezado
         outShow += `
         <tr class="group-header" data-date="${g.date}">
           <td colspan="2" class="text-start">
             <i class="bi bi-caret-right-fill toggle-icon"></i>
-            ${g.date} (${g.items.length} lines)
+            ${g.date} (${g.items.length} líneas)
           </td>
           <td>${g.sums.quantity}</td>
           <td>${g.sums.sold}</td>
@@ -280,7 +279,7 @@ resources/views/frontend/records/index.blade.php
           <td>${g.sums.waste}</td>
           <td>${g.sums.revenue.toFixed(2)}</td>
         </tr>`;
-        // detail rows
+        // filas de detalle
         g.items.forEach(r=>{
           outShow += `
           <tr class="group-child group-${g.date}" style="display:none">
@@ -294,7 +293,7 @@ resources/views/frontend/records/index.blade.php
           </tr>`;
         });
       });
-      // grand footer
+      // pie de total general
       document.getElementById('showcaseBody').innerHTML = outShow;
       document.getElementById('showcaseQtyFooter').textContent   = sGroups.reduce((s,g)=>s+g.sums.quantity,0);
       document.getElementById('showcaseSoldFooter').textContent  = sGroups.reduce((s,g)=>s+g.sums.sold,0);
@@ -302,14 +301,14 @@ resources/views/frontend/records/index.blade.php
       document.getElementById('showcaseWasteFooter').textContent = sGroups.reduce((s,g)=>s+g.sums.waste,0);
       document.getElementById('showcaseFooter').textContent      = grandShow.toFixed(2);
 
-      // populate external table
+      // rellenar tabla externa
       let outExt = '';
       eGroups.forEach(g=>{
         outExt += `
         <tr class="group-header" data-date="${g.date}">
           <td colspan="3" class="text-start">
             <i class="bi bi-caret-right-fill toggle-icon"></i>
-            ${g.date} (${g.items.length} lines)
+            ${g.date} (${g.items.length} líneas)
           </td>
           <td>${g.sums.returns}</td>
           <td>${g.sums.qty}</td>
@@ -332,7 +331,7 @@ resources/views/frontend/records/index.blade.php
       document.getElementById('externalQtyFooter').textContent     = eGroups.reduce((s,g)=>s+g.sums.qty,0);
       document.getElementById('externalFooter').textContent        = grandExt.toFixed(2);
 
-      // wire up toggles
+      // configurar toggles
       document.querySelectorAll('.group-header').forEach(row=>{
         row.querySelector('.toggle-icon').onclick = () => {
           const date = row.dataset.date;
@@ -355,7 +354,7 @@ resources/views/frontend/records/index.blade.php
     document.getElementById('filter_from'  ).addEventListener('change', render);
     document.getElementById('filter_to'    ).addEventListener('change', render);
     document.getElementById('filter_recipe').addEventListener('input', debounce(render));
-    // initial
+    // inicial
     render();
 
 
@@ -365,20 +364,21 @@ resources/views/frontend/records/index.blade.php
 
 
 
+
       document.getElementById('addToIncomeBtn').addEventListener('click', () => {
-      // build hidden form
+      // construir formulario oculto
       const form = document.createElement('form');
       form.method = 'POST';
       form.action = '{{ route("income.addFiltered") }}';
       form.style.display = 'none';
 
-      // CSRF token
+      // token CSRF
       const token = document.createElement('input');
       token.name  = '_token';
       token.value = document.querySelector('meta[name="csrf-token"]').content;
       form.appendChild(token);
 
-      // add showcase inputs
+      // añadir entradas de exhibición
       lastShowGroups.forEach((g,i) => {
         const d = document.createElement('input');
         d.name  = `showcase[${i}][date]`;
@@ -391,7 +391,7 @@ resources/views/frontend/records/index.blade.php
         form.appendChild(a);
       });
 
-      // add external inputs
+      // añadir entradas externas
       lastExtGroups.forEach((g,i) => {
         const d = document.createElement('input');
         d.name  = `external[${i}][date]`;
@@ -409,7 +409,7 @@ resources/views/frontend/records/index.blade.php
     });
 
 
-      // handle Add to Income click
+      // manejar clic de Añadir a ingresos
       document.getElementById('addToIncomeBtn').addEventListener('click', () => {
       const payload = {
         showcase: lastShowGroups.map(g => ({ date: g.date, amount: g.sums.revenue })),
@@ -417,8 +417,8 @@ resources/views/frontend/records/index.blade.php
       };
 
       axios.post('{{ route("income.addFiltered") }}', payload)
-        .then(res => alert(`Inserted ${res.data.count} income records.`))
-        .catch(() => alert('Failed to add to income.'));
+        .then(res => alert(`Se insertaron ${res.data.count} registros de ingresos.`))
+        .catch(() => alert('No se pudo añadir a ingresos.'));
     });
 </script>
 @endsection

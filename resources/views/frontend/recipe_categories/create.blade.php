@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title','Gestione Categorie Ricette')
+@section('title','Gestión Categorías Recetas')
 
 @section('content')
 <div class="container py-5 px-md-5">
@@ -9,7 +9,7 @@
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-tags me-2 fs-4" style="color: #e2ae76;"></i>
       <h5 class="mb-0" style="color: #e2ae76;">
-        {{ isset($category) ? 'Modifica Categoria Ricetta' : 'Aggiungi Categoria Ricetta' }}
+        {{ isset($category) ? 'Editar Categoría Receta' : 'Añadir Categoría Receta' }}
       </h5>
     </div>
 
@@ -25,16 +25,16 @@
         @if(isset($category)) @method('PUT') @endif
 
         <div class="col-md-8">
-          <label for="categoryName" class="form-label fw-semibold">Nome Categoria</label>
+          <label for="categoryName" class="form-label fw-semibold">Nombre categoría</label>
           <input
             type="text"
             id="categoryName"
             name="name"
             class="form-control form-control-lg"
-            placeholder="es. Dolce"
+            placeholder="ej. Dulce"
             value="{{ old('name', $category->name ?? '') }}"
             required>
-          <div class="invalid-feedback">Inserisci un nome per la categoria.</div>
+          <div class="invalid-feedback">Introduce un nombre para la categoría.</div>
         </div>
 
         <div class="col-12 text-end">
@@ -42,7 +42,7 @@
                   class="btn btn-lg fw-semibold"
                   style="background-color: #e2ae76; color: #041930;">
             <i class="bi bi-save2 me-2" style="color: #041930;"></i>
-            {{ isset($category) ? 'Aggiorna Categoria' : 'Salva Categoria' }}
+            {{ isset($category) ? 'Actualizar categoría' : 'Guardar categoría' }}
           </button>
         </div>
       </form>

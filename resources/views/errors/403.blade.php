@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Azione non consentita')
+@section('title', 'Acción no permitida')
 
 @section('content')
 <style>
@@ -58,9 +58,9 @@
               d="M12 9v3.75m0 3.75h.007M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
       </svg>
     </div>
-    <h1>Azione non consentita</h1>
-    <p>Torna indietro per continuare</p>
-    <a href="{{ url()->previous() }}" class="btn btn-primary px-4">Torna Indietro</a>
+    <h1>Acción no permitida</h1>
+    <p>Vuelve atrás para continuar</p>
+    <a href="{{ url()->previous() }}" class="btn btn-primary px-4">Volver atrás</a>
   </div>
 </div>
 @endsection

@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title','Categorie Entrate')
+@section('title','Categorías de Ingresos')
 
 @section('content')
 <div class="container py-5 px-md-5">
@@ -16,7 +16,7 @@
       <div class="card shadow-sm border-success">
         <div class="card-header" style="background:#041930;color:#e2ae76;">
           <strong class="mb-0">
-            @isset($editingCategory) Modifica Categoria @else Nuova Categoria @endisset
+            @isset($editingCategory) Editar categoría @else Nueva categoría @endisset
           </strong>
         </div>
         <div class="card-body">
@@ -27,19 +27,19 @@
             @isset($editingCategory) @method('PUT') @endisset
 
             <div class="col-12">
-              <label class="form-label fw-semibold">Nome</label>
+              <label class="form-label fw-semibold">Nombre</label>
               <input type="text" name="name" required
                      value="{{ old('name', $editingCategory->name ?? '') }}"
                      class="form-control form-control-lg @error('name') is-invalid @enderror">
-              <div class="invalid-feedback">{{ $errors->first('name', 'Inserisci il nome.') }}</div>
+              <div class="invalid-feedback">{{ $errors->first('name', 'Introduce el nombre.') }}</div>
             </div>
 
             <div class="col-12 text-end">
               <button type="submit" class="btn btn-gold-save btn-lg">
-                @isset($editingCategory) Aggiorna @else Salva @endisset
+                @isset($editingCategory) Actualizar @else Guardar @endisset
               </button>
               @isset($editingCategory)
-                <a href="{{ route('income-categories.index') }}" class="btn btn-deepblue btn-lg ms-2">Annulla</a>
+                <a href="{{ route('income-categories.index') }}" class="btn btn-deepblue btn-lg ms-2">Cancelar</a>
               @endisset
             </div>
           </form>
@@ -50,14 +50,14 @@
     <div class="col-lg-7">
       <div class="card shadow-sm">
         <div class="card-header" style="background:#041930;color:#e2ae76;">
-          <h5 class="mb-0 fw-bold">Categorie Entrate</h5>
+          <h5 class="mb-0 fw-bold">Categorías de Ingresos</h5>
         </div>
         <div class="card-body table-responsive">
-          <table  data-page-length="25"class="table table-hover align-middle text-center mb-0">
+          <table class="table table-hover align-middle text-center mb-0" data-page-length="25">
             <thead>
               <tr>
-                <th>Nome</th>
-                <th>Azioni</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -78,7 +78,7 @@
                       </a>
                       <form class="d-inline" method="POST"
                             action="{{ route('income-categories.destroy', $cat) }}"
-                            onsubmit="return confirm('Eliminare la categoria?');">
+                            onsubmit="return confirm('¿Eliminar la categoría?');">
                         @csrf @method('DELETE')
                         <button class="btn btn-sm btn-red">
                           <i class="bi bi-trash"></i>
@@ -90,7 +90,7 @@
                   </td>
                 </tr>
               @empty
-                <tr><td colspan="3" class="text-muted">Nessuna categoria.</td></tr>
+                <tr><td colspan="3" class="text-muted">No hay categorías.</td></tr>
               @endforelse
             </tbody>
           </table>
@@ -109,25 +109,24 @@
   .btn-red:hover{ background:red!important;color:#fff!important; }
 </style>
 <style>
-  /* Left align all table body cells by default */
+  /* Alinear a la izquierda todas las celdas del cuerpo de la tabla por defecto */
   table tbody td {
     text-align: left !important;
     vertical-align: middle !important;
   }
 
-  /* Keep table header left aligned (except actions) */
+  /* Mantener el encabezado de la tabla alineado a la izquierda (excepto acciones) */
   table thead th {
     text-align: left !important;
     vertical-align: middle !important;
   }
 
-  /* Actions column should stay centered */
+  /* La columna de acciones debe permanecer centrada */
   table thead th:last-child,
   table tbody td:last-child {
     text-align: center !important;
-    width: 120px; /* optional, keeps buttons compact */
+    width: 120px; /* opcional, mantiene los botones compactos */
   }
 </style>
 
 @endsection
-

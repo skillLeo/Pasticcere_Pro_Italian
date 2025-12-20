@@ -1,12 +1,12 @@
 {{-- resources/views/frontend/costs/dashboard.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Mensile Costi e Ricavi')
+@section('title', 'Costes e Ingresos Mensuales')
 
 @section('content')
 @php 
     use \Carbon\Carbon; 
-    Carbon::setLocale('it');
+    Carbon::setLocale('es');
 @endphp
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -31,7 +31,7 @@
 
 <div class="container dashboard-container">
 
-  <!-- Header + Year Selector -->
+  <!-- Encabezado + Selector de año -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="page-header-custom mb-0">
       <i class="bi bi-speedometer2 me-2"></i>
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <!-- Month Tabs -->
+  <!-- Pestañas de meses -->
   <ul class="nav nav-pills mb-4 month-tabs justify-content-center">
     @for($m = 1; $m <= 12; $m++)
       <li class="nav-item">
@@ -60,7 +60,7 @@
     @endfor
   </ul>
 
-  <!-- Category Summary -->
+  <!-- Resumen por categoría -->
   <div class="summary-container">
     @foreach($categories as $cat)
       <div class="card-mini">
@@ -71,17 +71,17 @@
     @endforeach
   </div>
 
-  <!-- Monthly Comparison -->
+  <!-- Comparativa mensual -->
   <div class="card shadow-sm mb-4 mt-4">
     <div class="card-header bg-dark text-white">
-      <i class="bi bi-bar-chart-line me-2"></i>Confronto Mensile ({{ $year }})
+      <i class="bi bi-bar-chart-line me-2"></i>Comparativa Mensual ({{ $year }})
     </div>
     <div class="card-body p-3">
       <div class="alert alert-info mb-4 small">
-        <strong>Miglior mese:</strong>
+        <strong>Mejor mes:</strong>
           {{ Carbon::create($year, $bestMonth, 1)->translatedFormat('F') }} (€{{ number_format($bestNet, 2) }})
         &nbsp;&nbsp;
-        <strong>Peggior mese:</strong>
+        <strong>Peor mes:</strong>
           {{ $worstMonth ? Carbon::create($year, $worstMonth, 1)->translatedFormat('F') : '—' }}
           (€{{ number_format($worstNet, 2) }})
       </div>
@@ -90,22 +90,22 @@
         <table class="table table-bordered align-middle mb-0">
           <thead>
             <tr>
-              <th rowspan="2">Mese</th>
-              <th colspan="5">Anno Corrente ({{ $year }})</th>
-              <th colspan="5">Anno Precedente ({{ $lastYear }})</th>
+              <th rowspan="2">Mes</th>
+              <th colspan="5">Año Actual ({{ $year }})</th>
+              <th colspan="5">Año Anterior ({{ $lastYear }})</th>
             </tr>
             <tr>
-              <th>Costo (€)</th>
-              <th>Ricavi (€)</th>
-              <th>Netto (€)</th>
-              <th>Giorni apertura</th>
-              <th>BEP (€/giorno)</th>
+              <th>Coste (€)</th>
+              <th>Ingresos (€)</th>
+              <th>Neto (€)</th>
+              <th>Días de apertura</th>
+              <th>PE (€/día)</th>
 
-              <th>Costo (€)</th>
-              <th>Ricavi (€)</th>
-              <th>Netto (€)</th>
-              <th>Giorni apertura</th>
-              <th>BEP (€/giorno)</th>
+              <th>Coste (€)</th>
+              <th>Ingresos (€)</th>
+              <th>Neto (€)</th>
+              <th>Días de apertura</th>
+              <th>PE (€/día)</th>
             </tr>
           </thead>
           <tbody>
@@ -126,7 +126,7 @@
               <tr data-cost-current="{{ $c1 }}" data-cost-previous="{{ $c2 }}">
                 <td class="text-start">{{ Carbon::create($year, $m, 1)->translatedFormat('F') }}</td>
 
-                {{-- CURRENT YEAR --}}
+                {{-- AÑO ACTUAL --}}
                 <td>€{{ number_format($c1, 2) }}</td>
                 <td>€{{ number_format($i1, 2) }}</td>
                 <td class="{{ $n1 >= 0 ? 'text-success' : 'text-danger' }}">€{{ number_format($n1, 2) }}</td>
@@ -138,7 +138,7 @@
                 </td>
                 <td class="bep-cell" id="bep-{{ $year }}-{{ $m }}">€{{ number_format($b1, 2) }}</td>
 
-                {{-- PREVIOUS YEAR --}}
+                {{-- AÑO ANTERIOR --}}
                 <td>€{{ number_format($c2, 2) }}</td>
                 <td>€{{ number_format($i2, 2) }}</td>
                 <td class="{{ $n2 >= 0 ? 'text-success' : 'text-danger' }}">€{{ number_format($n2, 2) }}</td>
@@ -153,16 +153,16 @@
             @endfor
 
             <tr class="fw-bold bg-light">
-              <td>Totale</td>
+              <td>Total</td>
 
-              {{-- CURRENT YEAR TOTALS --}}
+              {{-- TOTALES AÑO ACTUAL --}}
               <td>€{{ number_format($totalCostYear, 2) }}</td>
               <td>€{{ number_format($totalIncomeYear, 2) }}</td>
               <td class="{{ $netYear >= 0 ? 'text-success' : 'text-danger' }}">€{{ number_format($netYear, 2) }}</td>
               <td id="sum-days-{{ $year }}">{{ $sumDaysThisYear }}</td>
               <td id="sum-bep-{{ $year }}">€{{ number_format($overallBepThisYear, 2) }}</td>
 
-              {{-- PREVIOUS YEAR TOTALS --}}
+              {{-- TOTALES AÑO ANTERIOR --}}
               <td>€{{ number_format($totalCostLastYear, 2) }}</td>
               <td>€{{ number_format($totalIncomeLastYear, 2) }}</td>
               <td class="{{ $netLastYear >= 0 ? 'text-success' : 'text-danger' }}">€{{ number_format($netLastYear, 2) }}</td>
@@ -173,31 +173,31 @@
         </table>
       </div>
 
-      <!-- Bottom Summary Mini-Cards -->
+      <!-- Mini-tarjetas de resumen inferior -->
       <div class="summary-container">
         <div class="card-mini border border-success">
           <i class="bi bi-wallet2 card-mini-icon text-success"></i>
-          <div class="card-mini-title">Ricavi ({{ Carbon::create($year, $month, 1)->translatedFormat('F Y') }})</div>
+          <div class="card-mini-title">Ingresos ({{ Carbon::create($year, $month, 1)->translatedFormat('F Y') }})</div>
           <div class="card-mini-value">€{{ number_format($incomeThisMonth, 2) }}</div>
         </div>
         <div class="card-mini border border-secondary">
           <i class="bi bi-wallet card-mini-icon text-secondary"></i>
-          <div class="card-mini-title">Ricavi ({{ Carbon::create($lastYear, $month, 1)->translatedFormat('F Y') }})</div>
+          <div class="card-mini-title">Ingresos ({{ Carbon::create($lastYear, $month, 1)->translatedFormat('F Y') }})</div>
           <div class="card-mini-value">€{{ number_format($incomeLastYearSame, 2) }}</div>
         </div>
         <div class="card-mini border border-primary">
           <i class="bi bi-receipt card-mini-icon text-primary"></i>
-          <div class="card-mini-title">Costi Totali ({{ $year }})</div>
+          <div class="card-mini-title">Costes Totales ({{ $year }})</div>
           <div class="card-mini-value">€{{ number_format($totalCostYear, 2) }}</div>
         </div>
         <div class="card-mini border border-success">
           <i class="bi bi-cash-stack card-mini-icon text-success"></i>
-          <div class="card-mini-title">Ricavi Totali ({{ $year }})</div>
+          <div class="card-mini-title">Ingresos Totales ({{ $year }})</div>
           <div class="card-mini-value">€{{ number_format($totalIncomeYear, 2) }}</div>
         </div>
         <div class="card-mini border border-danger">
           <i class="bi bi-percent card-mini-icon text-danger"></i>
-          <div class="card-mini-title">Netto ({{ $year }})</div>
+          <div class="card-mini-title">Neto ({{ $year }})</div>
           @php $netVal = $totalIncomeYear - $totalCostYear; @endphp
           <div class="card-mini-value {{ $netVal >= 0 ? 'text-success' : 'text-danger' }}">
             €{{ number_format($netVal, 2) }}
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.location.href = `${baseUrl}?y=${year}&m=${month}`;
   }
 
-  // Year change keeps the same month
+  // Cambio de año mantiene el mismo mes
   yearSelector?.addEventListener('change', function(){
     navigateTo(this.value, {{ $month }});
   });
@@ -231,12 +231,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const euro = v => `€${n2(v)}`;
 
   function recomputeTotalsFor(year){
-    // sum opening days
+    // suma de días de apertura
     const inputs = document.querySelectorAll(`.open-days-input[data-year="${year}"]`);
     let sumDays = 0; inputs.forEach(i => sumDays += (parseInt(i.value,10)||0));
     const sumEl = document.getElementById(`sum-days-${year}`); if (sumEl) sumEl.textContent = String(sumDays);
 
-    // total costs for that year (already in the rows as data-attrs)
+    // coste total para ese año (ya en las filas como data-attrs)
     let totalCost = 0;
     document.querySelectorAll('tbody tr[data-cost-current]').forEach(tr=>{
       const c = (String(year) === '{{ $year }}')
@@ -257,20 +257,20 @@ document.addEventListener('DOMContentLoaded', function() {
       const scope = el.dataset.scope;
       const days  = parseInt(el.value || '0', 10);
 
-      // row cost
+      // coste de la fila
       const tr   = el.closest('tr');
       const cost = scope === 'current'
         ? parseFloat(tr.getAttribute('data-cost-current') || '0')
         : parseFloat(tr.getAttribute('data-cost-previous') || '0');
 
-      // update BEP cell immediately
+      // actualizar celda de PE inmediatamente
       const bepCell = document.getElementById(`bep-${year}-${month}`);
       if (bepCell) bepCell.textContent = euro(days > 0 ? (cost / days) : 0);
 
-      // totals
+      // totales
       recomputeTotalsFor(year);
 
-      // persist via AJAX
+      // guardar vía AJAX
       try{
         await fetch(saveDaysUrl,{
           method:'POST',

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class ShowcaseController extends Controller
 {
-    /* ---------------------------- LIST (INDEX) ---------------------------- */
+    /* ---------------------------- LISTA (INDEX) ---------------------------- */
     public function index()
     {
         $user        = Auth::user();
@@ -24,7 +24,7 @@ class ShowcaseController extends Controller
             ->pluck('id')
             ->push($groupRootId);
 
-        // ⚠️ Show only real records (hide templates)
+        // ⚠️ Mostrar solo registros reales (ocultar MODELOs)
         $showcases = Showcase::with([
                 'recipes.recipe.ingredients.ingredient',
                 'recipes.recipe'
@@ -37,7 +37,7 @@ class ShowcaseController extends Controller
         return view('frontend.showcase.index', compact('showcases'));
     }
 
-    /* ---------------------------- CREATE (FORM) --------------------------- */
+    /* ---------------------------- CREAR (FORMULARIO) --------------------------- */
     public function create()
     {
         $user        = Auth::user();
@@ -50,10 +50,10 @@ class ShowcaseController extends Controller
             ->pluck('id')
             ->push($groupRootId);
 
-        // ✅ Only sellable recipes (priced per current sell_mode)
+        // ✅ Solo recetas vendibles (con precio según el sell_mode actual)
         $recipes = $this->getSellableRecipes($groupUserIds, withIngredients: true)->get();
 
-        // Precompute costs for client-side math
+        // Precalcular costes para los cálculos en el cliente
         $recipes->each(function ($r) use ($laborCostRate) {
             $rate = $r->labor_cost_mode === 'external'
                 ? ($laborCostRate->external_cost_per_min ?? 0)
@@ -63,7 +63,7 @@ class ShowcaseController extends Controller
             $r->batch_ing_cost   = $r->ingredients_cost_per_batch;
         });
 
-        // Templates dropdown (group scope)
+        // Lista de MODELOs (ámbito de grupo)
         $templates = Showcase::where('save_template', true)
             ->whereIn('user_id', $groupUserIds)
             ->pluck('showcase_name', 'id');
@@ -79,25 +79,25 @@ class ShowcaseController extends Controller
         ));
     }
 
-    /* --------------------------- STORE (CREATE) --------------------------- */
+    /* --------------------------- GUARDAR (CREAR) --------------------------- */
     public function store(Request $request)
     {
         $messages = [
-            'showcase_name.required'              => 'Il nome della vetrina è obbligatorio.',
-            'showcase_date.required'              => 'La data della vetrina è obbligatoria.',
-            'template_action.required'            => 'Seleziona un\'azione valida per il salvataggio.',
-            'items.required'                      => 'Devi aggiungere almeno un articolo alla vetrina.',
-            'items.*.recipe_id.required'          => 'Seleziona una ricetta per ciascuna riga.',
-            'items.*.price.required'              => 'Il prezzo è obbligatorio e deve essere un numero.',
-            'items.*.quantity.required'           => 'La quantità è obbligatoria e deve essere un numero intero.',
-            'items.*.sold.required'               => 'Il numero di venduti è obbligatorio e deve essere un numero intero.',
-            'items.*.reuse.required'              => 'Il numero di riutilizzi è obbligatorio e deve essere un numero intero.',
-            'items.*.waste.required'              => 'Il numero di scarti è obbligatorio e deve essere un numero intero.',
-            'items.*.potential_income.required'   => 'Il potenziale è obbligatorio e deve essere un numero.',
-            'items.*.actual_revenue.required'     => 'Il ricavo effettivo è obbligatorio e deve essere un numero.',
-            'total_revenue.required'              => 'Il ricavo totale è obbligatorio e deve essere un numero.',
-            'plus.required'                       => 'Il valore "Extra" è obbligatorio e deve essere un numero.',
-            'real_margin.required'                => 'Il margine reale è obbligatorio e deve essere un numero.',
+            'showcase_name.required'              => 'El nombre del escaparate es obligatorio.',
+            'showcase_date.required'              => 'La fecha del escaparate es obligatoria.',
+            'template_action.required'            => 'Selecciona una acción de guardado válida.',
+            'items.required'                      => 'Debes añadir al menos un artículo al escaparate.',
+            'items.*.recipe_id.required'          => 'Selecciona una receta para cada fila.',
+            'items.*.price.required'              => 'El precio es obligatorio y debe ser un número.',
+            'items.*.quantity.required'           => 'La cantidad es obligatoria y debe ser un número entero.',
+            'items.*.sold.required'               => 'El número de unidades vendidas es obligatorio y debe ser un número entero.',
+            'items.*.reuse.required'              => 'El número de reutilizaciones es obligatorio y debe ser un número entero.',
+            'items.*.waste.required'              => 'El número de desperdicios es obligatorio y debe ser un número entero.',
+            'items.*.potential_income.required'   => 'El potencial es obligatorio y debe ser un número.',
+            'items.*.actual_revenue.required'     => 'El ingreso efectivo es obligatorio y debe ser un número.',
+            'total_revenue.required'              => 'El ingreso total es obligatorio y debe ser un número.',
+            'plus.required'                       => 'El valor "Extra" es obligatorio y debe ser un número.',
+            'real_margin.required'                => 'El margen real es obligatorio y debe ser un número.',
         ];
 
         $request->validate([
@@ -169,7 +169,7 @@ class ShowcaseController extends Controller
         return DB::transaction(function () use ($data, $userId, $syncLinesForRecord, $syncLinesForTemplate) {
             $action = $data['template_action'];
 
-            // 1) Always create the RECORD
+            // 1) Crear SIEMPRE el REGISTRO
             $record = Showcase::create([
                 'showcase_name'   => $data['showcase_name'] ?? null,
                 'showcase_date'   => $data['showcase_date'],
@@ -183,7 +183,7 @@ class ShowcaseController extends Controller
             ]);
             $syncLinesForRecord($record, $data['items']);
 
-            // 2) Optionally create a TEMPLATE
+            // 2) Opcionalmente crear una MODELO
             if (in_array($action, ['template', 'both'])) {
                 $template = Showcase::create([
                     'showcase_name'   => $data['showcase_name'],
@@ -202,30 +202,30 @@ class ShowcaseController extends Controller
             return redirect()
                 ->route('showcase.index')
                 ->with('success', in_array($action, ['template', 'both'])
-                    ? 'Vetrina salvata + modello aggiornato.'
-                    : 'Vetrina salvata con successo.');
+                    ? 'Escaparate guardado y MODELO actualizada.'
+                    : 'Escaparate guardado con éxito.');
         });
     }
 
-    /* ---------------------------- UPDATE (EDIT) --------------------------- */
+    /* ---------------------------- ACTUALIZAR (EDITAR) --------------------------- */
     public function update(Request $request, Showcase $showcase)
     {
         abort_if($showcase->user_id !== Auth::id(), 403);
 
         $messages = [
-            'showcase_date.required'            => 'La data della vetrina è obbligatoria.',
-            'items.required'                    => 'Devi aggiungere almeno un articolo alla vetrina.',
-            'items.*.recipe_id.required'        => 'Seleziona una ricetta per ciascuna riga.',
-            'items.*.price.required'            => 'Il prezzo è obbligatorio e deve essere un numero.',
-            'items.*.quantity.required'         => 'La quantità è obbligatoria e deve essere un numero intero.',
-            'items.*.sold.required'             => 'Il numero dei venduti è obbligatorio e deve essere un numero intero.',
-            'items.*.reuse.required'            => 'Il numero di riutilizzi è obbligatorio e deve essere un numero intero.',
-            'items.*.waste.required'            => 'Il numero di scarti è obbligatorio e deve essere un numero intero.',
-            'items.*.potential_income.required' => 'Il potenziale è obbligatorio e deve essere un numero.',
-            'items.*.actual_revenue.required'   => 'Il ricavo effettivo è obbligatorio e deve essere un numero.',
-            'total_revenue.required'            => 'Il ricavo totale è obbligatorio e deve essere un numero.',
-            'plus.required'                     => 'Il valore "Extra" è obbligatorio e deve essere un numero.',
-            'real_margin.required'              => 'Il margine reale è obbligatorio e deve essere un numero.',
+            'showcase_date.required'            => 'La fecha del escaparate es obligatoria.',
+            'items.required'                    => 'Debes añadir al menos un artículo al escaparate.',
+            'items.*.recipe_id.required'        => 'Selecciona una receta para cada fila.',
+            'items.*.price.required'            => 'El precio es obligatorio y debe ser un número.',
+            'items.*.quantity.required'         => 'La cantidad es obligatoria y debe ser un número entero.',
+            'items.*.sold.required'             => 'El número de unidades vendidas es obligatorio y debe ser un número entero.',
+            'items.*.reuse.required'            => 'El número de reutilizaciones es obligatorio y debe ser un número entero.',
+            'items.*.waste.required'            => 'El número de desperdicios es obligatorio y debe ser un número entero.',
+            'items.*.potential_income.required' => 'El potencial es obligatorio y debe ser un número.',
+            'items.*.actual_revenue.required'   => 'El ingreso efectivo es obligatorio y debe ser un número.',
+            'total_revenue.required'            => 'El ingreso total es obligatorio y debe ser un número.',
+            'plus.required'                     => 'El valor "Extra" es obligatorio y debe ser un número.',
+            'real_margin.required'              => 'El margen real es obligatorio y debe ser un número.',
         ];
 
         $request->validate([
@@ -250,7 +250,7 @@ class ShowcaseController extends Controller
             $request->validate([
                 'showcase_name' => 'required|string|max:255',
             ], [
-                'showcase_name.required' => 'Il nome della vetrina è obbligatorio quando si salva come modello.',
+                'showcase_name.required' => 'El nombre del escaparate es obligatorio cuando se guarda como MODELO.',
             ]);
         }
 
@@ -298,7 +298,7 @@ class ShowcaseController extends Controller
         return DB::transaction(function () use ($showcase, $data, $syncLinesForRecord, $syncLinesForTemplate, $userId) {
             $action = $data['template_action'] ?? 'none';
 
-            // 1) Update the RECORD (do not flip save_template flag)
+            // 1) Actualizar el REGISTRO (no cambiar la bandera save_template)
             $showcase->update([
                 'showcase_name'   => $data['showcase_name'] ?? $showcase->showcase_name,
                 'showcase_date'   => $data['showcase_date'],
@@ -312,7 +312,7 @@ class ShowcaseController extends Controller
             ]);
             $syncLinesForRecord($showcase, $data['items']);
 
-            // 2) Optionally upsert a TEMPLATE (by name for this user)
+            // 2) Opcionalmente crear/actualizar una MODELO (por nombre para este usuario)
             if (in_array($action, ['template', 'both'])) {
                 $template = Showcase::where('user_id', $userId)
                     ->where('save_template', true)
@@ -350,12 +350,12 @@ class ShowcaseController extends Controller
             return redirect()
                 ->route('showcase.index')
                 ->with('success', in_array($action, ['template', 'both'])
-                    ? 'Vetrina aggiornata e modello sincronizzato.'
-                    : 'Vetrina aggiornata con successo.');
+                    ? 'Escaparate actualizado y MODELO sincronizada.'
+                    : 'Escaparate actualizado con éxito.');
         });
     }
 
-    /* ------------------------- LOAD TEMPLATE (AJAX) ----------------------- */
+    /* ------------------------- CARGAR MODELO (AJAX) ----------------------- */
     public function getTemplate($id)
     {
         $user        = Auth::user();
@@ -364,7 +364,7 @@ class ShowcaseController extends Controller
             ->pluck('id')
             ->push($groupRootId);
 
-        // Allow loading any template that belongs to the user’s group
+        // Permitir cargar cualquier MODELO que pertenezca al grupo del usuario
         $template = Showcase::with('recipes')
             ->where('id', $id)
             ->where('save_template', true)
@@ -375,7 +375,7 @@ class ShowcaseController extends Controller
             'recipe_id'        => $r->recipe_id,
             'price'            => $r->price,
             'quantity'         => $r->quantity,
-            // transactional fields reset for template
+            // campos transaccionales reiniciados para la MODELO
             'sold'             => 0,
             'reuse'            => 0,
             'waste'            => 0,
@@ -392,7 +392,7 @@ class ShowcaseController extends Controller
         ]);
     }
 
-    /* ----------------------------- EDIT (FORM) ---------------------------- */
+    /* ----------------------------- EDITAR (FORMULARIO) ---------------------------- */
     public function edit(Showcase $showcase)
     {
         abort_if($showcase->user_id !== Auth::id(), 403);
@@ -404,7 +404,7 @@ class ShowcaseController extends Controller
             ->pluck('id')
             ->push($groupRootId);
 
-        // ✅ Use the same "sellable" filter as create()
+        // ✅ Usar el mismo filtro de "recetas vendibles" que en create()
         $recipes = $this->getSellableRecipes($groupUserIds, withIngredients: true)->get();
 
         $laborCost = LaborCost::where('user_id', $groupRootId)->first();
@@ -432,7 +432,7 @@ class ShowcaseController extends Controller
         ));
     }
 
-    /* ----------------------------- DESTROY -------------------------------- */
+    /* ----------------------------- ELIMINAR -------------------------------- */
     public function destroy(Showcase $showcase)
     {
         abort_if($showcase->user_id !== Auth::id(), 403);
@@ -442,10 +442,10 @@ class ShowcaseController extends Controller
 
         return redirect()
             ->route('showcase.index')
-            ->with('success', 'Vetrina eliminata con successo.');
+            ->with('success', 'Escaparate eliminado con éxito.');
     }
 
-    /* -------------------------------- SHOW -------------------------------- */
+    /* -------------------------------- MOSTRAR -------------------------------- */
     public function show(Showcase $showcase)
     {
         $showcase->load([
@@ -460,12 +460,12 @@ class ShowcaseController extends Controller
     /* ---------------------------- HELPERS --------------------------------- */
 
     /**
-     * Build a base query for recipes that are "sellable":
+     * Construye una query base para las recetas "vendibles":
      * - sell_mode = 'kg'    → selling_price_per_kg > 0
      * - sell_mode = 'piece' → selling_price_per_piece > 0
      *
      * @param \Illuminate\Support\Collection|array $groupUserIds
-     * @param bool $withIngredients  Whether to eager-load ingredients
+     * @param bool $withIngredients  Indica si se deben cargar los ingredientes con eager-loading
      * @return \Illuminate\Database\Eloquent\Builder
      */
     private function getSellableRecipes($groupUserIds, bool $withIngredients = false)
@@ -478,7 +478,7 @@ class ShowcaseController extends Controller
                        ->where('selling_price_per_kg', '>', 0);
                 })->orWhere(function ($q2) {
                     $q2->where('sell_mode', 'piece')
-                       ->where('selling_price_per_piece', '>', 0); // change to selling_price_per_pc if that's your column
+                       ->where('selling_price_per_piece', '>', 0); // cambia a selling_price_per_pc si esa es tu columna
                 });
             });
 

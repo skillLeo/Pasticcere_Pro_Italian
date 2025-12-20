@@ -10,39 +10,39 @@ use Symfony\Component\HttpFoundation\Response;
 class ClientController extends Controller
 {
     /**
-     * Display a listing of the logged-in user’s clients.
+     * Mostrar un listado de los clientes del usuario autenticado.
      */
     public function index()
     {
         $user = Auth::user();
     
-        // 1) Build your two-level group of user IDs
+        // 1) Construir el grupo de dos niveles de IDs de usuario
         if (is_null($user->created_by)) {
-            // Root user → see yourself + anyone you created
+            // Usuario raíz → ve a sí mismo y a cualquiera que haya creado
             $visibleUserIds = \App\Models\User::where('created_by', $user->id)
                                   ->pluck('id')
                                   ->push($user->id)
                                   ->unique();
         } else {
-            // Child user → see yourself + your creator
+            // Usuario hijo → se ve a sí mismo y a su creador
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
     
-        // 2) Fetch clients owned by those users OR global clients (user_id IS NULL)
-$clients = Client::with('user')
-    ->where(function ($q) use ($visibleUserIds) {
-        $q->whereIn('user_id', $visibleUserIds)
-          ->orWhereNull('user_id');
-    })
-    ->latest()
-    ->get(); // ✅ no more paginate()
+        // 2) Obtener clientes pertenecientes a esos usuarios O clientes globales (user_id ES NULL)
+        $clients = Client::with('user')
+            ->where(function ($q) use ($visibleUserIds) {
+                $q->whereIn('user_id', $visibleUserIds)
+                  ->orWhereNull('user_id');
+            })
+            ->latest()
+            ->get(); // ✅ no más paginate()
 
     
         return view('frontend.clients.index', compact('clients'));
     }
     
     /**
-     * Show the form for creating a new client.
+     * Mostrar el formulario para crear un nuevo cliente.
      */
     public function create()
     {
@@ -50,7 +50,7 @@ $clients = Client::with('user')
     }
 
     /**
-     * Store a newly created client in storage.
+     * Almacenar un nuevo cliente en el sistema.
      */
     public function store(Request $request)
     {
@@ -62,47 +62,47 @@ $clients = Client::with('user')
             'notes'    => 'nullable|string',
         ]);
 
-        // stamp with the current user's ID
+        // registrar el ID del usuario actual
         $data['user_id'] = Auth::id();
 
         Client::create($data);
 
         return redirect()
             ->route('clients.index')
-            ->with('success', 'Cliente creato con successo.');
+            ->with('success', 'Cliente creado con éxito.');
     }
 
     /**
-     * Display the specified client (only if it belongs to the user).
+     * Mostrar el cliente especificado (solo si pertenece al usuario).
      */
     public function show(Client $client)
     {
         if ($client->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada.');
         }
 
         return view('frontend.clients.show', compact('client'));
     }
 
     /**
-     * Show the form for editing the specified client.
+     * Mostrar el formulario para editar el cliente especificado.
      */
     public function edit(Client $client)
     {
         if ($client->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada.');
         }
 
         return view('frontend.clients.create', compact('client'));
     }
 
     /**
-     * Update the specified client in storage.
+     * Actualizar el cliente especificado en el sistema.
      */
     public function update(Request $request, Client $client)
     {
         if ($client->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada.');
         }
 
         $data = $request->validate([
@@ -117,22 +117,22 @@ $clients = Client::with('user')
 
         return redirect()
             ->route('clients.index')
-            ->with('success', 'Cliente aggiornato con successo.');
+            ->with('success', 'Cliente actualizado con éxito.');
     }
 
     /**
-     * Remove the specified client from storage.
+     * Eliminar el cliente especificado del sistema.
      */
     public function destroy(Client $client)
     {
         if ($client->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada.');
         }
 
         $client->delete();
 
         return redirect()
             ->route('clients.index')
-            ->with('success', 'Cliente eliminato con successo.');
+            ->with('success', 'Cliente eliminado con éxito.');
     }
 }

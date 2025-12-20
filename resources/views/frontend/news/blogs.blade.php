@@ -2,16 +2,16 @@
 
 @extends('frontend.layouts.app')
 
-@section('title', 'Notizie & Blog')
+@section('title', 'Noticias & Blog')
 
 @section('content')
 <div class="container py-5">
 
-    <!-- Sezione Blog Più Apprezzati -->
+    <!-- Sección Últimas Novedades -->
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="text-center text-dark">Ultime novità</h2>
-            <p class="text-center text-muted"> Qui troverai tutte le novità per la crescita della tua attività.</p>
+            <h2 class="text-center text-dark">Últimas novedades</h2>
+            <p class="text-center text-muted">Aquí encontrarás todas las novedades para el crecimiento de tu negocio.</p>
         </div>
     </div>
 
@@ -20,7 +20,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 shadow-lg rounded-3 overflow-hidden">
 
-                    {{-- Sezione Immagine --}}
+                    {{-- Sección de imagen --}}
                     @if ($item->image)
                         <img src="{{ asset('storage/' . $item->image) }}" 
                              alt="{{ $item->title }}" 
@@ -28,7 +28,7 @@
                              style="object-fit: cover; height: 220px;">
                     @endif
 
-                    {{-- Titolo + Badge --}}
+                    {{-- Título + Insignia --}}
                     <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #041930; color: #e2ae76;">
                         <h5 class="mb-0 flex-grow-1 text-truncate" style="background-color: #041930; color: #e2ae76;" title="{{ $item->title }}">
                             {{ $item->title }}
@@ -36,7 +36,7 @@
                         <span class="badge bg-warning text-dark ms-2">{{ $item->created_at->diffForHumans() }}</span>
                     </div>
 
-                    {{-- Contenuto con auto‐linking --}}
+                    {{-- Contenido con auto-enlaces --}}
                     <div class="card-body">
                         <div class="text-muted" style="white-space: pre-wrap;">
                             {!! preg_replace(
@@ -48,22 +48,22 @@
                         </div>
                     </div>
 
-                    {{-- Footer --}}
+                    {{-- Pie de tarjeta --}}
                     <div class="card-footer text-end">
                         <a href="{{ route('news.show', $item->id) }}" 
                            class="btn btn-sm"
                            style="background-color:#e2ae76; color:#041930; border-color:#e2ae76;">
-                            Leggi di più
+                            Leer más
                         </a>
                     </div>
                 </div>
             </div>
         @endforeach
 
-        <!-- Stato vuoto se nessun articolo -->
+        <!-- Estado vacío si no hay artículos -->
         @if($news->isEmpty())
             <div class="col-12 text-center text-muted">
-                <p>Nessun articolo trovato.</p>
+                <p>No se ha encontrado ningún artículo.</p>
             </div>
         @endif
     </div>

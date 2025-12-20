@@ -1,13 +1,13 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Visualizza Ingrediente')
+@section('title', 'Ver Ingrediente')
 
 @section('content')
 <div class="container py-5">
   <div class="card border-primary shadow-lg rounded-3 overflow-hidden">
-    <!-- Header with icon and title -->
+    <!-- Cabecera con icono y título -->
     <div class="card-header d-flex align-items-center gap-2" style="background-color: #041930; color: #e2ae76;">
-      <!-- SVG Icon -->
+      <!-- Icono SVG -->
       <div style="width: 30px; height: 30px;">
           <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#e2ae76" width="100%" height="100%">
               <path d="M479.605,91.769c-23.376,23.376-66.058,33.092-79.268,19.882c-13.21-13.21-3.494-55.892,19.883-79.268s85.999-26.614,85.999-26.614S502.982,68.393,479.605,91.769z"/>
@@ -26,47 +26,47 @@
           </svg>
       </div>
   
-      <!-- Title -->
+      <!-- Título -->
       <h4 class="mb-0" style="color: #e2ae76;">{{ $ingredient->ingredient_name }}</h4>
     </div>
   
     <div class="card-body">
-      <!-- Details in a 2-column grid -->
+      <!-- Detalles en una cuadrícula de 2 columnas -->
       <div class="row g-4 mb-3" style="width: 50%">
         <div class="col-md-6">
-          <h6 class="text-uppercase text-muted small mb-1">Prezzo al kg</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Precio por kg</h6>
           <p class="fs-5 mb-0">€{{ number_format($ingredient->price_per_kg, 2) }}</p>
         </div>
         <div class="col-md-6">
-          <h6 class="text-uppercase text-muted small mb-1">Ultimo aggiornamento</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Última actualización</h6>
           <p class="fs-5 mb-0">{{ $ingredient->updated_at->format('Y-m-d H:i') }}</p>
         </div>
       </div>
   
       <hr class="border-secondary">
   
-      <!-- Action buttons -->
+      <!-- Botones de acción -->
       <div class="d-flex justify-content-end gap-2">
-        <!-- Edit Button -->
+        <!-- Botón Editar -->
         <a href="{{ route('ingredients.edit', $ingredient) }}"
            class="btn btn-outline-warning btn-lg">
-           <i class="bi bi-pencil me-1"></i>Modifica
+           <i class="bi bi-pencil me-1"></i>Editar
         </a>
   
-        <!-- Back to List Button -->
+        <!-- Botón Volver al listado -->
         <a href="{{ route('ingredients.index') }}"
            class="btn btn-outline-dark btn-lg">
-           <i class="bi bi-arrow-left me-1"></i>Indietro alla lista
+           <i class="bi bi-arrow-left me-1"></i>Volver al listado
         </a>
   
-        <!-- Delete Button -->
+        <!-- Botón Eliminar -->
         <form action="{{ route('ingredients.destroy', $ingredient) }}"
               method="POST"
-              onsubmit="return confirm('Eliminare questo ingrediente?');">
+              onsubmit="return confirm('¿Eliminar este ingrediente?');">
           @csrf
           @method('DELETE')
           <button type="submit" class="btn btn-danger btn-lg">
-            <i class="bi bi-trash me-1"></i>Elimina
+            <i class="bi bi-trash me-1"></i>Eliminar
           </button>
         </form>
       </div>

@@ -1,34 +1,34 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Ruoli & Permessi')
+@section('title', 'Roles & Permisos')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Intestazione -->
+  <!-- Encabezado -->
   <div class="page-header d-flex align-items-center mb-4"
        style="background-color: #041930; border-radius: 0.75rem; padding: 1rem 2rem;">
     <i class="bi bi-shield-lock me-2 fs-3" style="color: #e2ae76;"></i>
-    <h4 class="mb-0 fw-bold" style="color: #e2ae76;">Ruoli &amp; Permessi</h4>
+    <h4 class="mb-0 fw-bold" style="color: #e2ae76;">Roles &amp; Permisos</h4>
   </div>
 
-  <!-- Pulsante Aggiungi -->
+  <!-- Botón Añadir -->
   <div class="d-flex justify-content-end mb-3">
     <a href="{{ route('roles.create') }}" class="btn btn-gold-blue">
-      <i class="bi bi-plus-circle me-1"></i> Aggiungi Ruolo
+      <i class="bi bi-plus-circle me-1"></i> Añadir rol
     </a>
   </div>
 
-  <!-- Tabella -->
+  <!-- Tabla -->
   <div class="card shadow-lg border-0 rounded-3">
     <div class="card-body p-0">
       <div class="table-responsive">
         <table  data-page-length="25"class="table table-hover table-bordered table-striped mb-0">
           <thead style="background-color: #e2ae76; color: #041930;">
             <tr class="text-center">
-              <th style="font-size: 16px; font-weight: 600;">Nome Ruolo</th>
-              <th style="font-size: 16px; font-weight: 600;">Permessi</th>
-              <th style="font-size: 16px; font-weight: 600;">Azioni</th>
+              <th style="font-size: 16px; font-weight: 600;">Nombre del rol</th>
+              <th style="font-size: 16px; font-weight: 600;">Permisos</th>
+              <th style="font-size: 16px; font-weight: 600;">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -43,17 +43,17 @@
                   @endforelse
                 </td>
                 <td class="text-center align-middle">
-                  <a href="{{ route('roles.edit', $role) }}" class="btn btn-sm btn-gold me-1" title="Modifica Ruolo">
-                    <i class="bi bi-pencil"></i> Modifica
+                  <a href="{{ route('roles.edit', $role) }}" class="btn btn-sm btn-gold me-1" title="Editar rol">
+                    <i class="bi bi-pencil"></i> Editar
                   </a>
                   <form action="{{ route('roles.destroy', $role) }}"
                         method="POST"
                         class="d-inline"
-                        onsubmit="return confirm('Eliminare questo ruolo?');">
+                        onsubmit="return confirm('¿Eliminar este rol?');">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-red" title="Elimina Ruolo">
-                      <i class="bi bi-trash"></i> Elimina
+                    <button type="submit" class="btn btn-sm btn-red" title="Eliminar rol">
+                      <i class="bi bi-trash"></i> Eliminar
                     </button>
                   </form>
                 </td>

@@ -14,14 +14,14 @@
     </div>
 
     <div class="card-body">
-      <!-- Dettagli -->
+      <!-- Detalles -->
       <div class="row row-cols-1 row-cols-md-2 g-4 mb-4" style="width: 70%;">
         <div class="col">
           <h6 class="text-uppercase text-muted small mb-1">Sede</h6>
           <p class="fs-5 mb-0">{{ $client->location ?? '—' }}</p>
         </div>
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Telefono</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Teléfono</h6>
           <p class="fs-5 mb-0">{{ $client->phone ?? '—' }}</p>
         </div>
         <div class="col">
@@ -29,35 +29,35 @@
           <p class="fs-5 mb-0">{{ $client->email ?? '—' }}</p>
         </div>
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Note</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Notas</h6>
           <p class="fs-5 mb-0">{{ $client->notes ?? '—' }}</p>
         </div>
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Ultimo Aggiornamento</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Última actualización</h6>
           <p class="fs-5 mb-0">{{ optional($client->updated_at)?->format('Y-m-d H:i') ?? '—' }}</p>
         </div>
       </div>
 
       <hr class="border-secondary">
 
-      <!-- Pulsanti Azione -->
+      <!-- Botones de acción -->
       <div class="d-flex justify-content-end gap-2">
         <a href="{{ route('clients.edit', $client) }}" class="btn btn-gold btn-lg">
-          <i class="bi bi-pencil me-1"></i> Modifica
+          <i class="bi bi-pencil me-1"></i> Modificar
         </a>
 
         <a href="{{ route('clients.index') }}" class="btn btn-deepblue btn-lg">
-          <i class="bi bi-arrow-left me-1"></i> Indietro alla lista
+          <i class="bi bi-arrow-left me-1"></i> Volver a la lista
         </a>
 
         <form action="{{ route('clients.destroy', $client) }}"
               method="POST"
-              onsubmit="return confirm('Eliminare questo cliente?');"
+              onsubmit="return confirm('¿Eliminar este cliente?');"
               class="d-inline">
           @csrf
           @method('DELETE')
           <button type="submit" class="btn btn-red btn-lg">
-            <i class="bi bi-trash me-1"></i> Elimina
+            <i class="bi bi-trash me-1"></i> Eliminar
           </button>
         </form>
       </div>

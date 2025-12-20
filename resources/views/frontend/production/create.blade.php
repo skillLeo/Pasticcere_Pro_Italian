@@ -1,12 +1,12 @@
 {{-- resources/views/frontend/production/create.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', isset($production) ? 'Modifica Produzione' : 'Nuova Voce di Produzione')
+@section('title', isset($production) ? 'Modificar producción' : 'Nueva línea de producción')
 
 @section('content')
 <div class="container py-5">
   <div class="card border-primary shadow-sm">
-    <!-- Header with custom blue background and gold text -->
+    <!-- Encabezado con fondo azul personalizado y texto dorado -->
     <div class="card-header d-flex align-items-center"
      style="background-color: #041930; color: #e2ae76; padding: .5rem; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
       <iconify-icon
@@ -15,7 +15,7 @@
         style=" height: 1.1em; color: #e2ae76; font-size:1.5vw;">
       </iconify-icon>
       <h5 class="mb-0" style="color: #e2ae76;">
-        {{ isset($production) ? 'Modifica' : 'Crea' }} Voce di Produzione
+        {{ isset($production) ? 'Modificar' : 'Crear' }} línea de producción
       </h5>
     </div>
 
@@ -26,9 +26,9 @@
         @csrf
         @if(isset($production)) @method('PUT') @endif
 
-        {{-- Production Name --}}
+        {{-- Nombre producción --}}
         <div class="mb-4">
-          <label for="production_name" class="form-label fw-semibold" id="productionNameLabel">Nome Produzione</label>
+          <label for="production_name" class="form-label fw-semibold" id="productionNameLabel">Nombre de la producción</label>
           <input type="text"
                  id="production_name"
                  name="production_name"
@@ -36,12 +36,12 @@
                  value="{{ old('production_name', isset($production) ? $production->production_name : '') }}">
         </div>
 
-        {{-- Template Selection --}}
+        {{-- Selección de MODELO --}}
         @if (!isset($production))
         <div class="mb-4">
-          <label for="template_select" class="form-label fw-semibold">Scegli Modello</label>
+          <label for="template_select" class="form-label fw-semibold">Elegir MODELO</label>
           <select id="template_select" name="template_id" class="form-select">
-            <option value="">-- Seleziona Modello --</option>
+            <option value="">-- Seleccionar MODELO --</option>
             @foreach($templates as $id => $name)
               <option value="{{ $id }}">{{ $name }}</option>
             @endforeach
@@ -49,9 +49,9 @@
         </div>
         @endif
 
-        {{-- Production Date --}}
+        {{-- Fecha de producción --}}
         <div class="mb-4">
-          <label for="production_date" class="form-label fw-semibold">Data Produzione</label>
+          <label for="production_date" class="form-label fw-semibold">Fecha de producción</label>
           <input type="date"
                  id="production_date"
                  name="production_date"
@@ -60,29 +60,28 @@
                  required>
         </div>
 
-        {{-- Save As --}}
+        {{-- Guardar como --}}
         <div class="mb-4 col-md-4 px-0">
-          <label for="template_action" class="form-label fw-semibold">Salva come</label>
+          <label for="template_action" class="form-label fw-semibold">Guardar como</label>
           <select id="template_action" name="template_action" class="form-select">
             @php
               $default = old('template_action', isset($production) ? ($production->save_template ? 'template' : 'none') : 'none');
             @endphp
-            <option value="none"     {{ $default=='none' ? 'selected' : '' }}>Solo Salva</option>
-            <option value="template" {{ $default=='template' ? 'selected' : '' }}>Salva come Modello</option>
-           
+            <option value="none"     {{ $default=='none' ? 'selected' : '' }}>Solo guardar</option>
+            <option value="template" {{ $default=='template' ? 'selected' : '' }}>Guardar como MODELO</option>
           </select>
         </div>
 
-        {{-- Details Table --}}
-        <table  data-page-length="25"class="table table-bordered align-middle" id="recipeTable">
+        {{-- Tabla de detalles --}}
+        <table data-page-length="25" class="table table-bordered align-middle" id="recipeTable">
           <thead class="table-light">
             <tr>
-              <th>Ricetta</th>
-              <th> Pasticcere</th>
-              <th>Qtà</th>
-              <th>Tempo (min)</th>
-              <th>Attrezzatura</th>
-              <th>Ricavo (€)</th>
+              <th>Receta</th>
+              <th>Pastelero</th>
+              <th>Cant.</th>
+              <th>Tiempo (min)</th>
+              <th>Equipo</th>
+              <th>Ingreso (€)</th>
               <th></th>
             </tr>
           </thead>
@@ -92,7 +91,7 @@
             <tr>
               <td>
                 <select name="recipe_id[]" class="form-select recipe-select" required>
-                  <option value="">Seleziona Ricetta</option>
+                  <option value="">Seleccionar receta</option>
                   @foreach($recipes as $r)
                   <option value="{{ $r->id }}"
                           data-price-kg="{{ $r->selling_price_per_kg }}"
@@ -106,7 +105,7 @@
               </td>
               <td>
                 <select name="pastry_chef_id[]" class="form-select" required>
-                  <option value="">Seleziona Chef</option>
+                  <option value="">Seleccionar chef</option>
                   @foreach($chefs as $c)
                     <option value="{{ $c->id }}" {{ isset($d) && $c->id == $d->pastry_chef_id ? 'selected' : '' }}>{{ $c->name }}</option>
                   @endforeach
@@ -120,7 +119,7 @@
                          value="{{ $d->quantity ?? 1 }}"
                          min="1"
                          required>
-                  <span class="input-group-text unit-label">/unità</span>
+                  <span class="input-group-text unit-label">/unidad</span>
                 </div>
               </td>
               <td>
@@ -136,12 +135,12 @@
                   <div class="selected-equipment d-flex flex-wrap mb-2"></div>
                   <div class="input-group">
                     <select class="form-select equipment-select">
-                      <option value="">Seleziona Attrezzatura</option>
+                      <option value="">Seleccionar equipo</option>
                       @foreach($equipments as $e)
                         <option value="{{ $e->id }}">{{ $e->name }}</option>
                       @endforeach
                     </select>
-                    <button type="button" class="btn btn-outline-secondary add-equipment-btn">Aggiungi</button>
+                    <button type="button" class="btn btn-outline-secondary add-equipment-btn">Añadir</button>
                   </div>
                   <input type="hidden" name="equipment_ids[{{ $loop->index }}][]" class="equipment-hidden" value="{{ $d->equipment_ids ?? '' }}">
                 </div>
@@ -162,18 +161,18 @@
         </table>
 
         <div class="mb-3">
-          <!-- Add Row button with gold border and blue text -->
+          <!-- Botón Añadir fila con borde dorado y texto azul -->
           <button type="button"
                   id="addRowBtn"
                   class="btn"
                   style="border: 1px solid #e2ae76; color: #041930; background-color: transparent;">
-            + Aggiungi Riga
+            + Añadir fila
           </button>
         </div>
 
-        {{-- Total Revenue --}}
+        {{-- Ingreso total --}}
         <div class="mb-4">
-          <label class="form-label fw-semibold">Ricavo Potenziale Totale (€)</label>
+          <label class="form-label fw-semibold">Ingresos potenciales totales (€)</label>
           <input type="text"
                  id="totalRevenue"
                  name="total_revenue"
@@ -183,12 +182,12 @@
         </div>
 
         <div class="text-end">
-          <!-- Save Production button with gold background and blue text -->
+          <!-- Botón Guardar producción con fondo dorado y texto azul -->
           <button type="submit"
                   class="btn btn-lg"
                   style="background-color: #e2ae76; color: #041930; border: none;">
             <i class="bi bi-save2 me-1"></i>
-            {{ isset($production) ? 'Aggiorna' : 'Salva' }} Produzione
+            {{ isset($production) ? 'Actualizar' : 'Guardar' }} producción
           </button>
         </div>
       </form>
@@ -199,7 +198,7 @@
 
 
 <style>
-  /* keep the Qty & Time columns from wrapping and respect the fixed width */
+  /* Mantener las columnas Cant. y Tiempo sin salto de línea y respetar el ancho fijo */
   #recipeTable th:nth-child(3),
   #recipeTable td:nth-child(3),
   #recipeTable th:nth-child(4),
@@ -208,7 +207,7 @@
     white-space: nowrap;
   }
 
-  /* Recipe column min width */
+  /* Ancho mínimo columna Receta */
   #recipeTable th:first-child,
   #recipeTable td:first-child {
     white-space: nowrap;
@@ -247,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateNameRequirement() {
     const v = actionSelect.value;
-    nameLabel.textContent = (v === 'template' || v === 'both') ? 'Nome Modello' : 'Nome Produzione';
+    nameLabel.textContent = (v === 'template' || v === 'both') ? 'Nombre de la MODELO' : 'Nombre de la producción';
     nameInput.required = (v === 'template' || v === 'both');
   }
 
@@ -264,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const qty        = +qtyInput.value || 0;
     const price      = mode === 'kg' ? priceKg : pricePiece;
 
-    unitLabel.textContent = '/' + (mode === 'kg' ? 'kg' : 'pz');
+    unitLabel.textContent = '/' + (mode === 'kg' ? 'kg' : 'ud');
     row.querySelector('.revenue-field').value = (qty * price).toFixed(2);
     calculateTotalRevenue();
   }
@@ -362,13 +361,13 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch(`/production/template/${templateId}`)
       .then(res => res.json())
       .then(data => {
-        // Fill name and reset date
-        nameInput.value = (data.production_name || 'Modello');
+        // Rellenar nombre y reiniciar fecha
+        nameInput.value = (data.production_name || 'MODELO');
         dateInput.value = new Date().toISOString().split('T')[0];
         actionSelect.value = 'template';
         updateNameRequirement();
 
-        // Clear old rows
+        // Limpiar filas antiguas
         tableBody.innerHTML = '';
         rowIndex = 0;
 

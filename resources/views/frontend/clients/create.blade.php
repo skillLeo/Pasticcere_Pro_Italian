@@ -1,7 +1,7 @@
 {{-- resources/views/frontend/clients/form.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', isset($client) ? 'Modifica Cliente' : 'Aggiungi Cliente')
+@section('title', isset($client) ? 'Modificar cliente' : 'Añadir cliente')
 
 @section('content')
 <div class="container py-5 px-md-5">
@@ -9,7 +9,7 @@
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-person-lines-fill fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($client) ? 'Modifica Cliente' : 'Aggiungi Cliente' }}
+        {{ isset($client) ? 'Modificar cliente' : 'Añadir cliente' }}
       </h5>
     </div>
 
@@ -24,14 +24,14 @@
         @endif
 
         <div class="col-md-6">
-          <label for="name" class="form-label fw-semibold">Nome Cliente</label>
+          <label for="name" class="form-label fw-semibold">Nombre del cliente</label>
           <input type="text"
                  name="name"
                  id="name"
                  class="form-control form-control-lg"
                  value="{{ old('name', $client->name ?? '') }}"
                  required>
-          <div class="invalid-feedback">Inserisci il nome del cliente.</div>
+          <div class="invalid-feedback">Ingresa el nombre del cliente.</div>
         </div>
 
         <div class="col-md-6">
@@ -44,7 +44,7 @@
         </div>
 
         <div class="col-md-4">
-          <label for="phone" class="form-label fw-semibold">Telefono</label>
+          <label for="phone" class="form-label fw-semibold">Teléfono</label>
           <input type="text"
                  name="phone"
                  id="phone"
@@ -62,7 +62,7 @@
         </div>
 
         <div class="col-md-4">
-          <label for="notes" class="form-label fw-semibold">Note</label>
+          <label for="notes" class="form-label fw-semibold">Notas</label>
           <input type="text"
                  name="notes"
                  id="notes"
@@ -73,7 +73,7 @@
         <div class="col-12 text-end">
           <button type="submit" class="btn btn-gold btn-lg">
             <i class="bi bi-save2 me-1"></i>
-            {{ isset($client) ? 'Aggiorna Cliente' : 'Salva Cliente' }}
+            {{ isset($client) ? 'Actualizar cliente' : 'Guardar cliente' }}
           </button>
         </div>
       </form>

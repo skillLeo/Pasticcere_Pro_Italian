@@ -1,7 +1,7 @@
 {{-- resources/views/frontend/cost_categories/form.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', isset($category) ? 'Modifica Categoria' : 'Aggiungi Categoria')
+@section('title', isset($category) ? 'Modificar categoría' : 'Añadir categoría')
 
 @section('content')
 <div class="container py-5 px-md-5">
@@ -10,7 +10,7 @@
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-tags fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($category) ? 'Modifica Categoria di Costo' : 'Aggiungi Categoria di Costo' }}
+        {{ isset($category) ? 'Modificar categoría de costo' : 'Añadir categoría de costo' }}
       </h5>
     </div>
 
@@ -26,24 +26,24 @@
 
         <!-- Nome Categoria -->
         <div class="col-md-8">
-          <label for="name" class="form-label fw-semibold">Nome Categoria</label>
+          <label for="name" class="form-label fw-semibold">Nombre de la categoría</label>
           <input
             type="text"
             name="name"
             id="name"
             class="form-control form-control-lg"
-            placeholder="es. Utenze, Affitto, Imballaggio"
+            placeholder="p. ej. Servicios, Alquiler, Embalaje"
             value="{{ old('name', $category->name ?? '') }}"
             required
           >
-          <div class="invalid-feedback">Per favore inserisci un nome di categoria.</div>
+          <div class="invalid-feedback">Por favor ingresa un nombre de categoría.</div>
         </div>
 
         <!-- Pulsante Salva/Aggiorna -->
         <div class="col-12 text-end">
           <button type="submit" class="btn btn-gold btn-lg">
             <i class="bi bi-save2 me-2"></i>
-            {{ isset($category) ? 'Aggiorna Categoria' : 'Salva Categoria' }}
+            {{ isset($category) ? 'Actualizar categoría' : 'Guardar categoría' }}
           </button>
         </div>
       </form>

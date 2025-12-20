@@ -1,18 +1,18 @@
 {{-- resources/views/frontend/external-supplies/return.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title','Resi Merci')
+@section('title','Devoluciones de mercancía')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Header -->
+  <!-- Encabezado -->
   <div class="card border-primary shadow-sm mb-4">
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <h4><i class="bi bi-arrow-counterclockwise me-2 fs-4" style="color: #e2ae76;"></i></h4>
       <h4 class="mb-0" style="color: #e2ae76;">
-        Reso per {{ $externalSupply->client->name }} — {{ $externalSupply->supply_name }}
-        <small class="d-block text-muted" style="font-size: 0.8rem;">Data Fornitura: {{ $externalSupply->supply_date->format('Y-m-d') }}</small>
+        Devolución para {{ $externalSupply->client->name }} — {{ $externalSupply->supply_name }}
+        <small class="d-block text-muted" style="font-size: 0.8rem;">Fecha de suministro: {{ $externalSupply->supply_date->format('Y-m-d') }}</small>
       </h4>
     </div>
 
@@ -22,10 +22,10 @@
         <input type="hidden" name="client_id" value="{{ $externalSupply->client->id }}">
         <input type="hidden" name="external_supply_id" value="{{ $externalSupply->id }}">
 
-        <!-- Return Date -->
+        <!-- Fecha de devolución -->
         <div class="row mb-4">
           <div class="col-md-4">
-            <label for="return_date" class="form-label fw-semibold">Data Reso</label>
+            <label for="return_date" class="form-label fw-semibold">Fecha de devolución</label>
             <input
               type="date"
               id="return_date"
@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <!-- Return Table -->
+        <!-- Tabla de devoluciones -->
         <div class="card-body px-4">
           <div class="table-responsive p-3">
             <table
@@ -46,13 +46,13 @@
             >
               <thead>
                 <tr class="text-center">
-                  <th class="text-center">Ricetta</th>
-                  <th class="text-center">Qtà Originale</th>
-                  <th class="text-center">Già Reso</th>
-                  <th class="text-center">Rimanente</th>
-                  <th class="text-center">Qtà da Reso</th>
-                  <th class="text-center">Prezzo Unitario (€)</th>
-                  <th class="text-center">Totale Riga (€)</th>
+                  <th class="text-center">Receta</th>
+                  <th class="text-center">Cant. original</th>
+                  <th class="text-center">Ya devuelto</th>
+                  <th class="text-center">Restante</th>
+                  <th class="text-center">Cant. a devolver</th>
+                  <th class="text-center">Precio unitario (€)</th>
+                  <th class="text-center">Total de la fila (€)</th>
                 </tr>
               </thead>
               <tbody>
@@ -92,11 +92,11 @@
         </div>
         
 
-        <!-- Submit Button -->
+        <!-- Botón de envío -->
         <div class="text-end">
           <button class="btn btn-lg fw-semibold" style="background-color: #e2ae76; color: #041930;">
             <i class="bi bi-arrow-counterclockwise me-2" style="color: #041930;"></i>
-            Invia Reso
+            Enviar devolución
           </button>
         </div>
       </form>
@@ -107,10 +107,10 @@
 @endsection
 
 
-<!-- DataTables CSS -->
+<!-- CSS de DataTables -->
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 <style>
-  /* Match table heading with ingredients style */
+  /* Hacer coincidir el encabezado de la tabla con el estilo de ingredientes */
   table#returnTable thead th {
     background-color: #e2ae76 !important;
     color: #041930 !important;
@@ -124,7 +124,7 @@
     vertical-align: middle;
   }
 
-  /* DataTables sorting arrow override */
+  /* Sobrescribir flecha de ordenación de DataTables */
   table.dataTable thead .sorting:after,
   table.dataTable thead .sorting_asc:after,
   table.dataTable thead .sorting_desc:after {
@@ -147,7 +147,7 @@
     border: 1px solid #e2ae76;
   }
 
-  /* Optional: pagination or info text */
+  /* Opcional: paginación o texto informativo */
   .dataTables_wrapper .dataTables_info,
   .dataTables_wrapper .dataTables_paginate {
     color: #041930;
@@ -161,7 +161,7 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Calcolo Totale Riga
+    // Cálculo total de la fila
     document.querySelectorAll('.return-qty').forEach(input => {
       input.addEventListener('input', function () {
         const tr = this.closest('tr');
@@ -172,7 +172,7 @@
       });
     });
 
-    // Inizializza DataTables
+    // Inicializar DataTables
     $('#returnTable').DataTable({
       paging: true,
       searching: true,
@@ -182,14 +182,14 @@
         { className: "text-center", targets: "_all" }
       ],
       language: {
-        search: "Cerca:",
-        lengthMenu: "Mostra _MENU_ elementi",
-        info: "Visualizzati _START_ su _END_ di _TOTAL_ resi",
+        search: "Buscar:",
+        lengthMenu: "Mostrar _MENU_ elementos",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ devoluciones",
         paginate: {
           previous: "«",
           next: "»"
         },
-        zeroRecords: "Nessun reso trovato"
+        zeroRecords: "No se encontró ninguna devolución"
       }
     });
   });

@@ -6,50 +6,50 @@
 @section('content')
 <div class="container py-5 px-md-5">
   <div class="card border-primary shadow-sm rounded-3 overflow-hidden">
-    <!-- Header -->
+    <!-- Encabezado -->
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-person-fill fs-4 me-2" style="color: #e2ae76;"></i>
-      <h5 class="mb-0 fw-bold" style="color: #e2ae76;">Pasticcere — {{ $pastryChef->name }}</h5>
+      <h5 class="mb-0 fw-bold" style="color: #e2ae76;">Pastelero — {{ $pastryChef->name }}</h5>
     </div>
 
     <div class="card-body">
-      <!-- Dettagli -->
+      <!-- Detalles -->
       <div class="row row-cols-1 row-cols-md-2 g-4 mb-4" style="width: 70%;">
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1"> Nome Pasticceri</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Nombre del pastelero</h6>
           <p class="fs-3 fw-bold mb-0">{{ $pastryChef->name }}</p>
         </div>
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Email</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Correo electrónico</h6>
           <p class="fs-5 mb-0">{{ $pastryChef->email ?? '—' }}</p>
         </div>
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Telefono</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Teléfono</h6>
           <p class="fs-5 mb-0">{{ $pastryChef->phone ?? '—' }}</p>
         </div>
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Ultimo Aggiornamento</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Última actualización</h6>
           <p class="fs-5 mb-0">{{ optional($pastryChef->updated_at)?->format('Y-m-d H:i') ?? '—' }}</p>
         </div>
       </div>
 
       <hr class="border-secondary">
 
-      <!-- Pulsanti Azione -->
+      <!-- Botones de acción -->
       <div class="d-flex justify-content-end gap-2">
         <a href="{{ route('pastry-chefs.edit', $pastryChef) }}" class="btn btn-gold btn-lg">
-          <i class="bi bi-pencil me-1"></i> Modifica
+          <i class="bi bi-pencil me-1"></i> Editar
         </a>
 
         <a href="{{ route('pastry-chefs.index') }}" class="btn btn-deepblue btn-lg">
-          <i class="bi bi-arrow-left me-1"></i> Torna alla Lista
+          <i class="bi bi-arrow-left me-1"></i> Volver a la lista
         </a>
 
-        <form action="{{ route('pastry-chefs.destroy', $pastryChef) }}" method="POST" class="d-inline" onsubmit="return confirm('Eliminare questo Chef?');">
+        <form action="{{ route('pastry-chefs.destroy', $pastryChef) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar a este chef?');">
           @csrf
           @method('DELETE')
           <button type="submit" class="btn btn-red btn-lg">
-            <i class="bi bi-trash me-1"></i> Elimina
+            <i class="bi bi-trash me-1"></i> Eliminar
           </button>
         </form>
       </div>

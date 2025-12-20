@@ -1,7 +1,7 @@
 {{-- resources/views/frontend/showcase/index.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Tutte le Vetrine')
+@section('title', 'Todas las vitrinas')
 
 @section('content')
 <div class="container py-5 px-md-5">
@@ -9,14 +9,14 @@
     <div class="card-header d-flex justify-content-between align-items-center" style="background-color:#041930;">
       <h5 class="mb-0 fw-bold d-flex align-items-center" style="color:#e2ae76;">
         <svg class="me-2" viewBox="0 0 512.005 512.005" xmlns="http://www.w3.org/2000/svg" style="width:1.5em;height:1em;color:#e2ae76;fill:currentColor;"></svg>
-        Vetrine Giornaliere
+        Vitrinas Diarias
       </h5>
       <a href="{{ route('showcase.create') }}" class="btn btn-gold d-flex align-items-center">
-        <i class="bi bi-plus-circle me-1"></i> Nuova Vetrina
+        <i class="bi bi-plus-circle me-1"></i> Nueva Vitrina
       </a>
     </div>
     <div class="card-body">
-      <p class="mb-0 text-muted">Sfoglia e gestisci tutte le tue vetrine salvate qui sotto.</p>
+      <p class="mb-0 text-muted">Explora y gestiona todos tus Vitrinas guardados a continuación.</p>
     </div>
   </div>
 
@@ -24,23 +24,23 @@
     <div class="card-body table-responsive">
       <div class="row mb-3">
         <div class="col-md-3">
-          <input type="text" id="filter-date" class="form-control" placeholder="Filtra per Data">
+          <input type="text" id="filter-date" class="form-control" placeholder="Filtrar por fecha">
         </div>
         <div class="col-md-3">
-          <input type="text" id="filter-name" class="form-control" placeholder="Filtra per Nome">
+          <input type="text" id="filter-name" class="form-control" placeholder="Filtrar por nombre">
         </div>
       </div>
 
       <table  data-page-length="25"id="showcasesTable" class="table table-bordered table-striped table-hover align-middle text-center mb-0" style="width:100%;">
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Nome</th>
-            <th>Punto di Pareggio (€)</th>
-            <th>Ricavo Totale (€)</th>
+            <th>Fecha</th>
+            <th>Nombre</th>
+            <th>Punto de equilibrio (€)</th>
+            <th>Ingresos totales (€)</th>
             <th>Extra (€)</th>
-            <th>Margine Reale (€)</th>
-            <th>Azioni</th>
+            <th>Margen real (€)</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -60,16 +60,16 @@
               </td>
               <td>
                 <div class="btn-group" role="group">
-                  <a href="{{ route('showcase.show', $s->id) }}" class="btn btn-sm btn-deepblue" title="Visualizza">
+                  <a href="{{ route('showcase.show', $s->id) }}" class="btn btn-sm btn-deepblue" title="Ver">
                     <i class="bi bi-eye"></i>
                   </a>
-                  <a href="{{ route('showcase.edit', $s->id) }}" class="btn btn-sm btn-gold" title="Modifica">
+                  <a href="{{ route('showcase.edit', $s->id) }}" class="btn btn-sm btn-gold" title="Editar">
                     <i class="bi bi-pencil-square"></i>
                   </a>
-                  <form action="{{ route('showcase.destroy', $s->id) }}" method="POST" onsubmit="return confirm('Sei sicuro di voler eliminare questa vetrina?');" style="display:inline-block;">
+                  <form action="{{ route('showcase.destroy', $s->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar este escaparate?');" style="display:inline-block;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-red" title="Elimina">
+                    <button type="submit" class="btn btn-sm btn-red" title="Eliminar">
                       <i class="bi bi-trash"></i>
                     </button>
                   </form>
@@ -78,7 +78,7 @@
             </tr>
           @empty
             <tr>
-              <td colspan="7" class="text-muted">Nessuna vetrina trovata.</td>
+              <td colspan="7" class="text-muted">No se encontró ningún escaparate.</td>
             </tr>
           @endforelse
         </tbody>
@@ -115,11 +115,11 @@ document.addEventListener('DOMContentLoaded', function() {
     stateSave: false,
     columns: [null, null, null, null, null, null, { orderable:false }],
     language: {
-      search: "Cerca:",
-      lengthMenu: "Mostra _MENU_ voci per pagina",
-      info: "Mostrando da _START_ a _END_ di _TOTAL_ vetrine",
+      search: "Buscar:",
+      lengthMenu: "Mostrar _MENU_ elementos por página",
+      info: "Mostrando de _START_ a _END_ de _TOTAL_ Vitrinas",
       paginate: { previous: "&laquo;", next: "&raquo;" },
-      zeroRecords: "Nessuna vetrina corrispondente trovata"
+      zeroRecords: "No se encontró ningún escaparate coincidente"
     }
   });
 

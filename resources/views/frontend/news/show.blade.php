@@ -10,7 +10,7 @@
         <div class="col-12">
             <div class="card shadow-lg rounded-3 overflow-hidden">
 
-                {{-- Anteprima Immagine --}}
+                {{-- Vista previa de la imagen --}}
                 @if ($news->image)
                     <img src="{{ asset('storage/' . $news->image) }}"
                          alt="{{ $news->title }}"
@@ -18,13 +18,13 @@
                          style="object-fit: cover; height: 300px;">
                 @endif
 
-                {{-- Titolo & Timestamp --}}
+                {{-- Título y marca de tiempo --}}
                 <div class="card-header" style="background-color: #041930; color: #e2ae76;">
-                    <h2 class="mb-0"  style="background-color: #041930; color: #e2ae76;">{{ $news->title }}</h2>
+                    <h2 class="mb-0" style="background-color: #041930; color: #e2ae76;">{{ $news->title }}</h2>
                     <span class="badge bg-warning text-dark">{{ $news->created_at->diffForHumans() }}</span>
                 </div>
 
-                {{-- Contenuto con link rilevati automaticamente --}}
+                {{-- Contenido con enlaces detectados automáticamente --}}
                 <div class="card-body">
                     <div class="text-muted" style="white-space: pre-wrap;">
                         {!! preg_replace(

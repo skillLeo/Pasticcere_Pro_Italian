@@ -1,16 +1,16 @@
 {{-- resources/views/frontend/user-management/permissions/create.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', $isEdit ? 'Modifica Permesso' : 'Aggiungi Permesso')
+@section('title', $isEdit ? 'Modificar permiso' : 'Añadir permiso')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Intestazione -->
+  <!-- Encabezado -->
   <div class="page-header d-flex align-items-center mb-4" style="background-color: #041930; border-radius: 0.75rem; padding: 1rem 2rem;">
     <i class="bi bi-shield-lock-fill me-2 fs-3" style="color: #e2ae76;"></i>
     <h4 class="mb-0 fw-bold" style="color: #e2ae76;">
-      {{ $isEdit ? 'Modifica Permesso' : 'Aggiungi Permesso' }}
+      {{ $isEdit ? 'Modificar permiso' : 'Añadir permiso' }}
     </h4>
   </div>
 
@@ -23,7 +23,7 @@
         @if($isEdit) @method('PUT') @endif
 
         <div class="mb-4">
-          <label class="form-label fw-semibold text-dark">Nome Permesso</label>
+          <label class="form-label fw-semibold text-dark">Nombre del permiso</label>
           <input type="text" name="name"
                  class="form-control"
                  value="{{ old('name', $permission->name ?? '') }}"
@@ -32,7 +32,7 @@
 
         <button class="btn btn-gold-blue">
           <i class="bi bi-check-circle me-1"></i>
-          {{ $isEdit ? 'Aggiorna' : 'Crea' }}
+          {{ $isEdit ? 'Actualizar' : 'Crear' }}
         </button>
       </form>
     </div>

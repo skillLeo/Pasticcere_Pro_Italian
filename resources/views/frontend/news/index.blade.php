@@ -1,23 +1,23 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Tutte le Notizie')
+@section('title', 'Todas las Noticias')
 
 @section('content')
 <div class="container py-5 px-md-5">
     <div class="d-flex justify-content-between align-items-center page-header mb-4">
         <div class="d-flex align-items-center">
           <i class="bi bi-megaphone fs-3 me-2"></i>
-          <h4 class="mb-0 fw-bold">Tutte le Notizie</h4>
+          <h4 class="mb-0 fw-bold">Todas las Noticias</h4>
         </div>
         <a href="{{ route('news.create') }}" class="btn btn-gold-filled btn-lg">
-          <i class="bi bi-plus-circle me-1"></i> Aggiungi Notizia
+          <i class="bi bi-plus-circle me-1"></i> Añadir Noticia
         </a>
     </div>
 
     <div class="card border-primary shadow-sm mt-50">
         <div class="card-header d-flex align-items-center" style="background-color: #041930;">
             <i class="bi bi-newspaper fs-4 me-2" style="color: #e2ae76;"></i>
-            <h5 class="mb-0 fw-bold" style="color: #e2ae76;">Elenco Notizie</h5>
+            <h5 class="mb-0 fw-bold" style="color: #e2ae76;">Listado de Noticias</h5>
         </div>
         <div class="card-body table-responsive">
             <table
@@ -25,11 +25,11 @@
                 class="table table-bordered table-hover align-middle text-center mb-0">
                 <thead style="background-color: #e2ae76; color: #041930;">
                     <tr>
-                        <th class="no-sort">Immagine</th>
-                        <th class="sortable">Titolo <span class="sort-indicator"></span></th>
-                        <th class="sortable">Data Evento <span class="sort-indicator"></span></th>
-                        <th class="sortable">Stato <span class="sort-indicator"></span></th>
-                        <th class="no-sort">Azioni</th>
+                        <th class="no-sort">Imagen</th>
+                        <th class="sortable">Título <span class="sort-indicator"></span></th>
+                        <th class="sortable">Fecha del Evento <span class="sort-indicator"></span></th>
+                        <th class="sortable">Estado <span class="sort-indicator"></span></th>
+                        <th class="no-sort">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,17 +48,17 @@
                         </td>
                         <td data-order="{{ $item->is_active ? 1 : 0 }}">
                             <span class="badge {{ $item->is_active ? 'bg-success' : 'bg-secondary' }}">
-                                {{ $item->is_active ? 'Attivo' : 'Inattivo' }}
+                                {{ $item->is_active ? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
                         <td>
-                            <a href="{{ route('news.edit', $item) }}" class="btn btn-sm btn-gold me-1" title="Modifica">
+                            <a href="{{ route('news.edit', $item) }}" class="btn btn-sm btn-gold me-1" title="Editar">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <form action="{{ route('news.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('Sei sicuro di voler eliminare questa notizia?');">
+                            <form action="{{ route('news.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta noticia?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-red" title="Elimina">
+                                <button type="submit" class="btn btn-sm btn-red" title="Eliminar">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateIndicators();
 
-        // 2‑state toggle
+        // 2-state toggle
         $('#newsTable thead').on('click', 'th.sortable', function() {
             const idx = $(this).index();
             const colSettings = table.settings()[0].aoColumns[idx];

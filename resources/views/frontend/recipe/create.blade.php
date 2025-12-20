@@ -2,7 +2,7 @@
 {{-- ------------------------------------------------------------------ --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Crea Ricetta')
+@section('title', 'Crear Receta')
 
 @php
     $sectionHeaderStyle = 'style="background-color: #041930; color: #e2ae76;"';
@@ -12,7 +12,6 @@
 
 @section('styles')
     <style>
-        /* [FULL original CSS unchanged… kept exactly as you provided] */
         :root {
             --primary: #041930;
             --accent: #e2ae76;
@@ -633,20 +632,29 @@
 @section('content')
     <div class="container-fluid py-4">
         <div class="row g-4 align-items-start">
-            {{-- MAIN COLUMN --}}
+            {{-- COLUMNA PRINCIPAL --}}
             <div class="col-lg-8">
-                {{-- ===== FORM START ===== --}}
+                {{-- ===== INICIO FORMULARIO ===== --}}
                 <form method="POST" action="{{ $formAction }}" class="reveal" id="recipeForm">
                     @csrf
+                    
+                    
+                    
+                    
+                    @if($isEdit && $alreadyAsIngredient)
+    <input type="hidden" name="add_as_ingredient" value="1">
+@else
+    <input type="hidden" name="add_as_ingredient" value="0">
+@endif
                     @if ($isEdit)
                         @method('PUT')
                     @endif
 
-                    {{-- ===== Dettagli Ricetta ===== --}}
+                    {{-- ===== Detalles Receta ===== --}}
                     <div class="card mb-4 shadow-sm reveal" id="sec-details">
                         <div class="card-header brand-header d-flex align-items-center">
                             <div class="header-icon" aria-hidden="true">
-                                {{-- whisk icon --}}
+                                {{-- icono batidor --}}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path
                                         d="M356.334,494.134c43.124-12.321,153.745-52.878,155.636-110.035c1.88-57.184-85.049-58.301-139.549-49.294L356.334,494.134z" />
@@ -660,16 +668,16 @@
                                         d="M277.509,234.492c-10.833-10.833-30.659-28.329-46.765-27.786C214.616,207.227,48.711,314.21,34.496,328.424c-14.223,14.223,18.794,66.572,50.651,98.429c31.855,31.855,84.205,64.874,98.429,50.651c14.215-14.215,121.194-180.123,121.717-196.251C305.836,265.147,288.341,245.322,277.509,234.492z" />
                                 </svg>
                             </div>
-                            <h5 class="mb-0">Dettagli Ricetta</h5>
-                            <span class="badge badge-soft ms-3">Nuova</span>
+                            <h5 class="mb-0">Detalles de la receta</h5>
+                            <span class="badge badge-soft ms-3">Nueva</span>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
                                 <div class="col-md-4">
-                                    <label for="recipeName" class="form-label">Nome</label>
+                                    <label for="recipeName" class="form-label">Nombre</label>
                                     <input type="text" id="recipeName" name="recipe_name"
                                         class="form-control @error('recipe_name') is-invalid @enderror"
-                                        placeholder="Torta al cioccolato"
+                                        placeholder="Tarta de chocolate"
                                         value="{{ old('recipe_name', $isEdit ? $recipe->recipe_name : '') }}">
                                     @error('recipe_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -677,10 +685,10 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="recipeCategory" class="form-label">Categoria</label>
+                                    <label for="recipeCategory" class="form-label">Categoría</label>
                                     <select id="recipeCategory" name="recipe_category_id"
                                         class="form-select @error('recipe_category_id') is-invalid @enderror">
-                                        <option value="">Scegli…</option>
+                                        <option value="">Elegir…</option>
                                         @foreach ($categories as $cat)
                                             <option value="{{ $cat->id }}"
                                                 {{ old('recipe_category_id', $isEdit ? $recipe->recipe_category_id : '') == $cat->id ? 'selected' : '' }}>
@@ -694,11 +702,11 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="recipeDept" class="form-label">Reparto</label>
+                                    <label for="recipeDept" class="form-label">Departamento</label>
                                     <select id="recipeDept" name="department_id"
                                         data-rates-url="{{ route('departments.rates', ['department' => '__ID__']) }}"
                                         class="form-select @error('department_id') is-invalid @enderror">
-                                        <option value="">Scegli…</option>
+                                        <option value="">Elegir…</option>
                                         @foreach ($departments as $dept)
                                             <option value="{{ $dept->id }}"
                                                 {{ old('department_id', $isEdit ? $recipe->department_id : '') == $dept->id ? 'selected' : '' }}>
@@ -714,11 +722,11 @@
                         </div>
                     </div>
 
-                    {{-- ===== Ingredienti ===== --}}
+                    {{-- ===== Ingredientes ===== --}}
                     <div class="card mb-4 shadow-sm reveal" id="sec-ingredients">
                         <div class="card-header brand-header d-flex align-items-center">
                             <div class="header-icon" aria-hidden="true">
-                                {{-- sparkles icon --}}
+                                {{-- icono destellos --}}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path
                                         d="M479.605,91.769c-23.376,23.376-66.058,33.092-79.268,19.882c-13.21-13.21-3.494-55.892,19.883-79.268s85.999-26.614,85.999-26.614S502.982,68.393,479.605,91.769z" />
@@ -748,10 +756,10 @@
                                         d="M4.917,507.087c-6.552-6.552-6.552-17.174,0-23.725L404.75,83.527c6.552-6.552,17.174-6.552,23.725,0c6.552,6.552,6.552,17.174,0,23.725L28.643,507.087C22.091,513.637,11.468,513.637,4.917,507.087z" />
                                 </svg>
                             </div>
-                            <h5 class="mb-0">Ingredienti</h5>
+                            <h5 class="mb-0">Ingredientes</h5>
                             <button type="button" class="btn btn-outline-light ms-auto" data-bs-toggle="modal"
-                                data-bs-target="#addIngredientModal"><i class="bi bi-plus-lg"></i> Nuovo
-                                Ingrediente</button>
+                                data-bs-target="#addIngredientModal"><i class="bi bi-plus-lg"></i> Nuevo
+                                ingrediente</button>
                         </div>
 
                         <style>
@@ -762,14 +770,14 @@
 
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table  data-page-length="25"class="table table-hover table-striped mb-0 align-middle">
+                                <table data-page-length="25" class="table table-hover table-striped mb-0 align-middle">
                                     <thead>
                                         <tr>
                                             <th>Ingrediente</th>
-                                            <th class="text-center">Qtà (g)</th>
-                                            <th class="text-center">Costo (€)</th>
-                                            <th class="text-center incidence-col">Incidenza (%)</th>
-                                            <th class="text-center">Azione</th>
+                                            <th class="text-center">Cant. (g)</th>
+                                            <th class="text-center"> Coste (€)</th>
+                                            <th class="text-center incidence-col">Incidencia (%)</th>
+                                            <th class="text-center">Acción</th>
                                         </tr>
                                     </thead>
 
@@ -782,7 +790,7 @@
                                                     <td>
                                                         <select name="ingredients[{{ $i }}][id]"
                                                             class="form-select ingredient-select @error('ingredients.' . $i . '.id') is-invalid @enderror">
-                                                            <option value="">Seleziona ingrediente…</option>
+                                                            <option value="">Seleccionar ingrediente…</option>
                                                             @foreach ($ingredients as $ing)
                                                                 <option value="{{ $ing->id }}"
                                                                     data-price="{{ $ing->price_per_kg }}"
@@ -828,7 +836,7 @@
                                                     <td>
                                                         <select name="ingredients[{{ $i }}][id]"
                                                             class="form-select ingredient-select @error('ingredients.' . $i . '.id') is-invalid @enderror">
-                                                            <option value="">Seleziona ingrediente…</option>
+                                                            <option value="">Seleccionar ingrediente…</option>
                                                             @foreach ($ingredients as $ing)
                                                                 <option value="{{ $ing->id }}"
                                                                     data-price="{{ $ing->price_per_kg }}"
@@ -874,7 +882,7 @@
                                                 <td>
                                                     <select name="ingredients[0][id]"
                                                         class="form-select ingredient-select @error('ingredients.0.id') is-invalid @enderror">
-                                                        <option value="">Seleziona ingrediente…</option>
+                                                        <option value="">Seleccionar ingrediente…</option>
                                                         @foreach ($ingredients as $ing)
                                                             <option value="{{ $ing->id }}"
                                                                 data-price="{{ $ing->price_per_kg }}">
@@ -913,7 +921,7 @@
 
                                     <tfoot class="table-light">
                                         <tr>
-                                            <td class="fw-semibold">Peso Totale (g)</td>
+                                            <td class="fw-semibold">Peso total (g)</td>
                                             <td>
                                                 <input type="number" id="totalWeightFooter"
                                                     class="form-control text-center" readonly>
@@ -930,13 +938,13 @@
                                             </td>
                                             <td class="text-center">
                                                 <button id="addIngredientBtn" class="btn btn-outline-success btn-sm"
-                                                    title="Aggiungi riga">
-                                                    <i class="bi bi-plus"></i> Aggiungi
+                                                    title="Añadir fila">
+                                                    <i class="bi bi-plus"></i> Añadir
                                                 </button>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-semibold">Peso dopo il calo (g)</td>
+                                            <td class="fw-semibold">peso post-cocción (g)</td>
                                             <td>
                                                 <input type="number" id="weightWithLoss" name="recipe_weight"
                                                     class="form-control text-center @error('recipe_weight') is-invalid @enderror"
@@ -953,21 +961,21 @@
                         </div>
                     </div>
 
-                    {{-- ===== Manodopera ===== --}}
+                    {{-- ===== Mano de obra ===== --}}
                     <div class="card mb-4 shadow-sm reveal" id="sec-labor">
-                        {{-- pass the selected labor cost record ID (global/base) --}}
+                        {{-- pasar el ID del registro de coste laboral seleccionado (global/base) --}}
                         <input type="hidden" name="labor_cost_id" value="{{ optional($laborCost)->id }}">
-                        {{-- preserve global rates for JS (fallback) --}}
+                        {{-- conservar tarifas globales para JS (fallback) --}}
                         <input type="hidden" id="shopRate" value="{{ optional($laborCost)->shop_cost_per_min ?? 0 }}">
                         <input type="hidden" id="externalRate"
                             value="{{ optional($laborCost)->external_cost_per_min ?? 0 }}">
-                        {{-- department-aware rates map from controller (override if present) --}}
+                        {{-- mapa de tarifas por departamento desde el controlador (sobrescribe si existe) --}}
                         <input type="hidden" id="deptRatesJson" value='@json($ratesByDept ?? [])'>
 
                         <div class="card-header brand-header d-flex align-items-center">
                             <div class="header-icon"><i class="bi bi-clock-history" style="color:var(--accent)"></i>
                             </div>
-                            <h5 class="mb-0">Manodopera</h5>
+                            <h5 class="mb-0">Mano de obra</h5>
                         </div>
 
                         <div class="card-body">
@@ -975,13 +983,13 @@
                                 <input class="form-check-input" type="radio" name="labor_cost_mode" id="costModeShop"
                                     value="shop"
                                     {{ old('labor_cost_mode', $isEdit ? $recipe->labor_cost_mode : 'shop') == 'shop' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="costModeShop">Usa costo interno (€/min)</label>
+                                <label class="form-check-label" for="costModeShop">Usar coste interno (€/min)</label>
                             </div>
                             <div class="form-check form-check-inline @error('labor_cost_mode') is-invalid @enderror">
                                 <input class="form-check-input" type="radio" name="labor_cost_mode"
                                     id="costModeExternal" value="external"
                                     {{ old('labor_cost_mode', $isEdit ? $recipe->labor_cost_mode : 'shop') == 'external' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="costModeExternal">Usa costo esterno (€/min)</label>
+                                <label class="form-check-label" for="costModeExternal">Usar coste externo (€/min)</label>
                             </div>
                             @error('labor_cost_mode')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -989,7 +997,7 @@
 
                             <div class="row g-3 mt-3">
                                 <div class="col-md-3">
-                                    <label for="laborTimeInput" class="form-label">Tempo lavoro (min)</label>
+                                    <label for="laborTimeInput" class="form-label">Tiempo de trabajo (min)</label>
                                     <input type="number" id="laborTimeInput" name="labor_time_input"
                                         class="form-control @error('labor_time_input') is-invalid @enderror"
                                         min="0"
@@ -1000,7 +1008,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label for="costPerMin" class="form-label">Costo al minuto (€)</label>
+                                    <label for="costPerMin" class="form-label"> Coste por minuto (€)</label>
                                     <div class="input-group">
                                         <span class="input-group-text">€</span>
                                         <input type="text" id="costPerMin" class="form-control" readonly>
@@ -1008,7 +1016,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label for="laborCost" class="form-label">Costo lavoro (€)</label>
+                                    <label for="laborCost" class="form-label">Coste de mano de obra (€)</label>
                                     <div class="input-group">
                                         <span class="input-group-text">€</span>
                                         <input type="text" id="laborCost" name="labor_cost"
@@ -1020,27 +1028,27 @@
                                     @enderror
                                 </div>
 
-                                {{-- hidden incidence --}}
+                                {{-- incidencia oculta --}}
                                 <div class="col-md-3" style="display:none">
-                                    <label for="laborIncidence" class="form-label">Incidenza (%)</label>
+                                    <label for="laborIncidence" class="form-label">Incidencia (%)</label>
                                     <input type="text" id="laborIncidence" class="form-control text-center" readonly>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- ===== Spesa & Vendita ===== --}}
+                    {{-- ===== Gasto & Venta ===== --}}
                     <div class="row gx-4 mb-4">
                         <div class="col-md-6">
                             <div class="card shadow-sm h-100 reveal" id="sec-expense">
                                 <div class="card-header brand-header d-flex align-items-center">
                                     <div class="header-icon"><i class="bi bi-calculator" style="color:var(--accent)"></i>
                                     </div>
-                                    <h5 class="mb-0">Spesa Totale</h5>
+                                    <h5 class="mb-0">Gasto total</h5>
                                 </div>
                                 <div class="card-body d-flex flex-column align-items-center">
                                     <div class="input-group w-100 mb-3">
-                                        <span class="input-group-text">Costo €/kg prima Imballaggio</span>
+                                        <span class="input-group-text">Coste €/kg antes del Envase</span>
                                         <span class="input-group-text">€</span>
                                         <input type="text" id="prodCostKg" name="production_cost_per_kg"
                                             class="form-control text-end @error('production_cost_per_kg') is-invalid @enderror"
@@ -1052,7 +1060,7 @@
                                     </div>
 
                                     <div class="input-group w-100 mb-3">
-                                        <span class="input-group-text">Imballaggio</span>
+                                        <span class="input-group-text"> Envase</span>
                                         <span class="input-group-text">€</span>
                                         <input type="number" step="0.01" id="packingCost" name="packing_cost"
                                             class="form-control text-end @error('packing_cost') is-invalid @enderror"
@@ -1063,8 +1071,7 @@
                                     </div>
 
                                     <div class="input-group input-group-lg w-100 mb-2">
-                                        <span class="input-group-text">Costo €/kg dopo Imballaggio</span>
-                                        <span class="input-group-text">€</span>
+                                        <span class="input-group-text">Coste €/kg después del  Envase</span>
                                         <input type="text" id="totalExpense" name="total_expense"
                                             class="form-control fw-bold text-center @error('total_expense') is-invalid @enderror"
                                             readonly
@@ -1075,7 +1082,7 @@
                                     </div>
 
                                     <div class="w-100 text-center mt-1">
-                                        <span class="fw-semibold">Margine Potenziale:</span>
+                                        <span class="fw-semibold">Margen potencial:</span>
                                         <span id="potentialMargin" class="fw-bold ms-2">
                                             {{ old('potential_margin', $isEdit ? $recipe->potential_margin : '') }}
                                         </span>
@@ -1092,7 +1099,7 @@
                             <div class="card shadow-sm h-100 reveal" id="sec-sell">
                                 <div class="card-header brand-header d-flex align-items-center">
                                     <div class="header-icon"><i class="bi bi-shop" style="color:var(--accent)"></i></div>
-                                    <h5 class="mb-0">Modalità di Vendita</h5>
+                                    <h5 class="mb-0">Modo de venta</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3 @error('sell_mode') is-invalid @enderror">
@@ -1100,13 +1107,13 @@
                                             <input class="form-check-input" type="radio" name="sell_mode"
                                                 id="modePiece" value="piece"
                                                 {{ old('sell_mode', $isEdit ? $recipe->sell_mode : 'piece') == 'piece' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="modePiece">Vendita a Pezzo</label>
+                                            <label class="form-check-label" for="modePiece">Venta por pieza</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sell_mode"
                                                 id="modeKg" value="kg"
                                                 {{ old('sell_mode', $isEdit ? $recipe->sell_mode : '') == 'kg' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="modeKg">Vendita al Kg</label>
+                                            <label class="form-check-label" for="modeKg">Venta por kg</label>
                                         </div>
                                         @error('sell_mode')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -1115,7 +1122,7 @@
 
                                     <div id="pieceInputs">
                                         <div class="mb-3">
-                                            <label for="totalPieces" class="form-label">pezzi/dose</label>
+                                            <label for="totalPieces" class="form-label">Piezas/dosis</label>
                                             <input type="number" id="totalPieces" name="total_pieces"
                                                 class="form-control @error('total_pieces') is-invalid @enderror"
                                                 value="{{ old('total_pieces', $isEdit ? $recipe->total_pieces : '') }}">
@@ -1124,12 +1131,12 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="weightPerPiece" class="form-label">Peso per Pezzo (g)</label>
+                                            <label for="weightPerPiece" class="form-label">Peso por pieza (g)</label>
                                             <input type="text" id="weightPerPiece" class="form-control" readonly
                                                 value="{{ old('weight_per_piece', $isEdit && $recipe->total_pieces > 0 ? number_format(1000 / $recipe->total_pieces, 2) : '') }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="pricePerPiece" class="form-label">Prezzo di Vendita per Pezzo
+                                            <label for="pricePerPiece" class="form-label">Precio de venta por pieza
                                                 (€)</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">€</span>
@@ -1146,7 +1153,7 @@
 
                                     <div id="kgInputs" class="d-none">
                                         <div class="mb-3">
-                                            <label for="pricePerKg" class="form-label">Prezzo di Vendita per Kg
+                                            <label for="pricePerKg" class="form-label">Precio de venta por kg
                                                 (€)</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">€</span>
@@ -1163,14 +1170,17 @@
 
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-4">
-                                            <label for="vatRate" class="form-label">Aliquota IVA</label>
+                                            <label for="vatRate" class="form-label">Tipo de IVA</label>
                                             @php $currentVat = old('vat_rate', $isEdit ? $recipe->vat_rate : 0); @endphp
                                             <select id="vatRate" name="vat_rate"
                                                 class="form-select @error('vat_rate') is-invalid @enderror">
-                                                <option value="0" @selected($currentVat == 0)>Esente IVA</option>
-                                                <option value="4" @selected($currentVat == 4)>4%</option>
-                                                <option value="10" @selected($currentVat == 10)>10%</option>
-                                                <option value="22" @selected($currentVat == 22)>22%</option>
+                                                <option value="0" @selected((float) $currentVat == 0)>Sin IVA</option>
+                                                <option value="3" @selected((float) $currentVat == 3)>3%</option>
+                                                <option value="4" @selected((float) $currentVat == 4)>4%</option>
+                                                <option value="7" @selected((float) $currentVat == 7)>7%</option>
+                                                <option value="10" @selected((float) $currentVat == 10)>10%</option>
+                                                <option value="15" @selected((float) $currentVat == 15)>15%</option>
+                                                <option value="21" @selected((float) $currentVat == 21)>21%</option>
                                             </select>
                                             @error('vat_rate')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -1183,13 +1193,13 @@
                         </div>
                     </div>
 
-                    {{-- ===== Aggiunte ===== --}}
+                    {{-- ===== Adiciones ===== --}}
                     @if (!$isEdit || ($isEdit && !$alreadyAsIngredient))
                         <div class="card mb-4 shadow-sm reveal">
                             <div class="card-header brand-header d-flex align-items-center">
                                 <div class="header-icon"><i class="bi bi-plus-circle" style="color:var(--accent)"></i>
                                 </div>
-                                <h5 class="mb-0">Aggiunte</h5>
+                                <h5 class="mb-0">Adiciones</h5>
                             </div>
                             <div class="card-body">
                                 <div class="form-check">
@@ -1197,128 +1207,128 @@
                                         type="checkbox" id="addAsIngredient" name="add_as_ingredient" value="1"
                                         {{ old('add_as_ingredient', 0) ? 'checked' : '' }}>
                                     <label class="form-check-label fw-semibold" for="addAsIngredient">
-                                        Aggiungi questa ricetta come <em>ingrediente</em>
+                                        Añadir esta receta como <em>ingrediente</em>
                                     </label>
                                     @error('add_as_ingredient')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                     <p class="small text-muted mb-0">
-                                        Se selezionato, il nome della ricetta verrà salvato nella tabella degli ingredienti
-                                        con un costo €/kg pari al "Costo €/kg prima Imballaggio".
+                                        Si está marcado, el nombre de la receta se guardará en la tabla de ingredientes
+                                        con un coste €/kg igual al "Coste €/kg antes del  Envase".
                                     </p>
-                                    <p class="small text-info mb-0">Nota: gli ingredienti verranno aggiunti come costo al
-                                        kg</p>
+                                    <p class="small text-info mb-0">Nota: los ingredientes se añadirán como coste por kg</p>
                                 </div>
                             </div>
                         </div>
                     @endif
 
-                    {{-- ===== Submit Bar ===== --}}
+                    {{-- ===== Barra de envío ===== --}}
                     <div class="submit-bar">
                         <div class="submit_bar_inner">
                             <button type="submit" class="btn btn-lg btn-accent">
-                                <i class="bi bi-save2 me-2"></i> {{ $isEdit ? 'Aggiorna Ricetta' : 'Salva Ricetta' }}
+                                <i class="bi bi-save2 me-2"></i> {{ $isEdit ? 'Actualizar receta' : 'Guardar receta' }}
                             </button>
                         </div>
                     </div>
 
                 </form>
-                {{-- ===== FORM END ===== --}}
+                {{-- ===== FIN FORMULARIO ===== --}}
 
             @include('frontend.recipe.quick-actions')
 
             </div>
 
-            {{-- ===== RIGHT RAIL ===== --}}
+            {{-- ===== COLUMNA DERECHA ===== --}}
             <aside class="col-lg-4">
                 <div class="side-rail reveal">
-                    {{-- Flow / Steps --}}
+                    {{-- Flujo / Pasos --}}
                     <div class="rail-card">
                         <div class="rail-heading">
                             <i class="bi bi-sliders header-dot"></i>
-                            <span>Flusso di lavoro</span>
+                            <span>Flujo de trabajo</span>
                         </div>
                         <ol class="stepper" id="rail-stepper">
-                            <li><a href="#sec-details" class="js-scrollto"><i class="bi bi-1-circle"></i> Dettagli
-                                    Ricetta</a></li>
+                            <li><a href="#sec-details" class="js-scrollto"><i class="bi bi-1-circle"></i> Detalles de la
+                                    receta</a></li>
                             <li><a href="#sec-ingredients" class="js-scrollto"><i class="bi bi-2-circle"></i>
-                                    Ingredienti</a></li>
-                            <li><a href="#sec-labor" class="js-scrollto"><i class="bi bi-3-circle"></i> Manodopera</a>
+                                    Ingredientes</a></li>
+                            <li><a href="#sec-labor" class="js-scrollto"><i class="bi bi-3-circle"></i> Mano de obra</a>
                             </li>
-                            <li><a href="#sec-expense" class="js-scrollto"><i class="bi bi-4-circle"></i> Costi &amp;
-                                    Imballaggio</a></li>
-                            <li><a href="#sec-sell" class="js-scrollto"><i class="bi bi-5-circle"></i> Vendita &amp;
-                                    Margini</a></li>
+                            <li><a href="#sec-expense" class="js-scrollto"><i class="bi bi-4-circle"></i> Costes e
+                                     Envase</a></li>
+                            <li><a href="#sec-sell" class="js-scrollto"><i class="bi bi-5-circle"></i> Venta y
+                                    márgenes</a></li>
                         </ol>
                     </div>
 
-                    {{-- Calculators / Tips --}}
+                    {{-- Calculadoras / Consejos --}}
                     <div class="rail-card">
                         <div class="rail-heading">
                             <i class="bi bi-lightning-charge header-dot"></i>
-                            <span>Calcoli rapidi</span>
+                            <span>Cálculos rápidos</span>
                         </div>
                         <div class="rail-actions">
                             <button type="button" class="rail-btn" data-action="fill-loss-from-ingredients">
-                                <i class="bi bi-arrow-repeat"></i> Peso = Somma ingredienti
+                                <i class="bi bi-arrow-repeat"></i> Peso = Suma ingredientes
                             </button>
                             <button type="button" class="rail-btn" data-action="set-mode-kg">
-                                <i class="bi bi-basket"></i> Forza vendita al Kg
+                                <i class="bi bi-basket"></i> Forzar venta por kg
                             </button>
                             <button type="button" class="rail-btn" data-action="set-mode-piece">
-                                <i class="bi bi-grid-3x3-gap"></i> Vendita a Pezzo
+                                <i class="bi bi-grid-3x3-gap"></i> Venta por pieza
                             </button>
                             <button type="button" class="rail-btn" data-action="suggest-margin">
-                                <i class="bi bi-graph-up"></i> Suggerisci prezzo (x2.2)
+                                <i class="bi bi-graph-up"></i> Sugerir precio (x2.2)
                             </button>
                         </div>
-                        <p class="rail-note">Suggerimenti basati sui campi attuali—modificabili in qualsiasi momento.</p>
+                        <p class="rail-note">Sugerencias basadas en los campos actuales — modificables en cualquier momento.</p>
                     </div>
 
-                    {{-- Video coaching --}}
-                    <div class="rail-card">
-                        <div class="rail-heading">
-                            <i class="bi bi-play-circle header-dot"></i>
-                            <span>Video Guide</span>
-                        </div>
+{{-- Sección de vídeo guía - ACTUALIZADO con nuevo enlace de YouTube --}}
+<div class="rail-card">
+    <div class="rail-heading">
+        <i class="bi bi-play-circle header-dot"></i>
+        <span>Video guía</span>
+    </div>
 
-                        <div class="video-frame" data-youtube-id="HhC75Ion8fA"
-                            aria-label="Video guida calcolo costi e margini">
-                            <img class="video-poster" src="https://i.ytimg.com/vi/HhC75Ion8fA/hqdefault.jpg"
-                                alt="Anteprima video">
-                            <button class="play-btn" type="button" aria-label="Play video">
-                                <i class="bi bi-play-fill"></i>
-                            </button>
-                        </div>
+    {{-- ✅ ACTUALIZADO: ID de YouTube B96gkcswFK4 --}}
+    <div class="video-frame" data-youtube-id="B96gkcswFK4"
+        aria-label="Video guía cálculo de costes y márgenes">
+        <img class="video-poster" src="https://i.ytimg.com/vi/B96gkcswFK4/hqdefault.jpg"
+            alt="Miniatura del vídeo">
+        <button class="play-btn" type="button" aria-label="Reproducir vídeo">
+            <i class="bi bi-play-fill"></i>
+        </button>
+    </div>
 
-                        <ul class="video-tips">
-                            <li><i class="bi bi-check2"></i> Inserisci ingredienti &rarr; controlla
-                                <strong>costo/kg</strong></li>
-                            <li><i class="bi bi-check2"></i> Aggiungi <strong>manodopera</strong> con tariffa reparto</li>
-                            <li><i class="bi bi-check2"></i> Imposta <strong>imballaggio</strong> per pz/kg</li>
-                            <li><i class="bi bi-check2"></i> Scegli modalità vendita e verifica <strong>margine</strong>
-                            </li>
-                        </ul>
-                    </div>
+    <ul class="video-tips">
+        <li><i class="bi bi-check2"></i> Introduce ingredientes &rarr; revisa
+            <strong>coste/kg</strong></li>
+        <li><i class="bi bi-check2"></i> Añade <strong>mano de obra</strong> con tarifa por departamento</li>
+        <li><i class="bi bi-check2"></i> Define <strong> Envase</strong> por pz/kg</li>
+        <li><i class="bi bi-check2"></i> Elige modo de venta y verifica el <strong>margen</strong>
+        </li>
+    </ul>
+</div>
                 </div>
             </aside>
         </div>
     </div>
 
-    {{-- ===== Modal: Add Ingredient ===== --}}
+    {{-- ===== Modal: Añadir Ingrediente ===== --}}
     <div class="modal fade" id="addIngredientModal" tabindex="-1" aria-labelledby="addIngredientModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addIngredientModalLabel">Aggiungi Nuovo Ingrediente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                    <h5 class="modal-title" id="addIngredientModalLabel">Añadir nuevo ingrediente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addIngredientForm" action="{{ route('ingredients.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="ingredientNameModal" class="form-label">Nome Ingrediente</label>
+                            <label for="ingredientNameModal" class="form-label">Nombre del ingrediente</label>
                             <input type="text" id="ingredientNameModal" name="ingredient_name"
                                 class="form-control @error('ingredient_name') is-invalid @enderror"
                                 value="{{ old('ingredient_name') }}">
@@ -1327,7 +1337,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="pricePerKgModal" class="form-label">Prezzo per kg (€)</label>
+                            <label for="pricePerKgModal" class="form-label">Precio por kg (€)</label>
                             <input type="number" id="pricePerKgModal" name="price_per_kg"
                                 class="form-control @error('price_per_kg') is-invalid @enderror" step="0.01"
                                 value="{{ old('price_per_kg') }}">
@@ -1335,7 +1345,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-accent">Salva Ingrediente</button>
+                        <button type="submit" class="btn btn-accent">Guardar ingrediente</button>
                     </form>
                 </div>
             </div>
@@ -1347,7 +1357,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 /* =======================
-* A) REVEAL ON SCROLL
+* A) REVELAR AL HACER SCROLL
 * ======================= */
 const revealEls = document.querySelectorAll('.reveal');
 const revealIO = new IntersectionObserver((entries) => {
@@ -1356,7 +1366,7 @@ const revealIO = new IntersectionObserver((entries) => {
 revealEls.forEach(el => revealIO.observe(el));
 
 /* =======================
-* B) FORM LOGIC
+* B) LÓGICA DEL FORMULARIO
 * ======================= */
 const addForm = document.getElementById('addIngredientForm');
 const modalEl = document.getElementById('addIngredientModal');
@@ -1400,7 +1410,7 @@ const pieceFields = pieceWrap ? pieceWrap.querySelectorAll('input,select,textare
 let weightEdited = {{ $isEdit ? 'true' : 'false' }};
 let idx = {{ count(old('ingredients', [])) > 0 ? count(old('ingredients')) : (isset($recipe) ? $recipe->ingredients->count() : 1) }};
 
-// Ajax add ingredient
+// Ajax añadir ingrediente
 addForm?.addEventListener('submit', async e => {
     e.preventDefault();
     const fd = new FormData(addForm);
@@ -1410,7 +1420,7 @@ addForm?.addEventListener('submit', async e => {
     });
     const json = await res.json();
     if (!res.ok) {
-        alert(json.errors ? Object.values(json.errors).flat().join('\n') : 'Impossibile salvare l\'ingrediente.');
+        alert(json.errors ? Object.values(json.errors).flat().join('\n') : 'No se pudo guardar el ingrediente.');
         return;
     }
     const opt = document.createElement('option');
@@ -1429,7 +1439,7 @@ addForm?.addEventListener('submit', async e => {
     });
     const bsModal = bootstrap.Modal.getInstance(modalEl); bsModal && bsModal.hide();
     addForm.reset(); weightEdited = false;
-    } catch(err){ console.error(err); alert('Errore imprevisto durante il salvataggio dell\'ingrediente.'); }
+    } catch(err){ console.error(err); alert('Error inesperado al guardar el ingrediente.'); }
 });
 
 // === helpers
@@ -1447,7 +1457,7 @@ const currentDeptRates = () => {
     return { shop: parseFloat(shopRateEl?.value)||0, external: parseFloat(externalRateEl?.value)||0 };
 };
 
-// NEW: small util -> recalc every row
+// util → recalcular todas las filas
 function recalcAllRows(){
     document.querySelectorAll('.ingredient-row').forEach(r => recalcRow(r));
 }
@@ -1457,7 +1467,7 @@ async function fetchDeptRatesAndUpdate(){
     const id = deptSelect?.value;
     if (!id){
         updateCostPerMin();
-        recalcAllRows();         // <-- ensure row costs exist
+        recalcAllRows();
         recalcTotals();
         return;
     }
@@ -1470,9 +1480,9 @@ async function fetchDeptRatesAndUpdate(){
                 ratesByDept[id] = { shop: parseFloat(data.shop)||0, external: parseFloat(data.external)||0 };
             }
         }
-    }catch(err){ console.warn('Dept rates fetch failed, fallback to cached/global.', err); }
+    }catch(err){ console.warn('No se pudieron obtener las tarifas del departamento, se usan las globales.', err); }
     updateCostPerMin();
-    recalcAllRows();             // <-- this was missing; costs stayed blank
+    recalcAllRows();
     recalcTotals();
 }
 
@@ -1542,7 +1552,7 @@ function recalcMargin(){
     const costU = +totalExpenseIn?.value || 0;
     if (modePiece?.checked){
     const m = netSP - costU, pct = netSP>0 ? (m*100/netSP) : 0;
-    potentialMargin && (potentialMargin.innerText = `€${m.toFixed(2)} (${pct.toFixed(2)}%) / piece`);
+    potentialMargin && (potentialMargin.innerText = `€${m.toFixed(2)} (${pct.toFixed(2)}%) / pieza`);
     potentialInput && (potentialInput.value = m.toFixed(2));
     potentialPctInput && (potentialPctInput.value = pct.toFixed(2));
     } else {
@@ -1555,8 +1565,8 @@ function recalcMargin(){
 function updateMode(){
     const beforeLabel = prodCostKgIn.closest('.input-group').querySelector('.input-group-text');
     const afterLabel = totalExpenseIn.closest('.input-group').querySelector('.input-group-text');
-    if (modePiece?.checked){ beforeLabel.textContent = 'Costo per pz prima dell’imballaggio'; afterLabel.textContent = '€'; }
-    else { beforeLabel.textContent = 'Costo €/kg prima dell’imballaggio'; afterLabel.textContent = '€'; }
+    if (modePiece?.checked){ beforeLabel.textContent = 'Coste por pieza antes del  Envase'; afterLabel.textContent = '€'; }
+    else { beforeLabel.textContent = 'Coste €/kg antes del  Envase'; afterLabel.textContent = '€'; }
     document.getElementById('pieceInputs')?.classList.toggle('d-none', !modePiece?.checked);
     document.getElementById('kgInputs')?.classList.toggle('d-none', !!modePiece?.checked);
     recalcTotals(); if (modePiece?.checked) calcWeightPerPiece();
@@ -1579,20 +1589,20 @@ costModeExternal?.addEventListener('change', updateCostPerMin);
 laborTimeInput?.addEventListener('input', updateLaborCost);
 packingCostIn?.addEventListener('input', recalcExpense);
 
-// CHANGED: when these change, recompute row incidence and totals
+// cuando cambian estos, recalcular filas y totales
 vatRateEl?.addEventListener('change', () => { recalcAllRows(); recalcTotals(); });
 pricePerPiece?.addEventListener('input', () => { recalcAllRows(); recalcMargin(); });
 pricePerKg?.addEventListener('input', () => { recalcAllRows(); recalcMargin(); });
 weightWithLossIn?.addEventListener('input', () => { weightEdited = true; calcWeightPerPiece(); recalcAllRows(); recalcTotals(); });
 
-// CHANGED: on department change, fetch live rates then update rows + totals
+// cambio de departamento → tarifas nuevas
 deptSelect?.addEventListener('change', fetchDeptRatesAndUpdate);
 
 totalPiecesIn?.addEventListener('input', () => { calcWeightPerPiece(); updateMode(); });
 modePiece?.addEventListener('change', () => { calcWeightPerPiece(); updateMode(); });
 modeKg?.addEventListener('change', updateMode);
 
-// per-row inputs
+// inputs por fila
 tableBody?.addEventListener('input', e => {
     if (e.target.matches('.ingredient-select, .ingredient-quantity')){
         weightEdited = false;
@@ -1621,13 +1631,13 @@ tableBody?.addEventListener('click', e => {
     }
 });
 
-// initial
+// inicial
 if (!isEdit && modeKg) modeKg.checked = true;
 updateMode();
 
-// NEW: on load -> fetch rates (if dept selected), then compute every row and totals
+// al cargar → tarifas (si hay dept) y calcula filas + totales
 if (deptSelect && deptSelect.value){
-    fetchDeptRatesAndUpdate(); // will call updateCostPerMin() + recalcAllRows() + recalcTotals()
+    fetchDeptRatesAndUpdate();
 } else {
     updateCostPerMin();
     recalcAllRows();
@@ -1638,7 +1648,7 @@ if (deptSelect && deptSelect.value){
 if (addAsIngredient){ lockKgIfIngredient(); addAsIngredient.addEventListener('change', lockKgIfIngredient); }
 
 /* =======================
-* C) RIGHT RAIL actions
+* C) Acciones rail derecha
 * ======================= */
 document.querySelectorAll('.rail-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -1661,7 +1671,7 @@ document.querySelectorAll('.rail-btn').forEach(btn=>{
 });
 
 /* =======================
-* D) Smooth scroll from chips/stepper + ScrollSpy
+* D) Scroll suave desde rail + ScrollSpy
 * ======================= */
 const smoothScrollTo = (hash) => {
     const el = document.querySelector(hash);
@@ -1691,7 +1701,7 @@ const spy = new IntersectionObserver((entries)=>{
 sections.forEach(sec => spy.observe(sec));
 
 /* =======================
-* E) Quick Tips Banner
+* E) Mini banner (chips, scroll)
 * ======================= */
 (function initMiniBanner(){
     const banner = document.querySelector('.mini-banner'); if (!banner) return;
@@ -1716,7 +1726,6 @@ sections.forEach(sec => spy.observe(sec));
     scroller.addEventListener('scroll', updateArrows, {passive:true});
     window.addEventListener('resize', () => { updateArrows(); });
 
-    // Gentle auto-scroll
     let rafId; const speed = 0.4;
     const loop = () => {
     if (document.hidden || !hasOverflow() || scroller.matches(':hover,:focus-within')) {
@@ -1733,7 +1742,7 @@ sections.forEach(sec => spy.observe(sec));
 })();
 
 /* =======================
-* F) Video frame (YouTube lazy load)
+* F) Marco de vídeo (carga diferida YouTube)
 * ======================= */
 (function initVideo(){
     const vf = document.querySelector('.video-frame'); if (!vf) return;
@@ -1741,10 +1750,9 @@ sections.forEach(sec => spy.observe(sec));
     btn?.addEventListener('click', ()=>{
     const id = vf.getAttribute('data-youtube-id');
     const src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
-    vf.innerHTML = `<iframe src="${src}" allow="autoplay; encrypted-media" allowfullscreen title="Video guida"></iframe>`;
+    vf.innerHTML = `<iframe src="${src}" allow="autoplay; encrypted-media" allowfullscreen title="Video guía"></iframe>`;
     });
 })();
 });
 </script>
 @endsection
-

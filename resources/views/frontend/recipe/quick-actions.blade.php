@@ -3,12 +3,12 @@
 </style>
 
 {{-- resources/views/frontend/recipe/quick-actions.blade.php --}}
-<section id="qa-banner" class="mini-banner reveal" aria-label="Tutorials e risorse">
+<section id="qa-banner" class="mini-banner reveal" aria-label="Tutoriales y recursos">
     <div class="mini-banner-head d-flex align-items-center mb-2">
-        <span class="banner-kicker">Nuovo</span>
-        <h6 class="banner-title ms-2">Consigli rapidi &amp; Tutorial</h6>
+        <span class="banner-kicker">Nuevo</span>
+        <h6 class="banner-title ms-2">Consejos rápidos &amp; Tutoriales</h6>
         <button type="button" class="ms-auto banner-cta" data-bs-toggle="modal" data-bs-target="#tipAll">
-            Vedi tutti <i class="bi bi-arrow-right-short"></i>
+            Ver todos <i class="bi bi-arrow-right-short"></i>
         </button>
     </div>
 
@@ -17,32 +17,32 @@
 
     <div class="scroller" tabindex="0">
         <button type="button" class="chip chip--cta" data-bs-toggle="modal" data-bs-target="#tipVideo">
-            <span class="icon-badge"><i class="bi bi-play-circle"></i></span>Video: ricetta perfetta<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-play-circle"></i></span>Vídeo: receta perfecta<span class="shine"></span>
         </button>
 
         <button type="button" class="chip" data-bs-toggle="modal" data-bs-target="#tipCostiKg">
-            <span class="icon-badge"><i class="bi bi-currency-euro"></i></span>Costi al kg (guida)<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-currency-euro"></i></span>Costes al kg (guía)<span class="shine"></span>
         </button>
 
         <button type="button" class="chip" data-bs-toggle="modal" data-bs-target="#tipPrezzi">
-            <span class="icon-badge"><i class="bi bi-bag-check"></i></span>Prezzi di vendita: best practice<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-bag-check"></i></span>Precios de venta: buenas prácticas<span class="shine"></span>
         </button>
 
         <button type="button" class="chip chip--hot" data-bs-toggle="modal" data-bs-target="#tipMarginiIva">
-            <span class="icon-badge"><i class="bi bi-graph-up-arrow"></i></span>Margini &amp; IVA spiegati<span class="ping"></span><span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-graph-up-arrow"></i></span>Márgenes &amp; IVA explicados<span class="ping"></span><span class="shine"></span>
         </button>
 
         <button type="button" class="chip" data-bs-toggle="modal" data-bs-target="#tipManodopera">
-            <span class="icon-badge"><i class="bi bi-speedometer2"></i></span>Ottimizza manodopera<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-speedometer2"></i></span>Optimiza mano de obra<span class="shine"></span>
         </button>
 
         <button type="button" class="chip" data-bs-toggle="modal" data-bs-target="#tipTemplateIng">
-            <span class="icon-badge"><i class="bi bi-journal-text"></i></span>Template ingredienti<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-journal-text"></i></span>MODELO de ingredientes<span class="shine"></span>
         </button>
     </div>
 </section>
 
-{{-- ====== Modal styles (scoped) ====== --}}
+{{-- ====== Estilos de modales (acotados) ====== --}}
 <style>
     .modal-glass{
         background: rgba(255,255,255,.9);
@@ -73,28 +73,28 @@
     }
 </style>
 
-{{-- ====== Modals ====== --}}
+{{-- ====== Modales ====== --}}
 
-{{-- See all --}}
+{{-- Ver todos --}}
 <div class="modal fade" id="tipAll" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Consigli rapidi &amp; Tutorial — panoramica</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 class="modal-title fw-bold">Consejos rápidos &amp; Tutoriales — vista general</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <p class="mb-3">Benvenuto! Qui trovi le basi operative per calcolare costi, prezzi e margini in modo semplice e coerente con il flusso dell’app.</p>
+        <p class="mb-3">¡Bienvenido! Aquí encuentras las bases operativas para calcular costes, precios y márgenes de forma sencilla y coherente con el flujo de la app.</p>
         <ul class="mb-0">
-            <li><strong>1. Ingredienti →</strong> inserisci quantità in grammi e ottieni <em>costo materie</em>.</li>
-            <li><strong>2. Manodopera →</strong> minuti × tariffa reparto = <em>costo lavoro</em>.</li>
-            <li><strong>3. Imballaggio →</strong> aggiungi il costo unitario (per kg o per pezzo).</li>
-            <li><strong>4. Costo unitario →</strong> €/kg o €/pz prima/dopo imballaggio.</li>
-            <li><strong>5. Prezzo di vendita →</strong> scegli modalità (kg/pezzo), applica IVA, controlla <em>margine</em>.</li>
+            <li><strong>1. Ingredientes →</strong> introduce cantidades en gramos y obtén el <em>costo de materias</em>.</li>
+            <li><strong>2. Mano de obra →</strong> minutos × tarifa de departamento = <em>costo de trabajo</em>.</li>
+            <li><strong>3. Embalaje →</strong> añade el coste unitario (por kg o por pieza).</li>
+            <li><strong>4. Costo unitario →</strong> €/kg o €/pz antes/después del embalaje.</li>
+            <li><strong>5. Precio de venta →</strong> elige modalidad (kg/pieza), aplica IVA, comprueba el <em>margen</em>.</li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Capito!</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">¡Entendido!</button>
       </div>
     </div>
   </div>
@@ -105,24 +105,24 @@
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="tipVideoLabel" class="modal-title fw-bold">Video: ricetta perfetta — flusso in 3 minuti</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="tipVideoLabel" class="modal-title fw-bold">Vídeo: receta perfecta — flujo en 3 minutos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <div class="ratio ratio-16x9 rounded mb-3" style="border:1px solid rgba(226,174,118,.35);">
           <iframe src="https://www.youtube.com/embed/HhC75Ion8fA?rel=0&modestbranding=1"
-                  title="Guida rapida Pasticcere Pro" allowfullscreen></iframe>
+                  title="Guía rápida Pasticcere Pro" allowfullscreen></iframe>
         </div>
-        <div class="callout mb-2"><strong>Checklist veloce:</strong> ingredienti → manodopera → imballaggio → prezzo → margine.</div>
+        <div class="callout mb-2"><strong>Checklist rápida:</strong> ingredientes → mano de obra → embalaje → precio → margen.</div>
         <ul class="mb-0">
-          <li>Inserisci ingredienti in <strong>grammi</strong> (l’app calcola € con il listino €/kg).</li>
-          <li>Seleziona <strong>reparto</strong> per usare la tariffa corretta €/min.</li>
-          <li>Imposta imballaggio per dose (se a pezzo) o kg</li>
-          <li>Controlla il <strong>margine</strong> (netto, prima dell’IVA) e regola il prezzo se serve.</li>
+          <li>Introduce ingredientes en <strong>gramos</strong> (la app calcula € con la tarifa €/kg).</li>
+          <li>Selecciona el <strong>departamento</strong> para usar la tarifa correcta €/min.</li>
+          <li>Configura el embalaje por dosis (si es por pieza) o por kg.</li>
+          <li>Comprueba el <strong>margen</strong> (neto, antes del IVA) y ajusta el precio si hace falta.</li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Tutto chiaro</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Todo claro</button>
       </div>
     </div>
   </div>
@@ -133,25 +133,25 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="tipCostiKgLabel" class="modal-title fw-bold">Costi al kg — guida pratica</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="tipCostiKgLabel" class="modal-title fw-bold">Costes al kg — guía práctica</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <p class="mb-2">Il costo €/kg mette insieme materie prime e manodopera, rapportandoli al peso finito.</p>
+        <p class="mb-2">El coste €/kg reúne materias primas y mano de obra, relacionándolos con el peso final.</p>
         <div class="formula mb-3">
-          Costo materie (€) + Costo manodopera (€) = <u>Totale produzione (€)</u><br>
-          Peso finito (kg) = Peso dopo calo (g) / 1000<br>
-          <strong>Costo €/kg (prima imballaggio) = Totale produzione / Peso finito</strong><br>
-          <em>Costo €/kg (dopo imballaggio) = Costo €/kg + Imballaggio (€/kg)</em>
+          Costo de materias (€) + Costo mano de obra (€) = <u>Total producción (€)</u><br>
+          Peso final (kg) = Peso tras merma (g) / 1000<br>
+          <strong>Costo €/kg (antes de embalaje) = Total producción / Peso final</strong><br>
+          <em>Costo €/kg (después de embalaje) = Costo €/kg + Embalaje (€/kg)</em>
         </div>
-        <p class="mb-2"><strong>Note:</strong></p>
+        <p class="mb-2"><strong>Notas:</strong></p>
         <ul class="mb-0">
-          <li>Se vendi a pezzo, l’app converte in <em>€/pezzo</em> mantenendo la logica sopra.</li>
-          <li>Controlla sempre il peso finito: incide direttamente sul costo unitario.</li>
+          <li>Si vendes por pieza, la app convierte a <em>€/pieza</em> manteniendo la lógica anterior.</li>
+          <li>Comprueba siempre el peso final: influye directamente en el costo unitario.</li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Ok, grazie</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Ok, gracias</button>
       </div>
     </div>
   </div>
@@ -162,24 +162,24 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="tipPrezziLabel" class="modal-title fw-bold">Prezzi di vendita — best practice</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="tipPrezziLabel" class="modal-title fw-bold">Precios de venta — buenas prácticas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <p class="mb-2">Definisci prima il <strong>prezzo netto</strong> (senza IVA) e poi aggiungi l’IVA.</p>
+        <p class="mb-2">Define primero el <strong>precio neto</strong> (sin IVA) y luego añade el IVA.</p>
         <div class="formula mb-3">
-          <strong>Prezzo netto target = Costo unitario / (1 − Margine%)</strong><br>
-          Prezzo lordo = Prezzo netto × (1 + IVA%)
+          <strong>Precio neto objetivo = Costo unitario / (1 − Margen%)</strong><br>
+          Precio bruto = Precio neto × (1 + IVA%)
         </div>
         <ul class="mb-2">
-          <li><strong>Margine%</strong> consigliato per pasticceria da banco: 45–60% (varia per categoria).</li>
-          <li><strong>Ricarico</strong> (markup) ≠ Margine%: Ricarico% = Margine / Costo.</li>
-          <li>Usa “Suggerisci prezzo (×2.2)” come base, poi affina per mercato e qualità.</li>
+          <li><strong>Margen%</strong> recomendado para pastelería de mostrador: 45–60% (varía por categoría).</li>
+          <li><strong>Recargo</strong> (markup) ≠ Margen%: Recargo% = Margen / Costo.</li>
+          <li>Usa “Sugerir precio (×2.2)” como base, luego ajusta según mercado y calidad.</li>
         </ul>
-        <div class="callout mb-0">Ricorda: il margine mostrato dall’app è <em>netto</em> (prima dell’IVA), così confronti mele con mele.</div>
+        <div class="callout mb-0">Recuerda: el margen que muestra la app es <em>neto</em> (antes del IVA), así comparas peras con peras.</div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Perfetto</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Perfecto</button>
       </div>
     </div>
   </div>
@@ -190,23 +190,23 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="tipMarginiIvaLabel" class="modal-title fw-bold">Margini &amp; IVA — differenze e formule</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="tipMarginiIvaLabel" class="modal-title fw-bold">Márgenes &amp; IVA — diferencias y fórmulas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <div class="formula mb-3">
-          Margine (netto) = Prezzo netto − Costo unitario<br>
-          <strong>Margine% = Margine / Prezzo netto</strong><br>
-          Ricarico% = Margine / Costo unitario<br>
-          Prezzo lordo = Prezzo netto × (1 + IVA%)
+          Margen (neto) = Precio neto − Costo unitario<br>
+          <strong>Margen% = Margen / Precio neto</strong><br>
+          Recargo% = Margen / Costo unitario<br>
+          Precio bruto = Precio neto × (1 + IVA%)
         </div>
         <ul class="mb-0">
-          <li><strong>Perché netto?</strong> L’IVA è un’imposta a valle: non aumenta il guadagno.</li>
-          <li><strong>Controllo rapido:</strong> se Margine% scende sotto il target, rivedi prezzo o costi.</li>
+          <li><strong>¿Por qué neto?</strong> El IVA es un impuesto aguas abajo: no aumenta el beneficio.</li>
+          <li><strong>Control rápido:</strong> si el Margen% baja del objetivo, revisa precio o costes.</li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Chiaro</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Claro</button>
       </div>
     </div>
   </div>
@@ -217,22 +217,22 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="tipManodoperaLabel" class="modal-title fw-bold">Ottimizza manodopera — impatto reale sul costo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="tipManodoperaLabel" class="modal-title fw-bold">Optimiza mano de obra — impacto real en el coste</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <div class="formula mb-3">
-          <strong>Costo lavoro = Minuti × Tariffa (€/min) del reparto</strong>
+          <strong>Costo trabajo = Minutos × Tarifa (€/min) del departamento</strong>
         </div>
         <ul class="mb-2">
-          <li>Usa il <strong>reparto</strong> corretto per caricare la tariffa giusta.</li>
-          <li>Batching: aumentare la dose spesso <em>diluisce</em> il costo/min su ogni pezzo.</li>
-          <li>Automazioni e mise en place riducono minuti “non produttivi”.</li>
+          <li>Usa el <strong>departamento</strong> correcto para cargar la tarifa adecuada.</li>
+          <li>Batching: aumentar la dosis a menudo <em>diluye</em> el coste/min en cada pieza.</li>
+          <li>Automatizaciones y mise en place reducen minutos “no productivos”.</li>
         </ul>
-        <div class="callout mb-0">Suggerimento: prova a raddoppiare la dose e verifica come cambia il costo unitario.</div>
+        <div class="callout mb-0">Sugerencia: prueba a duplicar la dosis y verifica cómo cambia el costo unitario.</div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Ottimo</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Genial</button>
       </div>
     </div>
   </div>
@@ -243,27 +243,27 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="tipTemplateIngLabel" class="modal-title fw-bold">Template ingredienti — ordine &amp; precisione</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="tipTemplateIngLabel" class="modal-title fw-bold">MODELO de ingredientes — orden &amp; precisión</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <ul class="mb-3">
-          <li>Usa nomi chiari e <strong>unità in grammi</strong> per coerenza nei calcoli.</li>
-          <li>Aggiungi ricette-base come <em>ingredienti</em> (es. bagna, crema) per riuso e controllo costi.</li>
-          <li>Aggiorna i <strong>prezzi €/kg</strong> dal listino fornitore quando variano.</li>
+          <li>Usa nombres claros y <strong>unidades en gramos</strong> para coherencia en los cálculos.</li>
+          <li>Añade recetas base como <em>ingredientes</em> (p. ej. almíbar, crema) para reutilización y control de costes.</li>
+          <li>Actualiza los <strong>precios €/kg</strong> según la tarifa del proveedor cuando cambien.</li>
         </ul>
         <div class="formula mb-0">
-          <strong>Costo riga ingrediente = (€/kg ÷ 1000) × grammi</strong>
+          <strong>Costo por línea de ingrediente = (€/kg ÷ 1000) × gramos</strong>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Perfetto</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Perfecto</button>
       </div>
     </div>
   </div>
 </div>
 
-{{-- Tiny script: arrows for this banner only --}}
+{{-- Script pequeño: flechas solo para este banner --}}
 <script>
 (function(){
     const wrap = document.getElementById('qa-banner');

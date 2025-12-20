@@ -1,17 +1,17 @@
 {{-- resources/views/frontend/clients/index.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Clienti')
+@section('title', 'Clientes')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Aggiungi / Modifica Cliente -->
+  <!-- Añadir / Modificar cliente -->
   <div class="card border-primary shadow-sm mb-5">
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-person-lines-fill fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($client) ? 'Modifica Cliente' : 'Aggiungi Cliente' }}
+        {{ isset($client) ? 'Modificar cliente' : 'Añadir cliente' }}
       </h5>
     </div>
     <div class="card-body">
@@ -24,7 +24,7 @@
         @if(isset($client)) @method('PUT') @endif
 
         <div class="col-md-6">
-          <label for="name" class="form-label fw-semibold">Nome Cliente</label>
+          <label for="name" class="form-label fw-semibold">Nombre del cliente</label>
           <input
             type="text"
             name="name"
@@ -32,7 +32,7 @@
             class="form-control form-control-lg"
             value="{{ old('name', $client->name ?? '') }}"
             required>
-          <div class="invalid-feedback">Inserisci il nome del cliente.</div>
+          <div class="invalid-feedback">Ingresa el nombre del cliente.</div>
         </div>
 
         <div class="col-md-6">
@@ -46,7 +46,7 @@
         </div>
 
         <div class="col-md-4">
-          <label for="phone" class="form-label fw-semibold">Telefono</label>
+          <label for="phone" class="form-label fw-semibold">Teléfono</label>
           <input
             type="text"
             name="phone"
@@ -66,7 +66,7 @@
         </div>
 
         <div class="col-md-4">
-          <label for="notes" class="form-label fw-semibold">Note</label>
+          <label for="notes" class="form-label fw-semibold">Notas</label>
           <input
             type="text"
             name="notes"
@@ -81,18 +81,18 @@
             class="btn btn-lg fw-semibold"
             style="background-color: #e2ae76; color: #041930;">
             <i class="bi bi-save2 me-2"></i>
-            {{ isset($client) ? 'Aggiorna Cliente' : 'Salva Cliente' }}
+            {{ isset($client) ? 'Actualizar cliente' : 'Guardar cliente' }}
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Tabella Clienti -->
+  <!-- Tabla de clientes -->
   <div class="card border-primary shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #041930;">
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        <i class="bi bi-people me-2"></i> Clienti
+        <i class="bi bi-people me-2"></i> Clientes
       </h5>
     </div>
     <div class="card-body">
@@ -103,12 +103,12 @@
           data-page-length="25">
           <thead style="background-color: #e2ae76; color: #041930;">
             <tr>
-              <th>Nome</th>
+              <th>Nombre</th>
               <th>Sede</th>
-              <th>Telefono</th>
+              <th>Teléfono</th>
               <th>Email</th>
-              <th>Note</th>
-              <th>Azioni</th>
+              <th>Notas</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -123,26 +123,26 @@
                   <a
                     href="{{ route('clients.show', $client) }}"
                     class="btn btn-sm btn-deepblue me-1"
-                    title="Visualizza">
+                    title="Ver">
                     <i class="bi bi-eye"></i>
                   </a>
                   <a
                     href="{{ route('clients.edit', $client) }}"
                     class="btn btn-sm btn-gold me-1"
-                    title="Modifica">
+                    title="Modificar">
                     <i class="bi bi-pencil"></i>
                   </a>
                   <form
                     action="{{ route('clients.destroy', $client) }}"
                     method="POST"
                     class="d-inline"
-                    onsubmit="return confirm('Eliminare questo cliente?');">
+                    onsubmit="return confirm('¿Eliminar este cliente?');">
                     @csrf
                     @method('DELETE')
                     <button
                       type="submit"
                       class="btn btn-sm btn-red"
-                      title="Elimina">
+                      title="Eliminar">
                       <i class="bi bi-trash"></i>
                     </button>
                   </form>
@@ -150,7 +150,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="6" class="text-muted">Nessun cliente trovato.</td>
+                <td colspan="6" class="text-muted">Ningún cliente encontrado.</td>
               </tr>
             @endforelse
           </tbody>
@@ -177,15 +177,15 @@
           { orderable: false, targets: -1 }
         ],
         language: {
-          lengthMenu:    "Mostra _MENU_ elementi per pagina",
-          search:        "Cerca:",
-          info:          "Mostra _START_ a _END_ di _TOTAL_ elementi",
-          zeroRecords:   "Nessun record trovato",
+          lengthMenu:    "Mostrar _MENU_ elementos por página",
+          search:        "Buscar:",
+          info:          "Mostrando de _START_ a _END_ de _TOTAL_ elementos",
+          zeroRecords:   "Ningún registro encontrado",
           paginate: {
-            first:    "Primo",
+            first:    "Primero",
             previous: "←",
             next:     "→",
-            last:     "Ultimo"
+            last:     "Último"
           }
         }
       });

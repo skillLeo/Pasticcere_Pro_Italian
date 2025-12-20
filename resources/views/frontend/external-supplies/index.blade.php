@@ -1,10 +1,10 @@
 @extends('frontend.layouts.app')
 
-@section('title','Forniture Esterne e Resi')
+@section('title','Suministros externos y devoluciones')
 
 @section('content')
 <div class="container py-5">
-  <!-- Header Card -->
+  <!-- Tarjeta de cabecera -->
   <div class="card shadow-sm border-0 mb-4" style="background-color: #041930;">
     <div class="card-body d-flex justify-content-between align-items-center">
       <h4 class="mb-0 fw-bold d-flex align-items-center" style="color: #e2ae76;">
@@ -13,7 +13,7 @@
           class="me-2"
           style="height:1.1em; color:#e2ae76; font-size:2.1vw;">
         </iconify-icon>
-        Forniture Esterne e Resi
+        Suministros externos y devoluciones
       </h4>
       <a href="{{ route('external-supplies.create') }}" class="btn btn-lg fw-semibold d-flex align-items-center"
          style="background-color: #e2ae76; color: #041930;">
@@ -22,34 +22,34 @@
           class="me-2"
           style="height:1.5em; color:#041930;">
         </iconify-icon>
-        Aggiungi Fornitura
+        Añadir suministro
       </a>
     </div>
   </div>
 
-  <!-- Filters -->
+  <!-- Filtros -->
   <div class="card mb-4 shadow-sm border-0">
     <div class="card-body">
       <div class="row g-3 align-items-end">
         <div class="col-md-5">
-          <label for="filterClient" class="form-label fw-semibold">Filtra per Cliente</label>
-          <input id="filterClient" type="text" class="form-control form-control-lg" placeholder="es. Bar Jolly">
+          <label for="filterClient" class="form-label fw-semibold">Filtrar por cliente</label>
+          <input id="filterClient" type="text" class="form-control form-control-lg" placeholder="p. ej. Bar Jolly">
         </div>
         <div class="col-md-5">
-          <label for="filterDate" class="form-label fw-semibold">Filtra per Data</label>
+          <label for="filterDate" class="form-label fw-semibold">Filtrar por fecha</label>
           <input id="filterDate" type="date" class="form-control form-control-lg">
         </div>
         <div class="col-md-2 text-end">
           <button class="btn btn-outline-secondary w-100"
                   onclick="document.getElementById('filterClient').value=''; document.getElementById('filterDate').value=''; applyFilters();">
-            <i class="bi bi-x-circle me-1"></i> Pulisci
+            <i class="bi bi-x-circle me-1"></i> Limpiar
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Accordion Display -->
+  <!-- Acordeón -->
   <div class="accordion" id="reportAccordion">
     @php
       $rows = collect();
@@ -68,7 +68,7 @@
         $date      = $row['date'];
         $entries   = $row['entries'];
         $revenue   = $entries->sum('revenue');
-        // Cost is still computed for group-level profit (not shown per line anymore)
+        // El coste se sigue calculando para el beneficio del grupo (ya no se muestra por línea)
         $cost      = $entries
                       ->flatMap(fn($e) => $e['lines'])
                       ->sum(fn($l) => ($l->recipe->production_cost_per_kg ?? 0)/1000 * $l->qty);
@@ -94,16 +94,16 @@
             <div class="d-flex w-100 justify-content-between align-items-center">
               <div>
                 @if($type === 'supply')
-                  <i class="bi bi-truck me-1"></i> Fornitura — {{ $client }} il {{ $date }}
+                  <i class="bi bi-truck me-1"></i> Suministro — {{ $client }} el {{ $date }}
                 @else
-                  <i class="bi bi-arrow-counterclockwise me-1"></i> Reso — {{ $client }} il {{ $date }}
+                  <i class="bi bi-arrow-counterclockwise me-1"></i> Devolución — {{ $client }} el {{ $date }}
                 @endif
               </div>
               <div class="text-end">
-                <div>Ricavo:
+                <div>Ingresos:
                   <span class="badge bg-light text-dark">€{{ number_format($revenue, 2) }}</span>
                 </div>
-                <div>Profitto:
+                <div>Beneficio:
                   <span class="badge {{ $profit >= 0 ? 'bg-success' : 'bg-danger' }}">
                     €{{ number_format($profit, 2) }}
                   </span>
@@ -124,28 +124,27 @@
 
         <div id="{{ $collapseId }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $grp }}" data-bs-parent="#reportAccordion">
           <div class="accordion-body bg-light">
-            <table  data-page-length="25"class="table table-sm table-hover">
+            <table class="table table-sm table-hover" data-page-length="25">
               <thead class="table-light">
                 <tr>
                   <th>Cliente</th>
-                  <th>Ricetta</th>
-                  <th>Qtà</th>
-                  <th class="text-end">Ricavo Riga (€)</th>
-                  {{-- Removed: <th class="text-end">Costo Riga (€)</th> --}}
-                  <th class="text-end">Azioni</th>
+                  <th>Receta</th>
+                  <th>Cant.</th>
+                  <th class="text-end">Ingresos línea (€)</th>
+                  {{-- Eliminado: <th class="text-end">Costo línea (€)</th> --}}
+                  <th class="text-end">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach($entries as $entry)
                   @php
-                    // We no longer need per-line "cost" for the table, but we can keep revenue calc
+                    // Ya no se necesita el coste por línea en la tabla; mantenemos solo el cálculo de ingresos
                     $groupedLines = collect($entry['lines'])
                       ->groupBy(fn($l) => $l->recipe->id ?? 'x')
                       ->map(fn($g) => (object)[
                         'name'    => $g->first()->recipe->recipe_name ?? '—',
                         'qty'     => $g->sum('qty'),
                         'revenue' => ($entry['type']==='supply'?1:-1)*$g->sum('total_amount'),
-                        // 'cost' removed from display; keeping here is optional
                       ]);
                   @endphp
                   @foreach($groupedLines as $line)
@@ -154,24 +153,24 @@
                       <td>{{ $line->name }}</td>
                       <td>{{ $line->qty }}</td>
                       <td class="text-end">{{ number_format($line->revenue, 2) }}</td>
-                      {{-- Removed per-line cost cell --}}
+                      {{-- Celda de coste por línea eliminada --}}
                       <td class="text-end">
                         <a href="{{ route('returned-goods.create',['external_supply_id'=>$entry['external_supply_id']]) }}"
-                           class="btn btn-sm btn-outline-warning me-1" title="Reso">
+                           class="btn btn-sm btn-outline-warning me-1" title="Devolución">
                           <i class="bi bi-arrow-counterclockwise"></i>
                         </a>
                         <a href="{{ route('external-supplies.show',$entry['external_supply_id']) }}"
-                           class="btn btn-sm btn-outline-info me-1" title="Visualizza">
+                           class="btn btn-sm btn-outline-info me-1" title="Ver">
                           <i class="bi bi-eye"></i>
                         </a>
                         <a href="{{ route('external-supplies.edit',$entry['external_supply_id']) }}"
-                           class="btn btn-sm btn-outline-primary me-1" title="Modifica">
+                           class="btn btn-sm btn-outline-primary me-1" title="Editar">
                           <i class="bi bi-pencil"></i>
                         </a>
                         <form action="{{ route('external-supplies.destroy',$entry['external_supply_id']) }}"
-                              method="POST" class="d-inline" onsubmit="return confirm('Eliminare questa fornitura?')">
+                              method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este suministro?')">
                           @csrf @method('DELETE')
-                          <button class="btn btn-sm btn-outline-danger" title="Elimina">
+                          <button class="btn btn-sm btn-outline-danger" title="Eliminar">
                             <i class="bi bi-trash"></i>
                           </button>
                         </form>

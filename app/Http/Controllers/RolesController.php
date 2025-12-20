@@ -32,10 +32,10 @@ class RolesController extends Controller
             'permissions.*'=> 'exists:permissions,id',
         ]);
 
-        // aggiungo l'ID dell'utente che crea il ruolo
+        // agrego el ID del usuario que crea el rol
         $data['user_id'] = Auth::id();
 
-        // creo il ruolo
+        // creo el rol
         $role = Role::create([
             'name'       => $data['name'],
             'guard_name' => 'web',
@@ -49,7 +49,7 @@ class RolesController extends Controller
 
         return redirect()
             ->route('roles.index')
-            ->with('success', 'Ruolo creato con successo.');
+            ->with('success', 'Rol creado con éxito.');
     }
 
     public function edit(Role $role)
@@ -84,7 +84,7 @@ class RolesController extends Controller
 
         return redirect()
             ->route('roles.index')
-            ->with('success', 'Ruolo aggiornato con successo.');
+            ->with('success', 'Rol actualizado con éxito.');
     }
 
     public function destroy(Role $role)
@@ -93,6 +93,6 @@ class RolesController extends Controller
 
         return redirect()
             ->route('roles.index')
-            ->with('success', 'Ruolo eliminato con successo.');
+            ->with('success', 'Rol eliminado con éxito.');
     }
 }

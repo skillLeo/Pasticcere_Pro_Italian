@@ -15,13 +15,13 @@ use Symfony\Component\HttpFoundation\Response;
 class CostController extends Controller
 {
     /**
-     * Show form to create a new cost.
+     * Muestra el formulario para crear un nuevo costo.
      */
     public function create()
     {
         $user = Auth::user();
 
-        // Visible users: me + my children (if I’m root) OR me + my creator (if I’m a child)
+        // Usuarios visibles: yo + mis hijos (si soy raíz) O yo + mi creador (si soy hijo)
         if (is_null($user->created_by)) {
             $children = User::where('created_by', $user->id)->pluck('id');
             $visibleUserIds = $children->isEmpty()
@@ -31,7 +31,7 @@ class CostController extends Controller
             $visibleUserIds = collect([$user->id, $user->created_by]);
         }
 
-        // Categories belonging to visible users OR global (user_id NULL)
+        // Categorías pertenecientes a los usuarios visibles O globales (user_id NULL)
         $categories = CostCategory::with('user')
             ->where(function ($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds)
@@ -44,11 +44,11 @@ class CostController extends Controller
     }
 
     /**
-     * Display a single cost.
+     * Muestra un único costo.
      */
     public function show(Cost $cost)
     {
-        // Only owner can view (adapt if you want parent/child visibility for show)
+        // Solo el dueño puede ver (ajusta si quieres visibilidad padre/hijo para show)
         if ($cost->user_id !== Auth::id()) {
             abort(Response::HTTP_FORBIDDEN);
         }
@@ -57,7 +57,7 @@ class CostController extends Controller
     }
 
     /**
-     * Persist a newly created cost.
+     * Guarda un nuevo costo.
      */
     public function store(Request $request)
     {
@@ -70,7 +70,7 @@ class CostController extends Controller
             'other_category'  => ['nullable','string','max:255'],
         ]);
 
-        // Ensure due_date is a Carbon date instance
+        // Asegurar que due_date sea una instancia de Carbon
         $data['due_date'] = $request->date('due_date');
         $data['user_id']  = Auth::id();
 
@@ -78,11 +78,11 @@ class CostController extends Controller
 
         return redirect()
             ->route('costs.index')
-            ->with('success', 'Costo aggiunto!');
+            ->with('success', 'Costo agregado!');
     }
 
     /**
-     * Display a listing of costs.
+     * Muestra un listado de costos.
      */
     public function index()
     {
@@ -114,7 +114,7 @@ class CostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified cost.
+     * Muestra el formulario para editar el costo especificado.
      */
     public function edit(Cost $cost)
     {
@@ -141,12 +141,12 @@ class CostController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Reuse the create view for edit
+        // Reutilizar la vista de create para editar
         return view('frontend.costs.create', compact('cost', 'categories'));
     }
 
     /**
-     * Update the specified cost in storage.
+     * Actualiza el costo especificado en el almacenamiento.
      */
     public function update(Request $request, Cost $cost)
     {
@@ -163,18 +163,18 @@ class CostController extends Controller
             'other_category'  => ['nullable','string','max:255'],
         ]);
 
-        // Ensure due_date is a Carbon date instance
+        // Asegurar que due_date sea una instancia de Carbon
         $data['due_date'] = $request->date('due_date');
 
         $cost->update($data);
 
         return redirect()
             ->route('costs.index')
-            ->with('success', 'Costo aggiornato con successo!');
+            ->with('success', 'Costo actualizado con éxito!');
     }
 
     /**
-     * Remove the specified cost from storage.
+     * Elimina el costo especificado del almacenamiento.
      */
     public function destroy(Cost $cost)
     {
@@ -186,14 +186,14 @@ class CostController extends Controller
 
         return redirect()
             ->route('costs.index')
-            ->with('success', 'Costo eliminato con successo!');
+            ->with('success', 'Costo eliminado con éxito!');
     }
 
- public function dashboard(Request $request)
+    public function dashboard(Request $request)
     {
         $user = Auth::user();
 
-        // Determine visible user ids (owner + children, or user + owner)
+        // Determinar IDs de usuarios visibles (propietario + hijos, o usuario + propietario)
         if (is_null($user->created_by)) {
             $children = User::where('created_by', $user->id)->pluck('id');
             $visibleUserIds = $children->isEmpty()
@@ -207,7 +207,7 @@ class CostController extends Controller
         $month    = (int) $request->query('m', now()->month);
         $lastYear = $year - 1;
 
-        // Categories (summary cards)
+        // Categorías (tarjetas de resumen)
         $categories = CostCategory::with('user')
             ->where(function ($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds)
@@ -216,14 +216,14 @@ class CostController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Available years selector
+        // Años disponibles para el selector
         $availableYears = Cost::whereIn('user_id', $visibleUserIds)
             ->selectRaw('YEAR(due_date) as year')
             ->distinct()
             ->orderByDesc('year')
             ->pluck('year');
 
-        // Category totals for selected month
+        // Totales por categoría para el mes seleccionado
         $raw = Cost::whereIn('user_id', $visibleUserIds)
             ->whereYear('due_date', $year)
             ->whereMonth('due_date', $month)
@@ -231,7 +231,7 @@ class CostController extends Controller
             ->groupBy('category_id')
             ->pluck('total','category_id');
 
-        // Costs by month (this & last year)
+        // Costes por mes (este y el año pasado)
         $costsThisYear = Cost::whereIn('user_id', $visibleUserIds)
             ->whereYear('due_date', $year)
             ->selectRaw('MONTH(due_date) as month, SUM(amount) as total')
@@ -247,7 +247,7 @@ class CostController extends Controller
         $totalCostYear     = $costsThisYear->sum();
         $totalCostLastYear = $costsLastYear->sum();
 
-        // Incomes + Net by month
+        // Ingresos + Neto por mes
         $incomeThisYearMonthly = [];
         $incomeLastYearMonthly = [];
         $netByMonth            = [];
@@ -284,8 +284,8 @@ class CostController extends Controller
         $incomeThisMonth    = $incomeThisYearMonthly[$month] ?? 0;
         $incomeLastYearSame = $incomeLastYearMonthly[$month] ?? 0;
 
-        // ===== Opening Days (editable) + BEP (€/day) additions =====
-        // Per-user opening days (edit & persist)
+        // ===== Días de apertura (editables) + BEP (€/día) =====
+        // Días de apertura por usuario (editar y guardar)
         $openingDaysThisYear = OpeningDay::where('user_id', $user->id)
             ->where('year', $year)
             ->pluck('days', 'month');
@@ -294,7 +294,7 @@ class CostController extends Controller
             ->where('year', $lastYear)
             ->pluck('days', 'month');
 
-        // Precompute BEP per month for initial render
+        // Precalcular BEP por mes para render inicial
         $bepThisYear = [];
         $bepLastYear = [];
         for ($m = 1; $m <= 12; $m++) {
@@ -306,7 +306,7 @@ class CostController extends Controller
             $bepLastYear[$m] = $d2 > 0 ? $c2 / $d2 : 0.0;
         }
 
-        // Totals row: sum of days + overall BEP (Total Cost / Total Opening Days)
+        // Fila de totales: suma de días + BEP global (Costo total / Días de apertura totales)
         $sumDaysThisYear     = array_sum($openingDaysThisYear->toArray());
         $sumDaysLastYear     = array_sum($openingDaysLastYear->toArray());
         $overallBepThisYear  = $sumDaysThisYear > 0 ? ($totalCostYear / $sumDaysThisYear) : 0.0;
@@ -320,7 +320,7 @@ class CostController extends Controller
             'totalCostYear','totalIncomeYear','netYear',
             'totalCostLastYear','totalIncomeLastYear','netLastYear',
             'bestMonth','bestNet','worstMonth','worstNet',
-            // opening days + BEP
+            // días de apertura + BEP
             'openingDaysThisYear','openingDaysLastYear',
             'bepThisYear','bepLastYear',
             'sumDaysThisYear','sumDaysLastYear',
@@ -329,7 +329,7 @@ class CostController extends Controller
     }
 
     /**
-     * AJAX: save one month of opening days.
+     * AJAX: guardar un mes de días de apertura.
      */
     public function saveOpeningDays(Request $request)
     {

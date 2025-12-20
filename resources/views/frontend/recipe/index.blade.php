@@ -1,11 +1,11 @@
 {{-- resources/views/frontend/recipe/index.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Tutte le ricette')
+@section('title', 'Todas las recetas')
 
 @section('content')
     <style>
-        /* nuke all header arrows with max specificity */
+        /* eliminar todas las flechas de cabecera con máxima especificidad */
         .dataTables_wrapper table#recipesTable thead.custom-recipe-head th,
         .dataTables_wrapper table#recipesTable thead.custom-recipe-head th.sorting,
         .dataTables_wrapper table#recipesTable thead.custom-recipe-head th.sorting_asc,
@@ -27,7 +27,7 @@
             /* visibility:hidden; */
         }
 
-        /* compact stat card */
+        /* tarjeta de estadísticas compacta */
         .stat-card {
             border: 1px dashed #e2ae76;
             border-radius: .75rem;
@@ -47,34 +47,34 @@
 
     <div class="container py-5">
 
-        <!-- Header -->
+        <!-- Cabecera -->
         <div class="page-header d-flex align-items-center mb-4 p-4 rounded" style="background-color:#041930;">
             <i class="bi bi-bookmark-star-fill me-3 fs-3" style="color:#e2ae76;"></i>
             <div>
-                <h4 class="mb-0 fw-bold" style="color:#e2ae76;">Tutte le ricette</h4>
-                <small class="d-block text-light">Cerca, ordina e filtra rapidamente tutte le tue ricette qui sotto.</small>
+                <h4 class="mb-0 fw-bold" style="color:#e2ae76;">Todas las recetas</h4>
+                <small class="d-block text-light">Busca, ordena y filtra rápidamente todas tus recetas aquí abajo.</small>
             </div>
         </div>
 
-        <!-- Card w/ Filter + Table -->
+        <!-- Tarjeta con filtros + tabla -->
         <div class="card shadow-sm">
             <div class="card-body">
 
-                <!-- Filters + Sort + Compact Avg -->
+                <!-- Filtros + Orden + Media compacta -->
                 <div class="row g-3 mb-3 align-items-end">
                     <div class="col-md-3">
-                        <label for="sellModeFilter" class="form-label fw-semibold">Filtra per modalità di vendita</label>
+                        <label for="sellModeFilter" class="form-label fw-semibold">Filtrar por modalidad de venta</label>
                         <select id="sellModeFilter" class="form-select">
-                            <option value="">Tutte</option>
-                            <option value="piece">Pezzo</option>
+                            <option value="">Todas</option>
+                            <option value="piece">Pieza</option>
                             <option value="kg">kg</option>
                         </select>
                     </div>
 
                     <div class="col-md-3">
-                        <label for="categoryFilter" class="form-label fw-semibold">Filtra per categoria</label>
+                        <label for="categoryFilter" class="form-label fw-semibold">Filtrar por categoría</label>
                         <select id="categoryFilter" class="form-select">
-                            <option value="">Tutte</option>
+                            <option value="">Todas</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
@@ -82,64 +82,64 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label for="sortBy" class="form-label fw-semibold">Ordina per</label>
+                        <label for="sortBy" class="form-label fw-semibold">Ordenar por</label>
                         <select id="sortBy" class="form-select">
-                            <option value="">Predefinito</option>
-                            <option value="name_asc">Nome ↑</option>
-                            <option value="name_desc">Nome ↓</option>
-                            <option value="salesmode_asc">Modalità vendita ↑</option>
-                            <option value="salesmode_desc">Modalità vendita ↓</option>
-                            <option value="price_asc">Prezzo ↑</option>
-                            <option value="price_desc">Prezzo ↓</option>
+                            <option value="">Predeterminado</option>
+                            <option value="name_asc">Nombre ↑</option>
+                            <option value="name_desc">Nombre ↓</option>
+                            <option value="salesmode_asc">Modalidad de venta ↑</option>
+                            <option value="salesmode_desc">Modalidad de venta ↓</option>
+                            <option value="price_asc">Precio ↑</option>
+                            <option value="price_desc">Precio ↓</option>
                             <option value="entrycost_asc">Costo ingr. ↑</option>
                             <option value="entrycost_desc">Costo ingr. ↓</option>
-                            <option value="labourcost_asc">Costo lavoro ↑</option>
-                            <option value="labourcost_desc">Costo lavoro ↓</option>
-                            <option value="totalcost_asc">Costo totale ↑</option>
-                            <option value="totalcost_desc">Costo totale ↓</option>
-                            <option value="margin_asc">Margine ↑</option>
-                            <option value="margin_desc">Margine ↓</option>
+                            <option value="labourcost_asc">Costo mano de obra ↑</option>
+                            <option value="labourcost_desc">Costo mano de obra ↓</option>
+                            <option value="totalcost_asc">Costo total ↑</option>
+                            <option value="totalcost_desc">Costo total ↓</option>
+                            <option value="margin_asc">Margen ↑</option>
+                            <option value="margin_desc">Margen ↓</option>
                         </select>
                     </div>
 
-                    <!-- LIVE average (excludes negatives) — dropdown removed -->
+                    <!-- Media en vivo (excluye negativos) — desplegable eliminado -->
                     <div class="col-md-3">
                         <div class="stat-card">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="stat-title">Media margine</div>
+                                <div class="stat-title">Media de margen</div>
                             </div>
                             <div class="stat-value mt-1">
                                 <span id="avgMarginValue">—</span><span>%</span>
                             </div>
-                            <small class="text-muted" id="avgMarginHelp">Negativi esclusi.</small>
+                            <small class="text-muted" id="avgMarginHelp">Negativos excluidos.</small>
                         </div>
                     </div>
                 </div>
 
                 <div class="table-responsive">
-                    <table   id="recipesTable" class="table table-striped table-hover table-bordered mb-0"
+                    <table id="recipesTable" class="table table-striped table-hover table-bordered mb-0"
                         style="width:100%;" data-page-length="25">
                         <thead class="custom-recipe-head">
                             <tr class="text-center">
-                                <th class="sortable">Nome</th>
-                                <th class="sortable">Modalità vendita</th>
-                                <th class="text-end sortable">Prezzo</th>
+                                <th class="sortable">Nombre</th>
+                                <th class="sortable">Modalidad de venta</th>
+                                <th class="text-end sortable">Precio</th>
                                 <th class="text-end sortable">Costo ingr.</th>
-                                <th class="text-end sortable">Costo lavoro</th>
-                                <th class="text-end sortable">Costo totale</th>
-                                <th class="text-end sortable">Margine</th>
-                                <th class="text-center">Azioni</th>
+                                <th class="text-end sortable">Costo mano de obra</th>
+                                <th class="text-end sortable">Costo total</th>
+                                <th class="text-end sortable">Margen</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($recipes as $r)
                                 @php
                                     /*
-                                     * IMPORTANT: all per-unit values (ingredient, labor, packaging, total)
-                                     * are recomputed live here from current data to avoid stale totals.
+                                     * IMPORTANTE: todos los valores por unidad (ingredientes, mano de obra, embalaje, total)
+                                     * se recalculan en vivo aquí desde los datos actuales para evitar totales obsoletos.
                                      */
 
-                                    // 1) Selling price (gross + net)
+                                    // 1) Precio de venta (bruto + neto)
                                     $unitSell =
                                         $r->sell_mode === 'piece'
                                             ? $r->selling_price_per_piece ?? 0
@@ -147,18 +147,18 @@
                                     $vatRate = (float) ($r->vat_rate ?? 0);
                                     $netSell = $vatRate ? $unitSell / (1 + $vatRate / 100) : $unitSell;
 
-                                    // 2) Batch labor cost (already computed in controller with current effective rates):
-                                    //    $r->batch_labor_cost = (minutes * €/min)
+                                    // 2) Costo de mano de obra del lote (ya calculado en el controlador con tarifas efectivas actuales):
+                                    //    $r->batch_labor_cost = (minutos * €/min)
                                     $batchLabCost = (float) ($r->batch_labor_cost ?? 0);
 
-                                    // Convert batch labor -> unit labor
+                                    // Convertir mano de obra por lote -> por unidad
                                     if ($r->sell_mode === 'piece') {
                                         $pcs = ($r->total_pieces ?? 0) > 0 ? (int) $r->total_pieces : 1;
                                         $unitLabCost = $batchLabCost / $pcs;
                                     } else {
                                         $wLoss = (float) ($r->recipe_weight ?? 0);
                                         if ($wLoss <= 0) {
-                                            // fallback to sum of ingredient grams if recipe_weight is empty
+                                            // respaldo a la suma de gramos de ingredientes si recipe_weight está vacío
                                             $wLoss = $r->ingredients->sum(function ($i) {
                                                 return (float) $i->quantity_g;
                                             });
@@ -167,7 +167,7 @@
                                         $unitLabCost = $batchLabCost / $kg;
                                     }
 
-                                    // 3) LIVE ingredient costs from current ingredient prices
+                                    // 3) Costes de ingredientes EN VIVO desde precios actuales de ingredientes
                                     $ingredientsData = $r->ingredients
                                         ->map(function ($ri) {
                                             $priceKg = (float) (optional($ri->ingredient)->price_per_kg ?? 0);
@@ -180,9 +180,9 @@
                                         })
                                         ->values();
 
-                                    $batchIngCost = collect($ingredientsData)->sum('cost'); // € for whole batch
+                                    $batchIngCost = collect($ingredientsData)->sum('cost'); // € para todo el lote
 
-                                    // Convert batch ingredient -> unit ingredient
+                                    // Convertir ingredientes por lote -> por unidad
                                     if ($r->sell_mode === 'piece') {
                                         $pcs = ($r->total_pieces ?? 0) > 0 ? (int) $r->total_pieces : 1;
                                         $unitIngCost = $pcs > 0 ? $batchIngCost / $pcs : 0;
@@ -197,24 +197,29 @@
                                         $unitIngCost = $batchIngCost / $kg;
                                     }
 
-                                    // 4) Packaging per unit
+                                    // 4) Embalaje por unidad
                                     $pack = (float) ($r->packing_cost ?? 0);
                                     if ($r->sell_mode === 'piece') {
                                         $pcs = ($r->total_pieces ?? 0) > 0 ? (int) $r->total_pieces : 1;
                                         $unitPackCost = $pcs > 0 ? $pack / $pcs : 0;
                                     } else {
-                                        // packaging is already per kg in KG mode
+                                        // el embalaje ya es por kg en modo KG
                                         $unitPackCost = $pack;
                                     }
 
-                                    // 5) FINAL per-unit total cost (LIVE)
+                                    // 5) COSTE total final por unidad (EN VIVO)
                                     $unitTotalCost = round($unitIngCost + $unitLabCost + $unitPackCost, 2);
 
-                                    // 6) Margin (per unit) & percentages against net selling price
+                                    // 6) Margen (por unidad) y porcentajes respecto al precio de venta neto
                                     $unitMargin = round($netSell - $unitTotalCost, 2);
+                                    
+                                    // ✅ CORRECCIÓN: Calcular el porcentaje correctamente incluso para márgenes negativos
                                     $ingPct = $netSell > 0 ? round(($unitIngCost * 100) / $netSell, 2) : 0;
                                     $labPct = $netSell > 0 ? round(($unitLabCost * 100) / $netSell, 2) : 0;
                                     $totalPct = $netSell > 0 ? round(($unitTotalCost * 100) / $netSell, 2) : 0;
+                                    
+                                    // ✅ CORRECCIÓN CRÍTICA: Permitir porcentajes negativos para el margen
+                                    // Este era el error: cuando unitMargin es negativo, marPct también debe ser negativo
                                     $marPct = $netSell > 0 ? round(($unitMargin * 100) / $netSell, 2) : 0;
                                 @endphp
 
@@ -257,12 +262,12 @@
                                             <span class="{{ $unitMargin >= 0 ? 'text-success' : 'text-danger' }}">
                                                 €{{ number_format($unitMargin, 2) }}
                                             </span>
-                                            <small class="text-muted">({{ $marPct }}%)</small>
+                                            <small class="{{ $marPct >= 0 ? 'text-muted' : 'text-danger' }}">({{ $marPct }}%)</small>
                                         </div>
                                     </td>
 
                                     <td>
-                                        <!-- Edit -->
+                                        <!-- Editar -->
                                         <a href="{{ route('recipes.edit', $r) }}" class="btn btn-sm me-1"
                                             style="border:1px solid #e2ae76;color:#e2ae76;"
                                             onmouseover="this.style.backgroundColor='#e2ae76';this.style.color='#fff';"
@@ -270,7 +275,7 @@
                                             <i class="bi bi-pencil"></i>
                                         </a>
 
-                                        <!-- View -->
+                                        <!-- Ver -->
                                         <a href="{{ route('recipes.show', $r) }}" class="btn btn-sm me-1"
                                             style="border:1px solid #041930;color:#041930;"
                                             onmouseover="this.style.backgroundColor='#041930';this.style.color='#fff';"
@@ -278,9 +283,9 @@
                                             <i class="bi bi-eye"></i>
                                         </a>
 
-                                        <!-- Duplicate -->
+                                        <!-- Duplicar -->
                                         <form action="{{ route('recipes.duplicate', $r) }}" method="POST"
-                                            class="d-inline me-1" onsubmit="return confirm('Duplicare questa ricetta?');">
+                                            class="d-inline me-1" onsubmit="return confirm('¿Duplicar esta receta?');">
                                             @csrf
                                             <button type="submit" class="btn btn-sm"
                                                 style="border:1px solid #6c757d;color:#6c757d;"
@@ -290,9 +295,9 @@
                                             </button>
                                         </form>
 
-                                        <!-- Delete -->
+                                        <!-- Eliminar -->
                                         <form action="{{ route('recipes.destroy', $r) }}" method="POST"
-                                            class="d-inline" onsubmit="return confirm('Eliminare questa ricetta?');">
+                                            class="d-inline" onsubmit="return confirm('¿Eliminar esta receta?');">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="btn btn-sm"
                                                 style="border:1px solid #ff0000;color:#ff0000;"
@@ -325,7 +330,7 @@
         cursor: default
     }
 
-    /* Hide DataTables sort arrows (classic + new skins) */
+    /* Ocultar flechas de ordenación de DataTables (clásico + nuevos skins) */
     table.dataTable thead .sorting:before,
     table.dataTable thead .sorting:after,
     table.dataTable thead .sorting_asc:before,
@@ -378,19 +383,20 @@
                     }
                 },
                 language: {
-                    lengthMenu: "Mostra _MENU_ elementi per pagina",
-                    search: "Cerca:",
-                    searchPlaceholder: "Cerca ricette..."
+                    lengthMenu: "Mostrar _MENU_ elementos por página",
+                    search: "Buscar:",
+                    searchPlaceholder: "Buscar recetas..."
                 }
             });
 
-            // --- compute average of margin % over visible rows; exclude negatives
+            // --- calcular media del % de margen sobre filas visibles; excluir negativos
             function updateAvgMarginCard() {
                 const allVisibleNodes = table.rows({ filter: 'applied' }).nodes().toArray();
 
                 let sum = 0, count = 0;
                 allVisibleNodes.forEach(r => {
                     const v = parseFloat($(r).attr('data-margin-pct'));
+                    // ✅ CORRECCIÓN: ahora excluye correctamente márgenes negativos
                     if (!isNaN(v) && v >= 0) {
                         sum += v;
                         count++;
@@ -399,15 +405,15 @@
 
                 if (count === 0) {
                     $('#avgMarginValue').text('—');
-                    $('#avgMarginHelp').text('Nessun elemento con margine ≥ 0 nella vista corrente.');
+                    $('#avgMarginHelp').text('Ningún elemento con margen ≥ 0 en la vista actual.');
                 } else {
                     const avg = (sum / count).toFixed(2);
                     $('#avgMarginValue').text(avg);
-                    $('#avgMarginHelp').text(`Calcolata su ${count} prodotto/i (negativi esclusi).`);
+                    $('#avgMarginHelp').text(`Calculada sobre ${count} producto/s (negativos excluidos).`);
                 }
             }
 
-            // DataTables custom filters (sell mode + table category)
+            // Filtros personalizados de DataTables (modalidad de venta + categoría en tabla)
             $.fn.dataTable.ext.search.push((settings, data, rowIndex) => {
                 if (settings.nTable.id !== 'recipesTable') return true;
 
@@ -423,13 +429,13 @@
                 return modeOk && catOk;
             });
 
-            // Recompute & redraw on table filters
+            // Recalcular y redibujar al cambiar filtros
             $('#sellModeFilter, #categoryFilter').on('change', function() {
                 table.draw();
                 updateAvgMarginCard();
             });
 
-            // Keep dropdown synced + keep avg up to date
+            // Mantener desplegable sincronizado + mantener media actualizada
             const mapToKey = (col, dir) => {
                 const map = {
                     0: { asc: 'name_asc',       desc: 'name_desc' },
@@ -471,7 +477,7 @@
             syncDropdownWithOrder();
             updateAvgMarginCard();
 
-            // Dropdown -> apply order + persist
+            // Desplegable -> aplicar orden + persistir
             $('#sortBy').on('change', function() {
                 const key = $(this).val();
                 const ord = mapFromKey(key) || [0, 'asc'];
@@ -483,12 +489,12 @@
                 } catch (e) {}
             });
 
-            // Prevent shift multi-sort
+            // Evitar multi-orden con shift
             $('#recipesTable thead').on('mousedown', 'th', function(e) {
                 if (e.shiftKey) e.preventDefault();
             });
 
-            // Child-row toggle
+            // Toggle de fila hija
             $('#recipesTable tbody').on('click', 'tr.dt-control', function() {
                 const tr = $(this),
                     row = table.row(tr),
@@ -498,8 +504,8 @@
                     row.child.hide();
                     tr.removeClass('shown');
                 } else {
-                    let html = '<table  data-page-length="25" class="table table-borderless mb-0"><thead><tr>' +
-                        '<th>Ingrediente</th><th class="text-end">Qtà (g)</th><th class="text-end">Costo</th>' +
+                    let html = '<table data-page-length="25" class="table table-borderless mb-0"><thead><tr>' +
+                        '<th>Ingrediente</th><th class="text-end">Cant. (g)</th><th class="text-end">Costo</th>' +
                         '</tr></thead><tbody>';
                     ingredients.forEach(i => {
                         const name = i.name ?? '—';

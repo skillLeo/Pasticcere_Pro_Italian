@@ -1,37 +1,37 @@
 {{-- resources/views/frontend/records.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Registri Showcase & Forniture Esterne')
+@section('title', 'Registros de escaparate y suministros externos')
 
 @section('content')
 <div class="container py-5">
-  {{-- Page Title --}}
+  {{-- Título de la página --}}
   <div class="text-center mb-4">
     <h2 class="d-inline-block px-4 py-2" style="background:#041930; color:#e2ae76; border-radius:.5rem;">
-      Incassi Negozio e Forniture Esterne
+      Ingresos de tienda y suministros externos
     </h2>
   </div>
 
-  {{-- Filtri --}}
+  {{-- Filtros --}}
   <div class="card mb-4 shadow-sm border-0">
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-2">
-          <label class="form-label">Da</label>
+          <label class="form-label">Desde</label>
           <input id="filter-from" type="date" value="{{ $from }}" class="form-control">
         </div>
         <div class="col-md-2">
-          <label class="form-label">A</label>
+          <label class="form-label">Hasta</label>
           <input id="filter-to" type="date" value="{{ $to }}" class="form-control">
         </div>
         <div class="col-md-3">
-          <label class="form-label">Nome Ricetta</label>
-          <input id="filter-recipe" type="text" class="form-control" placeholder="Inserisci ricetta…">
+          <label class="form-label">Nombre de la receta</label>
+          <input id="filter-recipe" type="text" class="form-control" placeholder="Introduzca receta…">
         </div>
         <div class="col-md-2">
-          <label class="form-label">Categoria</label>
+          <label class="form-label">Categoría</label>
           <select id="filter-category" class="form-select">
-            <option value="">Tutte le categorie</option>
+            <option value="">Todas las categorías</option>
             @php
               $cats = $showcaseGroups
                 ->flatten(1)
@@ -47,9 +47,9 @@
           </select>
         </div>
         <div class="col-md-2">
-          <label class="form-label">Reparto</label>
+          <label class="form-label">Departamento</label>
           <select id="filter-department" class="form-select">
-            <option value="">Tutti i reparti</option>
+            <option value="">Todos los departamentos</option>
             @php
               $depts = $showcaseGroups
                 ->flatten(1)
@@ -68,13 +68,13 @@
     </div>
   </div>
 
-  {{-- Sommari --}}
+  {{-- Resúmenes --}}
   <div class="row mb-5 gx-4">
     <div class="col-md-6">
       <div class="card shadow-sm border-0">
         <div class="card-body text-center">
           <i class="bi bi-graph-up display-4 text-primary mb-2"></i>
-          <h5>Ricavi Totali Negozio</h5>
+          <h5>Ingresos totales de tienda</h5>
           <p id="summary-showcase" class="display-6 mb-1">€{{ number_format($totalShowcaseRevenue,2) }}</p>
           <small id="summary-showcase-pct" class="text-muted">0%</small>
         </div>
@@ -84,7 +84,7 @@
       <div class="card shadow-sm border-0">
         <div class="card-body text-center">
           <i class="bi bi-currency-euro display-4 text-danger mb-2"></i>
-          <h5>Ricavi Totali Forniture Esterne</h5>
+          <h5>Ingresos totales de suministros externos</h5>
           <p id="summary-external" class="display-6 mb-1">€{{ number_format($totalExternalCost,2) }}</p>
           <small id="summary-external-pct" class="text-muted">0%</small>
         </div>
@@ -93,24 +93,24 @@
   </div>
 
   <div class="row gx-4">
-    {{-- Showcase --}}
+    {{-- Escaparate --}}
     <div class="col-lg-6 mb-5">
       <div class="d-flex align-items-center"
            style="background: #041930; color: #e2ae76; padding: .5rem; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
         <i class="bi bi-calendar2-check me-1" style="font-size:1.2rem;"></i>
-         Lista Negozio
+         Lista tienda
       </div>
       <table  data-page-length="25"class="table mb-0 border showcaseTable" id="showcaseTable">
         <thead class="table-light text-center">
           <tr>
             <th style="width:1%"></th>
-            <th class="sortable">Data</th>
-            <th class="sortable">Ricetta</th>
-            <th class="sortable">Quantità</th>
-            <th class="sortable">Venduto</th>
-            <th class="sortable">Riutilizzo</th>
-            <th class="sortable">Spreco</th>
-            <th class="text-end sortable">Ricavo (€)</th>
+            <th class="sortable">Fecha</th>
+            <th class="sortable">Receta</th>
+            <th class="sortable">Cantidad</th>
+            <th class="sortable">Vendido</th>
+            <th class="sortable">Reutilización</th>
+            <th class="sortable">Desperdicio</th>
+            <th class="text-end sortable">Ingresos (€)</th>
           </tr>
         </thead>
         <tbody>
@@ -126,7 +126,7 @@
               <td class="toggle-arrow" style="cursor:pointer">
                 <i class="bi bi-caret-right-fill"></i>
               </td>
-              <td colspan="6" class="text-start">{{ $date }} ({{ $lines->count() }} righe)</td>
+              <td colspan="6" class="text-start">{{ $date }} ({{ $lines->count() }} líneas)</td>
               <td class="text-end fw-semibold">€{{ number_format($sum,2) }}</td>
             </tr>
             @foreach($group as $sc)
@@ -156,7 +156,7 @@
         </tbody>
         <tfoot class="table-light">
           <tr>
-            <th colspan="3" class="text-end">Totale Generale:</th>
+            <th colspan="3" class="text-end">Total general:</th>
             <th id="showcaseQtyFooter" class="text-center">0</th>
             <th id="showcaseSoldFooter" class="text-center">0</th>
             <th id="showcaseReuseFooter" class="text-center">0</th>
@@ -167,23 +167,23 @@
       </table>
     </div>
 
-    {{-- Esterno --}}
+    {{-- Externo --}}
     <div class="col-lg-6 mb-5">
       <div class="d-flex align-items-center"
            style="background: #041930; color: #e2ae76; padding: .5rem; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
         <i class="bi bi-box-seam me-1" style="font-size:1.2rem;"></i>
-        Lista Forniture Esterne
+        Lista de suministros externos
       </div>
       <table  data-page-length="25"class="table mb-0 border externalTable" id="externalTable">
         <thead class="table-light text-center">
           <tr>
             <th style="width:1%"></th>
-            <th class="sortable">Data</th>
+            <th class="sortable">Fecha</th>
             <th class="sortable">Cliente</th>
-            <th class="sortable">Ricetta</th>
-            <th class="sortable">Resi</th>
-            <th class="sortable">Quantità</th>
-            <th class="text-end sortable">Totale (€)</th>
+            <th class="sortable">Receta</th>
+            <th class="sortable">Devoluciones</th>
+            <th class="sortable">Cantidad</th>
+            <th class="text-end sortable">Total (€)</th>
           </tr>
         </thead>
         <tbody>
@@ -203,7 +203,7 @@
               <td class="toggle-arrow" style="cursor:pointer">
                 <i class="bi bi-caret-right-fill"></i>
               </td>
-              <td colspan="5" class="text-start">{{ $date }} ({{ $lines->count() }} righe)</td>
+              <td colspan="5" class="text-start">{{ $date }} ({{ $lines->count() }} líneas)</td>
               <td class="text-end fw-semibold">€{{ number_format($sum,2) }}</td>
             </tr>
             @foreach($group as $es)
@@ -235,7 +235,7 @@
         </tbody>
         <tfoot class="table-light text-center">
           <tr>
-            <th colspan="4" class="text-end">Totale Generale:</th>
+            <th colspan="4" class="text-end">Total general:</th>
             <th id="externalReturnsFooter" class="text-center">0</th>
             <th id="externalQtyFooter" class="text-center">0</th>
             <th id="externalFooter" class="text-end">0,00</th>
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return exact ? (v === filterVal) : v.includes(filterVal);
     }
 
-    // Showcase detail rows
+    // Filas de detalle de escaparate
     document.querySelectorAll('.showcaseTable .group-header').forEach(header => {
       const date = header.dataset.date;
       document.querySelectorAll(`.showcaseTable .group-${date}`).forEach(row => {
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // External detail rows
+    // Filas de detalle externas
     document.querySelectorAll('.externalTable .group-header').forEach(header => {
       const date = header.dataset.date;
       document.querySelectorAll(`.externalTable .group-${date}`).forEach(row => {
@@ -331,14 +331,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Update summaries
+    // Actualizar resúmenes
     const grand = showSum + extSum;
     sumShowEl.textContent = showSum.toFixed(2);
     pctShowEl.textContent = grand ? Math.round(showSum * 100 / grand) + '%' : '0%';
     sumExtEl .textContent = extSum.toFixed(2);
     pctExtEl .textContent = grand ? Math.round(extSum * 100 / grand) + '%' : '0%';
 
-    // Update footers
+    // Actualizar pies de tabla
     qtyShowEl.textContent   = qtySum;
     soldShowEl.textContent  = soldSum;
     reuseShowEl.textContent = reuseSum;
@@ -350,20 +350,20 @@ document.addEventListener('DOMContentLoaded', () => {
     footerExtEl.textContent = extSum.toFixed(2);
   }
 
-  // Wire up filter inputs
+  // Conectar campos de filtro
   [fromIn, toIn, recIn, catIn, deptIn].forEach(el => {
     el.addEventListener('input',  applyFilter);
     el.addEventListener('change', applyFilter);
   });
 
-  // Initial run
+  // Ejecución inicial
   applyFilter();
 
-  // Collapse detail‐rows by default
+  // Contraer filas de detalle por defecto
   document.querySelectorAll('.showcaseTable tr[class^="group-"]').forEach(r => r.classList.add('d-none'));
   document.querySelectorAll('.externalTable tr[class^="group-"]').forEach(r => r.classList.add('d-none'));
 
-  // Toggle details when header clicked
+  // Alternar detalles cuando se hace clic en el encabezado
   document.querySelectorAll('.toggle-arrow').forEach(btn => {
     btn.addEventListener('click', () => {
       const tr   = btn.closest('tr');
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================
-  // 2‑STATE SORT (asc/desc) + session persistence for BOTH tables
+  // ORDEN DE 2 ESTADOS (asc/desc) + persistencia de sesión para AMBAS tablas
   // =========================
   function makeTwoStateSortable(tableId, storageKey) {
     const table = document.getElementById(tableId);
@@ -415,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (A > B) return dir === 'asc' ? 1 : -1;
         return 0;
       });
-      // Re-append ONLY detail rows in new order, keep group headers at top (their order untouched)
+      // Volver a añadir SOLO las filas de detalle en el nuevo orden, mantener los encabezados de grupo arriba (su orden sin cambios)
       const all = Array.from(tbody.querySelectorAll('tr'));
       const headers = all.filter(tr => !isDetailRow(tr));
       tbody.innerHTML = '';
@@ -423,14 +423,14 @@ document.addEventListener('DOMContentLoaded', () => {
       rows.forEach(r => tbody.appendChild(r));
     }
 
-    // Restore previous state
+    // Restaurar estado previo
     try {
       const saved = sessionStorage.getItem(storageKey);
       if (saved) {
         const { col, dir } = JSON.parse(saved);
         if (col != null && dir) {
           sortRows(col, dir);
-          // Add indicator
+          // Agregar indicador
           const th = thead.querySelectorAll('th')[col];
             if (th) th.setAttribute('data-sort-dir', dir);
         }
@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const current = th.getAttribute('data-sort-dir');
         const newDir = current === 'asc' ? 'desc' : 'asc';
 
-        // Clear others
+        // Limpiar otros
         thead.querySelectorAll('th.sortable').forEach(h => {
           if (h !== th) h.removeAttribute('data-sort-dir');
         });
@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
         th.setAttribute('data-sort-dir', newDir);
         sortRows(idx, newDir);
 
-        // Persist
+        // Persistir
         try {
           sessionStorage.setItem(storageKey, JSON.stringify({ col: idx, dir: newDir }));
         } catch(e){}

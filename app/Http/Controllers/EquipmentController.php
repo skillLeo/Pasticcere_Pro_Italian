@@ -12,25 +12,25 @@ use Symfony\Component\HttpFoundation\Response;
 class EquipmentController extends Controller
 {
     /**
-     * Display a listing of the logged-in user’s equipment.
+     * Muestra el listado del equipo del usuario conectado.
      */
     public function index()
     {
         $user = Auth::user();
 
-        // 1) Build your two-level group of user IDs
+        // 1) Construye tu grupo de dos niveles de IDs de usuario
         if (is_null($user->created_by)) {
-            // Root user: yourself + anyone you created
+            // Usuario raíz: tú mismo + cualquiera que hayas creado
             $visibleUserIds = User::where('created_by', $user->id)
                                   ->pluck('id')
                                   ->push($user->id)
                                   ->unique();
         } else {
-            // Child user: yourself + your creator
+            // Usuario hijo: tú mismo + tu creador
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 2) Fetch equipment: in-group OR status = 'Default'
+        // 2) Obtener equipos: del grupo o con status = 'Default'
         $equipments = Equipment::with('user')
                         ->where(function($q) use ($visibleUserIds) {
                             $q->whereIn('user_id', $visibleUserIds)
@@ -43,7 +43,7 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Show the form for creating a new piece of equipment.
+     * Muestra el formulario para crear un nuevo equipo.
      */
     public function create()
     {
@@ -51,7 +51,7 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Store a newly created piece of equipment for this user.
+     * Guarda un nuevo equipo para este usuario.
      */
     public function store(Request $request)
     {
@@ -66,12 +66,12 @@ class EquipmentController extends Controller
 
         return redirect()
             ->route('equipment.index')
-            ->with('success', 'Attrezzatura aggiunta con successo!');
+            ->with('success', '¡Equipo añadido correctamente!');
     }
 
     /**
-     * Show the form for editing the specified equipment,
-     * only if it belongs to the logged-in user.
+     * Muestra el formulario para editar el equipo especificado,
+     * solo si pertenece al usuario conectado.
      */
     public function edit(Equipment $equipment)
     {
@@ -83,8 +83,8 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Update the specified equipment in storage,
-     * only if it belongs to the logged-in user.
+     * Actualiza en almacenamiento el equipo especificado,
+     * solo si pertenece al usuario conectado.
      */
     public function update(Request $request, Equipment $equipment)
     {
@@ -101,11 +101,11 @@ class EquipmentController extends Controller
 
         return redirect()
             ->route('equipment.index')
-            ->with('success', 'Attrezzatura aggiornata con successo!');
+            ->with('success', '¡Equipo actualizado correctamente!');
     }
 
     /**
-     * Display the specified equipment.
+     * Muestra el equipo especificado.
      */
     public function show(Equipment $equipment)
     {
@@ -113,8 +113,8 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Remove the specified equipment from storage,
-     * only if it belongs to the logged-in user.
+     * Elimina el equipo especificado del almacenamiento,
+     * solo si pertenece al usuario conectado.
      */
     public function destroy(Equipment $equipment)
     {
@@ -126,6 +126,6 @@ class EquipmentController extends Controller
 
         return redirect()
             ->route('equipment.index')
-            ->with('success', 'Attrezzatura eliminata con successo!');
+            ->with('success', '¡Equipo eliminado correctamente!');
     }
 }

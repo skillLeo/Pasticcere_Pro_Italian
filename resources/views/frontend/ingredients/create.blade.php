@@ -1,12 +1,12 @@
 @extends('frontend.layouts.app')
 
-@section('title', isset($ingredient) ? 'Modifica Ingrediente' : 'Aggiungi Ingrediente')
+@section('title', isset($ingredient) ? 'Modificar Ingrediente' : 'Añadir Ingrediente')
 
 @section('content')
     <div class="container py-5">
         <div class="card border-success shadow-sm">
             <div class="card-header d-flex align-items-center" style="background-color: #041930; color: #e2ae76;">
-                <!-- SVG Icon unchanged -->
+                <!-- Icono SVG sin cambios -->
                 <svg height="30px" width="30px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="fill: #e2ae76; margin-right: 10px;">
                     <path style="fill:#FFDC35;" d="M479.605,91.769c-23.376,23.376-66.058,33.092-79.268,19.882
                       c-13.21-13.21-3.494-55.892,19.883-79.268s85.999-26.614,85.999-26.614S502.982,68.393,479.605,91.769z"/>
@@ -38,7 +38,7 @@
                       c6.552,6.552,6.552,17.174,0,23.725L28.643,507.087C22.091,513.637,11.468,513.637,4.917,507.087z"/>
                 </svg>
                 <h5 class="mb-0" style="color: #e2ae76;">
-                    {{ isset($ingredient) ? 'Modifica Ingrediente' : 'Aggiungi Ingrediente' }}
+                    {{ isset($ingredient) ? 'Modificar Ingrediente' : 'Añadir Ingrediente' }}
                 </h5>
             </div>
 
@@ -55,23 +55,23 @@
                     @endif
 
                     <div class="col-md-6">
-                        <label for="ingredientName" class="form-label fw-semibold">Nome Ingrediente</label>
+                        <label for="ingredientName" class="form-label fw-semibold">Nombre del ingrediente</label>
                         <input
                             type="text"
                             id="ingredientName"
                             name="ingredient_name"
                             class="form-control form-control-lg"
-                            placeholder="es. Farina 00"
+                            placeholder="ej. Harina 00"
                             value="{{ old('ingredient_name', $ingredient->ingredient_name ?? '') }}"
                             required
                         >
                         <div class="invalid-feedback">
-                            Inserisci un nome ingrediente.
+                            Introduce un nombre de ingrediente.
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="pricePerKg" class="form-label fw-semibold">Prezzo al kg</label>
+                        <label for="pricePerKg" class="form-label fw-semibold">Precio por kg</label>
                         <div class="input-group input-group-lg has-validation">
                             <span class="input-group-text">€</span>
                             <input
@@ -86,7 +86,7 @@
                             >
                             <span class="input-group-text">/kg</span>
                             <div class="invalid-feedback">
-                                Inserisci un prezzo valido.
+                                Introduce un precio válido.
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                             style="background-color: #e2ae76; color: #041930;"
                         >
                             <i class="bi bi-save2 me-2" style="color: #041930;"></i>
-                            {{ isset($ingredient) ? 'Aggiorna Ingrediente' : 'Salva Ingrediente' }}
+                            {{ isset($ingredient) ? 'Actualizar Ingrediente' : 'Guardar Ingrediente' }}
                         </button>
                     </div>
                 </form>
@@ -109,7 +109,7 @@
 
 @section('scripts')
     <script>
-        // Bootstrap form validation
+        // Validación de formularios de Bootstrap
         (() => {
             'use strict';
             const forms = document.querySelectorAll('.needs-validation');

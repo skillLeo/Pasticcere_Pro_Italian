@@ -43,10 +43,10 @@ class ProductionController extends Controller
 
     public function show(Request $request, Production $production)
     {
-        // 1) Equipment lookup
+        // 1) Mapa de equipos
         $equipmentMap = Equipment::pluck('name', 'id')->toArray();
 
-        // 2) Build dropdown of chefs used here
+        // 2) Construir desplegable de pasteleros usados aquí
         $allChefs = PastryChef::whereIn(
             'id',
             $production->details()->pluck('pastry_chef_id')->unique()
@@ -55,18 +55,18 @@ class ProductionController extends Controller
         ->pluck('name', 'id')
         ->toArray();
 
-        // 3) Start query
+        // 3) Iniciar consulta
         $detailsQuery = $production
             ->details()
             ->with(['recipe', 'chef']); 
-            // make sure your ProductionDetail model’s chef() relation uses pastry_chef_id
+            // asegúrate de que la relación chef() en el modelo ProductionDetail use pastry_chef_id
 
-        // 4) Apply chef filter
+        // 4) Aplicar filtro por pastelero
         if ($request->filled('chef_id')) {
             $detailsQuery->where('pastry_chef_id', $request->chef_id);
         }
 
-        // 5) Sort by chef if requested
+        // 5) Ordenar por pastelero si se solicita
         $sortDir = $request->input('direction', 'asc');
         if ($request->input('sort') === 'chef') {
             $detailsQuery
@@ -75,10 +75,10 @@ class ProductionController extends Controller
                 ->select('production_details.*');
         }
 
-        // 6) Get the rows
+        // 6) Obtener filas
         $details = $detailsQuery->get();
 
-        // 7) Render
+        // 7) Renderizar
         return view('frontend.production.show', [
             'production'   => $production,
             'equipmentMap' => $equipmentMap,
@@ -92,25 +92,25 @@ class ProductionController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        // 1) Determine group: top-level users see themselves + their children; child users see themselves + their creator
+        // 1) Determinar grupo: usuarios de nivel superior se ven a sí mismos + sus hijos; los hijos se ven a sí mismos + su creador
         $groupRootId  = $user->created_by ?? $user->id;
         $groupUserIds = User::where('created_by', $groupRootId)
                             ->pluck('id')
                             ->push($groupRootId)
                             ->unique();
 
-        // 2) Load all productions for that group
+        // 2) Cargar todas las producciones para ese grupo
         $productions = Production::with(['details.recipe', 'details.chef', 'user'])
                                  ->whereIn('user_id', $groupUserIds)
                                  ->latest()
                                  ->get();
 
-        // 3) Compute total potential revenue across all details
+        // 3) Calcular el ingreso potencial total de todos los detalles
         $totalPotentialRevenue = $productions
-            ->flatMap(fn($p) => $p->details)    // flatten all detail collections
-            ->sum('potential_revenue');        // sum the potential_revenue field
+            ->flatMap(fn($p) => $p->details)
+            ->sum('potential_revenue');
 
-        // 4) Equipment map for display & filtering
+        // 4) Mapa de equipos para visualización y filtros
         $equipmentMap = Equipment::whereIn('user_id', $groupUserIds)
                                  ->pluck('name', 'id')
                                  ->toArray();
@@ -131,12 +131,12 @@ class ProductionController extends Controller
                             ->push($groupRootId)
                             ->unique();
 
-        // 1) Recipes (shop labor mode in your group)
+        // 1) Recetas (modo coste de trabajo "shop" dentro de tu grupo)
         $recipes = \App\Models\Recipe::where('labor_cost_mode', 'shop')
                         ->whereIn('user_id', $groupUserIds)
                         ->get();
 
-        // 2) Build visible user IDs (for chefs & equipment)
+        // 2) Construir IDs de usuarios visibles (para pasteleros y equipos)
         if (is_null($user->created_by)) {
             $visibleUserIds = \App\Models\User::where('created_by', $user->id)
                                   ->pluck('id')
@@ -146,7 +146,7 @@ class ProductionController extends Controller
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 3) Chefs: in-group OR default
+        // 3) Pasteleros: del grupo O por defecto
         $chefs = PastryChef::with('user')
             ->where(function($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds);
@@ -158,7 +158,7 @@ class ProductionController extends Controller
             ->orderBy('name')
             ->get();
 
-        // 4) Equipment: in-group OR default
+        // 4) Equipos: del grupo O por defecto
         $equipments = Equipment::with('user')
             ->where(function($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds)
@@ -167,7 +167,7 @@ class ProductionController extends Controller
             ->orderBy('name')
                ->get();
 
-        // 5) Templates (saved production templates in your group)
+        // 5) MODELOs (producciones guardadas como MODELO en tu grupo)
         $templates = \App\Models\Production::where('save_template', true)
                         ->whereIn('user_id', $groupUserIds)
                         ->pluck('production_name', 'id');
@@ -224,7 +224,7 @@ class ProductionController extends Controller
         }
 
         return redirect()->route('production.create')
-            ->with('success', 'Produzione salvata con successo!');
+            ->with('success', 'Producción guardada con éxito.');
     }
 
     public function edit($id)
@@ -232,17 +232,17 @@ class ProductionController extends Controller
         $user = Auth::user();
         $userId = $user->id;
 
-        // 1) Load the production (with details) for this user
+        // 1) Cargar la producción (con detalles) de este usuario
         $production = Production::with('details')
             ->where('user_id', $userId)
             ->findOrFail($id);
 
-        // 2) Recipes (shop labor mode owned by this user)
+        // 2) Recetas (modo coste de trabajo "shop" propiedad de este usuario)
         $recipes = Recipe::where('labor_cost_mode', 'shop')
             ->where('user_id', $userId)
             ->get();
 
-        // 3) Build visible user IDs (for chefs & equipment filters)
+        // 3) Construir IDs de usuarios visibles (para pasteleros y equipos)
         if (is_null($user->created_by)) {
             $visibleUserIds = \App\Models\User::where('created_by', $user->id)
                 ->pluck('id')
@@ -252,7 +252,7 @@ class ProductionController extends Controller
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 4) Chefs: in-group OR default
+        // 4) Pasteleros: del grupo O por defecto
         $chefs = PastryChef::with('user')
             ->where(function($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds);
@@ -264,7 +264,7 @@ class ProductionController extends Controller
             ->orderBy('name')
             ->get();
 
-        // 5) Equipment: in-group OR default
+        // 5) Equipos: del grupo O por defecto
         $equipments = Equipment::with('user')
             ->where(function($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds)
@@ -273,7 +273,7 @@ class ProductionController extends Controller
             ->orderBy('name')
                ->get();
 
-        // 6) Templates (saved production templates by this user)
+        // 6) MODELOs (producciones guardadas como MODELO por este usuario)
         $templates = Production::where('save_template', true)
             ->where('user_id', $userId)
             ->pluck('production_name', 'id');
@@ -335,7 +335,7 @@ class ProductionController extends Controller
         }
 
         return redirect()->route('production.index')
-            ->with('success', 'Produzione aggiornata con successo!');
+            ->with('success', 'Producción actualizada con éxito.');
     }
 
     public function destroy($id)
@@ -346,6 +346,6 @@ class ProductionController extends Controller
         $production->delete();
 
         return redirect()->route('production.index')
-            ->with('success', 'Produzione eliminata con successo!');
+            ->with('success', 'Producción eliminada con éxito.');
     }
 }

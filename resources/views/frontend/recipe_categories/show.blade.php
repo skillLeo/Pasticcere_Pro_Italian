@@ -7,7 +7,7 @@
 <div class="container py-5 px-md-5">
   <div class="card border-primary shadow-sm rounded-3 overflow-hidden">
     
-    <!-- Header -->
+    <!-- Cabecera -->
     <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #041930;">
       <div class="d-flex align-items-center">
         <i class="bi bi-tags fs-4 me-2" style="color: #e2ae76;"></i>
@@ -20,37 +20,37 @@
       </small>
     </div>
 
-    <!-- Body -->
+    <!-- Cuerpo -->
     <div class="card-body">
       <div class="row row-cols-1 row-cols-md-2 g-4 mb-4" style="width: 60%;">
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Nome Categoria</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Nombre categoría</h6>
           <p class="fs-3 fw-bold mb-0">{{ $recipeCategory->name }}</p>
         </div>
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Ultimo Aggiornamento</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Última actualización</h6>
           <p class="fs-5 mb-0">{{ $recipeCategory->updated_at->format('Y-m-d H:i') }}</p>
         </div>
       </div>
 
       <hr class="border-secondary">
 
-      <!-- Action Buttons -->
+      <!-- Botones de acción -->
       <div class="d-flex justify-content-end gap-2">
         <a href="{{ route('recipe-categories.edit', $recipeCategory) }}" class="btn btn-gold btn-lg">
-          <i class="bi bi-pencil me-1"></i> Modifica
+          <i class="bi bi-pencil me-1"></i> Editar
         </a>
         <a href="{{ route('recipe-categories.index') }}" class="btn btn-deepblue btn-lg">
-          <i class="bi bi-arrow-left me-1"></i> Indietro alla lista
+          <i class="bi bi-arrow-left me-1"></i> Volver al listado
         </a>
         <form action="{{ route('recipe-categories.destroy', $recipeCategory) }}"
               method="POST"
-              onsubmit="return confirm('Eliminare questa categoria?');"
+              onsubmit="return confirm('¿Eliminar esta categoría?');"
               class="d-inline">
           @csrf
           @method('DELETE')
           <button type="submit" class="btn btn-red btn-lg">
-            <i class="bi bi-trash me-1"></i> Elimina
+            <i class="bi bi-trash me-1"></i> Eliminar
           </button>
         </form>
       </div>

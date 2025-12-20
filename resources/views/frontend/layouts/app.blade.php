@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-bs-theme="light">
+<html lang="es" data-bs-theme="light">
 
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <title>@yield('title', 'Admin Dashboard')</title>
+    <title>@yield('title', 'Panel de administración')</title>
 
 
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.ico') }}" sizes="16x16">
@@ -244,10 +244,10 @@
                 jQuery.extend(true, jQuery.fn.dataTable.defaults, {
                     pageLength: 25,
                     language: {
-                        lengthMenu: "Mostra _MENU_ elementi per pagina",
-                        search: "Cerca:",
-                        info: "Mostra _START_ a _END_ di _TOTAL_ elementi",
-                        zeroRecords: "Nessun record trovato",
+                        lengthMenu: "Mostrar _MENU_ elementos por página",
+                        search: "Buscar:",
+                        info: "Mostrando de _START_ a _END_ de _TOTAL_ elementos",
+                        zeroRecords: "No se encontraron registros",
                         paginate: {
                             first: "<<",
                             previous: "<",
@@ -271,7 +271,7 @@
                 //    (ignores data-attributes and old saved values)
                 jQuery(document).on('preInit.dt', function(e, settings) {
                     var hasExplicit = settings.oInit && typeof settings.oInit.pageLength !==
-                    'undefined';
+                        'undefined';
                     if (!hasExplicit) {
                         // If DataTables or saved state set 10 (default), bump to 25 before first draw
                         if (!settings._iDisplayLength || settings._iDisplayLength === 10) {
@@ -290,7 +290,7 @@
                 // E) Final safety: after init, if length still 10 and not explicitly overridden, set to 25
                 jQuery(document).on('init.dt', function(e, settings) {
                     var hasExplicit = settings.oInit && typeof settings.oInit.pageLength !==
-                    'undefined';
+                        'undefined';
                     if (!hasExplicit) {
                         var api = new jQuery.fn.dataTable.Api(settings);
                         if (api.page.len() === 10) {

@@ -1,36 +1,36 @@
 {{-- resources/views/frontend/users/show.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title','Dettagli Utente')
+@section('title','Detalles de usuario')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Intestazione -->
+  <!-- Encabezado -->
   <div class="page-header d-flex align-items-center mb-4"
        style="background-color: #041930; border-radius: 0.75rem; padding: 1rem 2rem;">
     <i class="bi bi-person-lines-fill me-2 fs-3" style="color: #e2ae76;"></i>
     <h4 class="mb-0 fw-bold" style="color: #e2ae76;">
-      Utente: {{ $user->name }}
+      Usuario: {{ $user->name }}
     </h4>
   </div>
 
   <div class="card shadow-sm mb-4 border-0">
     <div class="card-body px-4 py-3">
       <div class="mb-3">
-        <strong class="text-muted">Email:</strong>
+        <strong class="text-muted">Correo electrónico:</strong>
         <div class="fs-5">{{ $user->email }}</div>
       </div>
 
       <div>
-        <strong class="text-muted">Ruoli:</strong>
+        <strong class="text-muted">Roles:</strong>
         <div>
           @forelse($user->roles as $r)
             <span class="badge rounded-pill bg-secondary px-3 py-2 me-1">
               {{ ucfirst($r->name) }}
             </span>
           @empty
-            <span class="text-muted">Nessun ruolo assegnato</span>
+            <span class="text-muted">Ningún rol asignado</span>
           @endforelse
         </div>
       </div>
@@ -39,10 +39,10 @@
 
   <div class="d-flex justify-content-end gap-2">
     <a href="{{ route('users.edit', $user) }}" class="btn btn-gold">
-      <i class="bi bi-pencil me-1"></i> Modifica
+      <i class="bi bi-pencil me-1"></i> Editar
     </a>
     <a href="{{ route('users.index') }}" class="btn btn-deepblue">
-      <i class="bi bi-arrow-left me-1"></i> Torna alla Lista
+      <i class="bi bi-arrow-left me-1"></i> Volver a la lista
     </a>
   </div>
 </div>

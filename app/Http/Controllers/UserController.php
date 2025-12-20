@@ -19,26 +19,26 @@ class UserController extends Controller
         return view('frontend.profile', compact('user'));
     }
 
-public function updateProfile(Request $request)
-{
-    $data = $request->validate([
-        'name'   => 'required|string|max:255',
-        'email'  => 'required|email|unique:users,email,' . Auth::id(),
-        'vat'    => 'nullable|string|max:255',
-        'address'=> 'nullable|string|max:255',
-        'photo'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    public function updateProfile(Request $request)
+    {
+        $data = $request->validate([
+            'name'   => 'required|string|max:255',
+            'email'  => 'required|email|unique:users,email,' . Auth::id(),
+            'vat'    => 'nullable|string|max:255',
+            'address'=> 'nullable|string|max:255',
+            'photo'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    if ($request->hasFile('photo')) {
-        // Save to storage/app/public/photos
-        $path = $request->file('photo')->store('photos', 'public'); // <-- unified
-        $data['photo'] = basename($path); // only filename in DB
+        if ($request->hasFile('photo')) {
+            // Guardar en storage/app/public/photos
+            $path = $request->file('photo')->store('photos', 'public'); // <-- unificado
+            $data['photo'] = basename($path); // solo el nombre del archivo en la BD
+        }
+
+        Auth::user()->update($data);
+
+        return redirect()->route('profile')->with('success', 'Perfil actualizado con éxito!');
     }
-
-    Auth::user()->update($data);
-
-    return redirect()->route('profile')->with('success', 'Profilo aggiornato con successo!');
-}
 
 
     public function index()
@@ -73,7 +73,7 @@ public function updateProfile(Request $request)
     public function toggleStatus(User $user)
     {
         if (!Auth::user()->hasRole('super')) {
-            abort(403, 'Accesso non autorizzato.');
+            abort(403, 'Acceso no autorizado.');
         }
     
         $user->status = !$user->status;
@@ -86,7 +86,7 @@ public function updateProfile(Request $request)
         }
     
         return redirect()->back()
-            ->with('success', 'Stato dell’utente aggiornato.');
+            ->with('success', 'Estado del usuario actualizado.');
     }
 
     public function edit(User $user)
@@ -104,110 +104,110 @@ public function updateProfile(Request $request)
         return view('frontend.user-management.users.create', compact('roles', 'user', 'isEdit'));
     }
 
-public function store(Request $request)
-{
-    $data = $request->validate([
-        'name'            => 'required|string|max:255',
-        'email'           => 'required|email|unique:users,email',
-        'password'        => 'required|string|min:6',
-        'role'            => 'required|exists:roles,id',
-        'vat'             => 'nullable|string|max:255',
-        'address'         => 'nullable|string|max:255',
-        'photo'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'expiry_enabled'  => 'nullable|in:on',
-        'expiry_date'     => 'required_if:expiry_enabled,on|date|after_or_equal:today',
-    ]);
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name'            => 'required|string|max:255',
+            'email'           => 'required|email|unique:users,email',
+            'password'        => 'required|string|min:6',
+            'role'            => 'required|exists:roles,id',
+            'vat'             => 'nullable|string|max:255',
+            'address'         => 'nullable|string|max:255',
+            'photo'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'expiry_enabled'  => 'nullable|in:on',
+            'expiry_date'     => 'required_if:expiry_enabled,on|date|after_or_equal:today',
+        ]);
 
-// store()
-if ($request->hasFile('photo')) {
-    // saves to storage/app/public/photos and returns "photos/xxxxx.jpg"
-    $path = $request->file('photo')->store('photos', 'public');
-    $data['photo'] = basename($path); // store just the filename in DB
-}
+        // store()
+        if ($request->hasFile('photo')) {
+            // guarda en storage/app/public/photos y devuelve "photos/xxxxx.jpg"
+            $path = $request->file('photo')->store('photos', 'public');
+            $data['photo'] = basename($path); // guardar solo el nombre en la BD
+        }
 
-    $plainPassword = $data['password']; // keep before hashing
+        $plainPassword = $data['password']; // mantener antes de hacer hash
 
-    $roleModel = Role::findOrFail($data['role']);
+        $roleModel = Role::findOrFail($data['role']);
 
-    $user = User::create([
-        'name'        => $data['name'],
-        'email'       => $data['email'],
-        'password'    => Hash::make($plainPassword),
-        'vat'         => $data['vat'] ?? null,
-        'address'     => $data['address'] ?? null,
-        'photo'       => $data['photo'] ?? null,
-        'created_by'  => $roleModel->name === 'admin' ? null : auth()->id(),
-        'expiry_date' => $request->has('expiry_enabled') ? $data['expiry_date'] : null,
-    ]);
+        $user = User::create([
+            'name'        => $data['name'],
+            'email'       => $data['email'],
+            'password'    => Hash::make($plainPassword),
+            'vat'         => $data['vat'] ?? null,
+            'address'     => $data['address'] ?? null,
+            'photo'       => $data['photo'] ?? null,
+            'created_by'  => $roleModel->name === 'admin' ? null : auth()->id(),
+            'expiry_date' => $request->has('expiry_enabled') ? $data['expiry_date'] : null,
+        ]);
 
-    $user->syncRoles($roleModel);
+        $user->syncRoles($roleModel);
 
-    // --- Send credentials email
-    try {
-        Mail::to($user->email)
-            ->send(new NewUserCredentialsMail($user, $plainPassword, route('login')));
-    } catch (\Throwable $e) {
-        report($e);
-        // Optional: flash a warning but do not block creation
-        // session()->flash('warning', 'Utente creato, ma invio email fallito.');
-    }
-
-    return redirect()->route('users.index')
-        ->with('success', 'Utente creato con successo! Le credenziali sono state inviate via email.');
-}
-
-public function update(Request $request, User $user)
-{
-    $data = $request->validate([
-        'name'            => 'required|string|max:255',
-        'email'           => 'required|email|unique:users,email,' . $user->id,
-        'password'        => 'nullable|string|min:6',
-        'role'            => 'required|exists:roles,id',
-        'vat'             => 'nullable|string|max:255',
-        'address'         => 'nullable|string|max:255',
-        'photo'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'expiry_enabled'  => 'nullable|in:on',
-        'expiry_date'     => 'required_if:expiry_enabled,on|date|after_or_equal:today',
-    ]);
-
-if ($request->hasFile('photo')) {
-    $path = $request->file('photo')->store('photos', 'public');
-    $data['photo'] = basename($path);
-}
-
-    $sendNewPassword = false;
-    $plainPassword   = null;
-
-    $user->name     = $data['name'];
-    $user->email    = $data['email'];
-    $user->vat      = $data['vat'] ?? null;
-    $user->address  = $data['address'] ?? null;
-    $user->photo    = $data['photo'] ?? $user->photo;
-
-    if (!empty($data['password'])) {
-        $sendNewPassword = true;
-        $plainPassword   = $data['password'];
-        $user->password  = Hash::make($plainPassword);
-    }
-
-    $user->expiry_date = $request->has('expiry_enabled') ? $data['expiry_date'] : null;
-    $user->save();
-
-    $roleModel = Role::findOrFail($data['role']);
-    $user->syncRoles($roleModel);
-
-    if ($sendNewPassword) {
+        // --- Enviar correo con credenciales
         try {
             Mail::to($user->email)
                 ->send(new NewUserCredentialsMail($user, $plainPassword, route('login')));
         } catch (\Throwable $e) {
             report($e);
+            // Opcional: mostrar un aviso pero no bloquear la creación
+            // session()->flash('warning', 'Usuario creado, pero el envío del email ha fallado.');
         }
+
+        return redirect()->route('users.index')
+            ->with('success', '¡Usuario creado con éxito! Las credenciales han sido enviadas por correo electrónico.');
     }
 
-    return redirect()->route('users.index')
-        ->with('success', 'Utente aggiornato con successo!');
-}
+    public function update(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'name'            => 'required|string|max:255',
+            'email'           => 'required|email|unique:users,email,' . $user->id,
+            'password'        => 'nullable|string|min:6',
+            'role'            => 'required|exists:roles,id',
+            'vat'             => 'nullable|string|max:255',
+            'address'         => 'nullable|string|max:255',
+            'photo'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'expiry_enabled'  => 'nullable|in:on',
+            'expiry_date'     => 'required_if:expiry_enabled,on|date|after_or_equal:today',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('photos', 'public');
+            $data['photo'] = basename($path);
+        }
+
+        $sendNewPassword = false;
+        $plainPassword   = null;
+
+        $user->name     = $data['name'];
+        $user->email    = $data['email'];
+        $user->vat      = $data['vat'] ?? null;
+        $user->address  = $data['address'] ?? null;
+        $user->photo    = $data['photo'] ?? $user->photo;
+
+        if (!empty($data['password'])) {
+            $sendNewPassword = true;
+            $plainPassword   = $data['password'];
+            $user->password  = Hash::make($plainPassword);
+        }
+
+        $user->expiry_date = $request->has('expiry_enabled') ? $data['expiry_date'] : null;
+        $user->save();
+
+        $roleModel = Role::findOrFail($data['role']);
+        $user->syncRoles($roleModel);
+
+        if ($sendNewPassword) {
+            try {
+                Mail::to($user->email)
+                    ->send(new NewUserCredentialsMail($user, $plainPassword, route('login')));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
+
+        return redirect()->route('users.index')
+            ->with('success', 'Usuario actualizado con éxito!');
+    }
 
     public function show(User $user)
     {
@@ -220,6 +220,6 @@ if ($request->hasFile('photo')) {
 
         return redirect()
             ->route('users.index')
-            ->with('success', 'Utente eliminato.');
+            ->with('success', 'Usuario eliminado.');
     }
 }

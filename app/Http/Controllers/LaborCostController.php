@@ -152,7 +152,7 @@ class LaborCostController extends Controller
 
         return redirect()
             ->route('labor-cost.index', ['edit' => $row->id])
-            ->with('success', 'Dettagli Costo Lavoro e BEP salvati.');
+            ->with('success', 'Detalles de Coste Laboral y BEP guardados.');
     }
 
     public function destroy(LaborCost $laborCost)
@@ -167,7 +167,7 @@ class LaborCostController extends Controller
 
         $laborCost->delete();
 
-        return back()->with('success', 'Record eliminato.');
+        return back()->with('success', 'Registro eliminado.');
     }
 
     public function show(Request $request, $id = null)

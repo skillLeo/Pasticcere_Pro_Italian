@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sessione Scaduta</title>
-  <!-- Bootstrap CSS -->
+  <title>Sesión caducada</title>
+  <!-- CSS de Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -20,15 +20,15 @@
 <body>
   <div class="card error-card shadow-sm">
     <div class="card-body text-center">
-      <h1 class="card-title display-5 mb-3">Sessione Scaduta</h1>
+      <h1 class="card-title display-5 mb-3">Sesión caducada</h1>
       <p class="card-text lead mb-4">
-        La tua sessione è scaduta o non valida.<br>
-        Per favore <a href="{{ route('login') }}" class="fw-semibold">effettua di nuovo l’accesso</a>.
+        Tu sesión ha caducado o no es válida.<br>
+        Por favor <a href="{{ route('login') }}" class="fw-semibold">inicia sesión de nuevo</a>.
       </p>
-      <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">Torna Indietro</a>
+      <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">Volver atrás</a>
     </div>
   </div>
-  <!-- Bootstrap JS Bundle (optional) -->
+  <!-- Paquete Bootstrap JS (opcional) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

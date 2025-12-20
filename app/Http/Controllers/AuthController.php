@@ -17,7 +17,7 @@ class AuthController extends Controller
         return view('auth.forgot-password');
     }
 
-    // Send the reset password link email
+    // Enviar el correo con el enlace para restablecer la contraseña
     public function sendResetLinkEmail(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -34,7 +34,7 @@ class AuthController extends Controller
 
 
 
-    // Show form to reset password
+    // Mostrar el formulario para restablecer la contraseña
     public function showResetForm(Request $request, $token = null)
     {
         return view('auth.reset-password')->with([
@@ -43,7 +43,7 @@ class AuthController extends Controller
         ]);
     }
 
-    // Handle reset password form submit
+    // Procesar el envío del formulario de restablecimiento de contraseña
     public function reset(Request $request)
     {
         $request->validate([
@@ -86,13 +86,13 @@ class AuthController extends Controller
 
 
 
-    // Show the registration form
+    // Mostrar el formulario de registro
     public function showRegisterForm()
     {
         return view('auth.register');
     }
 
-    // Handle registration
+    // Procesar el registro
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -106,8 +106,8 @@ class AuthController extends Controller
             'name'       => $data['name'],
             'email'      => $data['email'],
             'password'   => Hash::make($data['password']),
-            'status'     => true, // ✅ ensure status is active
-            'created_by' => null, // or Auth::id() if created from panel
+            'status'     => true, // ✅ asegurar que el estado esté activo
+            'created_by' => null, // o Auth::id() si se crea desde el panel
         ]);
 
         Auth::login($user);
@@ -115,13 +115,13 @@ class AuthController extends Controller
         return redirect()->intended(route('dashboard'));
     }
 
-    // Show the login form
+    // Mostrar el formulario de inicio de sesión
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Handle login
+    // Procesar el inicio de sesión
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -136,17 +136,17 @@ class AuthController extends Controller
 
             if (! $user->status) {
                 Auth::logout();
-                return back()->withErrors(['email' => 'Your account is inactive.']);
+                return back()->withErrors(['email' => 'Tu cuenta está inactiva.']);
             }
 
             $request->session()->regenerate();
             return redirect()->intended(route('dashboard'));
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+        return back()->withErrors(['email' => 'Credenciales no válidas.']);
     }
 
-    // Handle logout
+    // Procesar el cierre de sesión
     public function logout(Request $request)
     {
         Auth::logout();

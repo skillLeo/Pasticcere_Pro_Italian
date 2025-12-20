@@ -1,27 +1,27 @@
 @extends('frontend.layouts.app')
 
-@section('title','Calcolatore del Costo del Lavoro e BEP')
+@section('title','Calculadora del coste laboral y BEP')
 
 @php
   $lc = optional($laborCost);
 
-  // ✅ Updated labels
+  // ✅ Etiquetas actualizadas
   $ALL_BUCKETS = [
-    'electricity'      => 'Elettricità (€)',
-    'ingredients'      => 'Materie Prime (€)',
-    'leasing_loan'     => 'Affitto/Mutuo/Prestito (€)',
-    'packaging'        => 'Imballaggio (€)',
-    'owner'            => 'Stipendio Titolari (€)',          // 🔴 Red
-    'van_rental'       => 'Noleggio Furgone (€)',
-    'chefs'            => 'Stipendio Operatori (€)',         // 🟢 Green
-    'shop_assistants'  => 'Stipendio Addetti Vendita (€)',   // 🟣 Purple
-    'other_salaries'   => 'Altri Stipendi (€)',
-    'taxes'            => 'Tasse (€)',
-    'other_categories' => 'Altre Categorie (€)',
-    'driver_salary'    => 'Stipendi fornitura esterna (€)',
+    'electricity'      => 'Electricidad (€)',
+    'ingredients'      => 'Materias primas (€)',
+    'leasing_loan'     => 'Alquiler/Hipoteca/Préstamo (€)',
+    'packaging'        => 'Embalaje (€)',
+    'owner'            => 'Salario propietarios (€)',              // 🔴 Rojo
+    'van_rental'       => 'Alquiler furgoneta (€)',
+    'chefs'            => 'Salario operarios (€)',                  // 🟢 Verde
+    'shop_assistants'  => ' salario empleados ventas (€)',     // 🟣 Morado
+    'other_salaries'   => 'Otros salarios (€)',
+    'taxes'            => 'Impuestos (€)',
+    'other_categories' => 'Otras categorías (€)',
+    'driver_salary'    => 'Salarios suministro externo (€)',
   ];
 
-  // shared-only keys unchanged
+  // claves solo compartidas sin cambios
   $SHARED_ONLY = [
     'electricity','leasing_loan','owner','van_rental','taxes','shop_assistants',
   ];
@@ -53,7 +53,7 @@
       <div class="card-header d-flex align-items-center" style="background-color:#041930; color:#e2ae76;">
         <i class="bi bi-calculator fs-5 me-2"></i>
         <h5 class="mb-0 fw-bold">
-          {{ $editingId ? 'Modifica Costo Lavoro' : 'Calcolatore del Costo del Lavoro e Punto di Pareggio' }}
+          {{ $editingId ? 'Modificar coste laboral' : 'Calculadora del coste laboral y punto de equilibrio' }}
         </h5>
       </div>
 
@@ -62,17 +62,17 @@
         <div class="alert alert-info d-flex align-items-center" role="alert">
           <i class="bi bi-graph-up-arrow me-2"></i>
           <div>
-            <strong>BEP Globale</strong>: Mensile €{{ number_format($globalMonthlyBEP ?? 0, 2) }}
-            — Giornaliero €{{ number_format($globalDailyBEP ?? 0, 2) }}
+            <strong>BEP global</strong>: Mensual €{{ number_format($globalMonthlyBEP ?? 0, 2) }}
+            — Diario €{{ number_format($globalDailyBEP ?? 0, 2) }}
           </div>
         </div>
 
         @if(isset($departments) && $departments->count())
           <div class="row g-3 mb-3">
             <div class="col-md-6">
-              <label class="form-label">Reparto</label>
+              <label class="form-label">Departamento</label>
               <select name="department_id" id="departmentSelect" class="form-select">
-                <option value="">— Condiviso per tutto il gruppo —</option>
+                <option value="">— Compartido para todo el grupo —</option>
                 @foreach ($departments as $dept)
                   <option value="{{ $dept->id }}"
                     @selected(old('department_id', $lc->department_id) == $dept->id)>
@@ -81,12 +81,12 @@
                 @endforeach
               </select>
               <small class="text-muted">
-                Scegli <em>Condiviso</em> per modificare i costi globali; scegli un reparto per salvare un <strong>reparto singolo</strong>. {{-- “Override: reparto singolo” --}}
+                Elige <em>Compartido</em> para modificar los costes globales; elige un departamento para guardar un <strong>departamento individual</strong>.
               </small>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Incidenza reparto (%) — opzionale</label>
+              <label class="form-label">Incidencia del departamento (%) — opcional</label>
               <div class="input-group">
                 <input type="number" step="0.01" min="0" max="100"
                        id="incidencePct"
@@ -95,7 +95,7 @@
                        value="{{ old('incidence_pct', optional($lc->department)->share_percent) }}">
                 <span class="input-group-text">%</span>
               </div>
-              <small class="text-muted">Se vuoto: 100%.</small>
+              <small class="text-muted">Si se deja vacío: 100 %.</small>
             </div>
           </div>
           <hr>
@@ -103,13 +103,13 @@
 
         <div class="row g-3 mb-3">
           <div class="col-md-6">
-            <label class="form-label">Giorni di Apertura (questo mese)</label>
-            <input type="number" id="openDays" name="opening_days" class="form-control" min="1"
+            <label class="form-label">Días de apertura (este mes)</label>
+            <input type="number" step="1" id="openDays" name="opening_days" class="form-control" min="1"
                    value="{{ old('opening_days', $lc->opening_days ?? 22) }}">
           </div>
           <div class="col-md-6">
-            <label class="form-label">Ore di Apertura / Giorno</label>
-            <input type="number" id="hoursPerDay" name="hours_per_day" class="form-control" min="0"
+            <label class="form-label">Horas de apertura / día</label>
+            <input type="number" step="0.1" id="hoursPerDay" name="hours_per_day" class="form-control" min="0"
                    value="{{ old('hours_per_day', $lc->hours_per_day ?? 8) }}">
           </div>
         </div>
@@ -117,20 +117,20 @@
 
         <div class="mb-3">
           <div class="d-flex align-items-center justify-content-between mb-2">
-            <h6 class="mb-0">Voci di Reparto</h6>
-            <small class="text-muted">Specifiche del reparto</small>
+            <h6 class="mb-0"> indicadores por departamento </h6>
+            <small class="text-muted">Específicas del departamento</small>
           </div>
 
           <div class="row g-3">
-            {{-- 🔵 Blue --}}
+            {{-- 🔵 Azul --}}
             <div class="col-md-4">
-              <label class="form-label">Numero Operatori</label>
+              <label class="form-label">Número de empleados</label>
               <div class="input-group">
                 <input type="number" id="numChefs" name="num_chefs" class="form-control"
-                       min="0.1" step="0.1"
+                       min="0" step="0.1"
                        value="{{ old('num_chefs', $lc->num_chefs ?? 1) }}">
               </div>
-              <small class="text-muted">Specifico del reparto</small>
+              <small class="text-muted">Específico del departamento</small>
             </div>
 
             @foreach ($ALL_BUCKETS as $field => $label)
@@ -142,7 +142,7 @@
               <div class="col-md-4">
                 <label class="form-label">{{ $label }}</label>
                 <div class="input-group">
-                  <input type="number" step="0.01"
+                  <input type="number" step="0.01" min="0"
                          id="{{ $field }}"
                          name="{{ $field }}"
                          class="form-control cost-input dept-bucket"
@@ -158,8 +158,8 @@
 
         <div class="mb-3 p-3 border rounded-3 bg-light-subtle">
           <div class="d-flex align-items-center justify-content-between mb-2">
-            <h6 class="mb-0">Voci Condivise <small class="text-secondary">(comuni al gruppo)</small></h6>
-            <small class="text-muted">Modificabili solo in Reparto Condiviso.</small>
+            <h6 class="mb-0"> indicadores compartidos <small class="text-secondary">(comunes al grupo)</small></h6>
+            <small class="text-muted">Modificables solo en departamento compartido.</small>
           </div>
 
           <div class="row g-3">
@@ -172,7 +172,7 @@
               <div class="col-md-4">
                 <label class="form-label">{{ $label }}</label>
                 <div class="input-group">
-                  <input type="number" step="0.01"
+                  <input type="number" step="0.01" min="0"
                         id="{{ $field }}"
                         name="{{ $field }}"
                         class="form-control cost-input shared-bucket"
@@ -181,7 +181,7 @@
                         data-shared-default="{{ $sharedValue }}">
                   <span class="input-group-text">€</span>
                 </div>
-                <small class="text-muted">Campo condiviso</small>
+                <small class="text-muted">Campo compartido</small>
               </div>
             @endforeach
           </div>
@@ -191,7 +191,7 @@
 
         <div class="row g-3 mb-3">
           <div class="col-md-4">
-            <label class="form-label">BEP Mensile (Globale)</label>
+            <label class="form-label">BEP mensual (global)</label>
             <div class="input-group">
               <input type="text" class="form-control bg-light" readonly
                      value="{{ number_format($globalMonthlyBEP ?? 0, 2) }}">
@@ -199,7 +199,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <label class="form-label">BEP Giornaliero (Globale)</label>
+            <label class="form-label">BEP diario (global)</label>
             <div class="input-group">
               <input type="text" class="form-control bg-light" readonly
                      value="{{ number_format($globalDailyBEP ?? 0, 2) }}">
@@ -208,10 +208,10 @@
           </div>
         </div>
 
-        {{-- 🟧 Orange & ⚫ Black --}}
+        {{-- 🟧 Naranja & ⚫ Negro --}}
         <div class="row g-3 mb-3">
           <div class="col-md-6">
-            <label class="form-label">Costo del Lavoro (Negozio)</label>
+            <label class="form-label">coste trabajo/min. (tienda)</label>
             <div class="input-group">
               <input type="text" id="shopCostPerMin" name="shop_cost_per_min" class="form-control bg-light" readonly
                      value="{{ old('shop_cost_per_min', $lc->shop_cost_per_min) }}">
@@ -219,7 +219,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <label class="form-label">Costo del Lavoro (Forniture Esterne)</label>
+            <label class="form-label">coste trabajo/min. (suministros externos)</label>
             <div class="input-group">
               <input type="text" id="externalCostPerMin" name="external_cost_per_min" class="form-control bg-light" readonly
                      value="{{ old('external_cost_per_min', $lc->external_cost_per_min) }}">
@@ -230,11 +230,11 @@
 
         <div class="d-flex gap-2">
           <button type="submit" class="btn btn-gold-blue btn-lg">
-            <i class="bi bi-save2 me-1"></i> {{ $editingId ? 'Aggiorna' : 'Salva' }}
+            <i class="bi bi-save2 me-1"></i> {{ $editingId ? 'Actualizar' : 'Guardar' }}
           </button>
           @if($editingId)
             <a href="{{ route('labor-cost.index') }}#laborCostForm" class="btn btn-outline-secondary btn-lg">
-              Annulla modifica
+              Cancelar modificación
             </a>
           @endif
         </div>
@@ -246,22 +246,22 @@
   <div class="card mt-4 shadow-sm">
     <div class="card-header d-flex align-items-center" style="background-color:#041930; color:#e2ae76;">
       <i class="bi bi-list-check fs-5 me-2"></i>
-      <h5 class="mb-0 fw-bold">Tutti i Costi del Lavoro (questo gruppo)</h5> {{-- small grammar fix --}}
+      <h5 class="mb-0 fw-bold">Todos los costes laborales (este grupo)</h5>
     </div>
     <div class="card-body">
       <div class="table-responsive">
         <table data-page-length="25" class="table table-hover align-middle">
           <thead>
             <tr>
-              <th style="width:22%">Reparto</th>
-              <th class="text-center">Incidenza (%)</th>
-              <th class="text-center">Giorni</th>
-              <th class="text-center">Ore/gg</th>
-              <th class="text-center">Operatori</th> {{-- was: Chef --}}
-              <th class="text-end">€/min (Interno)</th>
-              <th class="text-end">€/min (Esterno)</th>
-              <th class="text-end">Aggiornato</th>
-              <th class="text-center" style="width: 180px;">Azioni</th>
+              <th style="width:22%">Departamento</th>
+              <th class="text-center">Incidencia (%)</th>
+              <th class="text-center">Días</th>
+              <th class="text-center">Horas/día</th>
+              <th class="text-center">Operarios</th>
+              <th class="text-end">€/min (interno)</th>
+              <th class="text-end">€/min (externo)</th>
+              <th class="text-end">Actualizado</th>
+              <th class="text-center" style="width: 180px;">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -270,11 +270,11 @@
               <tr>
                 <td>
                   @if ($row->department_id)
-                    <span class="badge bg-info-subtle text-dark me-1">Reparto singolo</span> {{-- “Override” → --}}
+                    <span class="badge bg-info-subtle text-dark me-1">Departamento individual</span>
                     {{ $dept?->name ?? '—' }}
                   @else
-                    <span class="badge bg-primary-subtle text-dark me-1">Condiviso</span>
-                    <em>Per tutto il gruppo</em>
+                    <span class="badge bg-primary-subtle text-dark me-1">Compartido</span>
+                    <em>Para todo el grupo</em>
                   @endif
                 </td>
                 <td class="text-center">
@@ -289,22 +289,22 @@
                 <td class="text-center">
                   <a href="{{ route('labor-cost.index', ['edit' => $row->id]) }}#laborCostForm"
                      class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-pencil-square"></i> Modifica
+                    <i class="bi bi-pencil-square"></i> Modificar
                   </a>
                   <form action="{{ route('labor-cost.destroy', $row) }}" method="POST"
                         class="d-inline"
-                        onsubmit="return confirm('Eliminare questo record?');">
+                        onsubmit="return confirm('¿Eliminar este registro?');">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-sm btn-outline-danger">
-                      <i class="bi bi-trash"></i> Elimina
+                      <i class="bi bi-trash"></i> Eliminar
                     </button>
                   </form>
                 </td>
               </tr>
             @empty
               <tr>
-                <td colspan="9" class="text-center text-muted py-4">Nessun record ancora.</td>
+                <td colspan="9" class="text-center text-muted py-4">Aún no hay registros.</td>
               </tr>
             @endforelse
           </tbody>
@@ -420,7 +420,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const shopOfficial     = mins > 0 ? (total - ing - van - drv) / mins / chefs : 0;
     const externalOfficial = mins > 0 ? (total - ing - saShare) / mins / chefs : 0;
 
-    // values remain calculated per minute; labels above changed as requested
     shopEl.value     = (shopOfficial / 3 * 4).toFixed(4);
     externalEl.value = (externalOfficial / 3 * 4).toFixed(4);
   }

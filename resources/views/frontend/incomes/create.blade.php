@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', isset($income) ? 'Modifica Entrata' : 'Aggiungi Entrata')
+@section('title', isset($income) ? 'Editar ingreso' : 'Añadir ingreso')
 
 @section('content')
 <div class="container py-5 px-md-5">
@@ -8,7 +8,7 @@
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-currency-euro fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($income) ? 'Modifica Entrata' : 'Aggiungi Entrata' }}
+        {{ isset($income) ? 'Editar ingreso' : 'Añadir ingreso' }}
       </h5>
     </div>
     <div class="card-body">
@@ -23,7 +23,7 @@
 
         <div class="col-md-6">
           <label for="identifier" class="form-label fw-semibold">
-            Identificatore Facoltativo <small class="text-muted">(facoltativo)</small>
+            Identificador <small class="text-muted">(opcional)</small>
           </label>
           <input
             type="text"
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-md-6">
-          <label for="amount" class="form-label fw-semibold">Importo (€)</label>
+          <label for="amount" class="form-label fw-semibold">Importe (€)</label>
           <div class="input-group input-group-lg has-validation">
             <span class="input-group-text"><i class="bi bi-currency-euro"></i></span>
             <input
@@ -48,13 +48,13 @@
               required
             >
             <div class="invalid-feedback">
-              {{ $errors->first('amount', 'Inserisci un importo valido.') }}
+              {{ $errors->first('amount', 'Introduce un importe válido.') }}
             </div>
           </div>
         </div>
 
         <div class="col-md-6">
-          <label for="date" class="form-label fw-semibold">Data</label>
+          <label for="date" class="form-label fw-semibold">Fecha</label>
           <input
             type="date"
             name="date"
@@ -64,29 +64,29 @@
             required
           >
           <div class="invalid-feedback">
-            {{ $errors->first('date', 'Seleziona una data.') }}
+            {{ $errors->first('date', 'Selecciona una fecha.') }}
           </div>
         </div>
 
-        <!-- New Category Field -->
+        <!-- Campo de categoría -->
         <div class="col-md-6">
-          <label for="category" class="form-label fw-semibold">Categoria Entrata</label>
+          <label for="category" class="form-label fw-semibold">Categoría de ingreso</label>
           <select name="category" id="category" class="form-select form-select-lg">
-            <option value="">Seleziona Categoria</option>
-            <option value="Sales" @selected(old('category', $income->category ?? '') === 'Sales')>Vendite</option>
-            <option value="Service" @selected(old('category', $income->category ?? '') === 'Service')>Servizi</option>
-            <option value="Investment" @selected(old('category', $income->category ?? '') === 'Investment')>Investimenti</option>
-            <option value="Other" @selected(old('category', $income->category ?? '') === 'Other')>Altro</option>
+            <option value="">Selecciona categoría</option>
+            <option value="Sales" @selected(old('category', $income->category ?? '') === 'Sales')>Ventas</option>
+            <option value="Service" @selected(old('category', $income->category ?? '') === 'Service')>Servicios</option>
+            <option value="Investment" @selected(old('category', $income->category ?? '') === 'Investment')>Inversiones</option>
+            <option value="Other" @selected(old('category', $income->category ?? '') === 'Other')>Otro</option>
           </select>
           <div class="invalid-feedback">
-            {{ $errors->first('category', 'Seleziona una categoria valida.') }}
+            {{ $errors->first('category', 'Selecciona una categoría válida.') }}
           </div>
         </div>
 
         <div class="col-12 text-end">
           <button type="submit" class="btn btn-gold-filled btn-lg">
             <i class="bi bi-save2 me-1"></i>
-            {{ isset($income) ? 'Aggiorna Entrata' : 'Salva Entrata' }}
+            {{ isset($income) ? 'Actualizar ingreso' : 'Guardar ingreso' }}
           </button>
         </div>
       </form>

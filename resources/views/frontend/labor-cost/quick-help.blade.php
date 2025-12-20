@@ -3,39 +3,37 @@
 </style>
 
 {{-- resources/views/frontend/labor-cost/quick-help.blade.php --}}
-<section id="lc-banner" class="mini-banner reveal" aria-label="Guida rapida costi lavoro">
+<section id="lc-banner" class="mini-banner reveal" aria-label="Guía rápida de costes laborales">
     <div class="mini-banner-head d-flex align-items-center mb-2">
-        <span class="banner-kicker">Nuovo</span>
-        <h6 class="banner-title ms-2">Capire i Costi del Lavoro</h6>
+        <span class="banner-kicker">Nuevo</span>
+        <h6 class="banner-title ms-2">Entender los costes laborales</h6>
         <button type="button" class="ms-auto banner-cta" data-bs-toggle="modal" data-bs-target="#lcAll">
-            Vedi tutti <i class="bi bi-arrow-right-short"></i>
+            Ver todos <i class="bi bi-arrow-right-short"></i>
         </button>
     </div>
 
-    <button class="scroll-arrow left" type="button" aria-label="Scorri a sinistra"><i class="bi bi-chevron-left"></i></button>
-    <button class="scroll-arrow right" type="button" aria-label="Scorri a destra"><i class="bi bi-chevron-right"></i></button>
+    <button class="scroll-arrow left" type="button" aria-label="Desplazar a la izquierda"><i class="bi bi-chevron-left"></i></button>
+    <button class="scroll-arrow right" type="button" aria-label="Desplazar a la derecha"><i class="bi bi-chevron-right"></i></button>
 
     <div class="scroller" tabindex="0">
-       
-
         <button type="button" class="chip" data-bs-toggle="modal" data-bs-target="#lcBuckets">
-            <span class="icon-badge"><i class="bi bi-diagram-3"></i></span>Voci: Condivise vs Reparto<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-diagram-3"></i></span>Partidas: compartidas vs departamento<span class="shine"></span>
         </button>
 
         <button type="button" class="chip" data-bs-toggle="modal" data-bs-target="#lcIncidenza">
-            <span class="icon-badge"><i class="bi bi-percent"></i></span>Incidenza reparto (%)<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-percent"></i></span>Incidencia del departamento (%)<span class="shine"></span>
         </button>
 
         <button type="button" class="chip chip--hot" data-bs-toggle="modal" data-bs-target="#lcBEP">
-            <span class="icon-badge"><i class="bi bi-graph-up-arrow"></i></span>BEP: mensile e giornaliero<span class="ping"></span><span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-graph-up-arrow"></i></span>BEP: mensual y diario<span class="ping"></span><span class="shine"></span>
         </button>
 
         <button type="button" class="chip" data-bs-toggle="modal" data-bs-target="#lcConsigli">
-            <span class="icon-badge"><i class="bi bi-lightbulb"></i></span>Consigli pratici<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-lightbulb"></i></span>Consejos prácticos<span class="shine"></span>
         </button>
 
         <button type="button" class="chip" data-bs-toggle="modal" data-bs-target="#lcEsempio">
-            <span class="icon-badge"><i class="bi bi-calculator"></i></span>Esempio passo-passo<span class="shine"></span>
+            <span class="icon-badge"><i class="bi bi-calculator"></i></span>Ejemplo paso a paso<span class="shine"></span>
         </button>
     </div>
 </section>
@@ -86,110 +84,110 @@
 
 {{-- ============ Modals ============ --}}
 
-{{-- Panoramica --}}
+{{-- Panorámica --}}
 <div class="modal fade" id="lcAll" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Costi del lavoro — panoramica per tutti</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 class="modal-title fw-bold">Costes laborales — visión general para todos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <p class="mb-2">Questa pagina serve a calcolare due tariffe: <strong>€/min interno</strong> (produzione in sede) e <strong>€/min esterno</strong> (fornitura/terzisti).</p>
+        <p class="mb-2">Esta página sirve para calcular dos tarifas: <strong>€/min interno</strong> (producción en el local) y <strong>€/min externo</strong> (suministros/terceros).</p>
         <ol class="mb-0">
-          <li><strong>Compila le voci di reparto</strong> (es. pasticceri, ingredienti, imballo).</li>
-          <li><strong>Compila le voci condivise</strong> (affitto, elettricità, tasse…).</li>
-          <li>Imposta <strong>giorni/ore di apertura</strong> e (se serve) <strong>incidenza reparto %</strong>.</li>
-          <li>Il sistema calcola i due <em>€/min</em> e il <strong>BEP</strong> (mensile/giornaliero).</li>
+          <li><strong>Rellena las partidas del departamento</strong> (p. ej. pasteleros, ingredientes, embalaje).</li>
+          <li><strong>Rellena las partidas compartidas</strong> (alquiler, electricidad, impuestos…).</li>
+          <li>Configura <strong>días/horas de apertura</strong> y (si hace falta) la <strong>incidencia del departamento %</strong>.</li>
+          <li>El sistema calcula los dos <em>€/min</em> y el <strong>BEP</strong> (mensual/diario).</li>
         </ol>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Capito!</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">¡Entendido!</button>
       </div>
     </div>
   </div>
 </div>
 
-{{-- 1) €/min: come funziona --}}
+{{-- 1) €/min: cómo funciona --}}
 <div class="modal fade" id="lcHowWorks" tabindex="-1" aria-hidden="true" aria-labelledby="lcHowWorksLabel">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="lcHowWorksLabel" class="modal-title fw-bold">Come si calcola il costo minuto (€/min)</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="lcHowWorksLabel" class="modal-title fw-bold">Cómo se calcula el coste por minuto (€/min)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <div class="formula mb-3">
-          Minuti totali/mese = <strong>Giorni apertura</strong> × <strong>Ore/gg</strong> × 60<br>
-          <em>Divisione per</em> <strong>n. pasticceri</strong> per avere il costo per minuto per addetto.
+          Minutos totales/mes = <strong>Días de apertura</strong> × <strong>Horas/día</strong> × 60<br>
+          <em>División por</em> <strong>n.º de pasteleros</strong> para tener el coste por minuto por empleado.
         </div>
 
-        <p class="mb-1"><strong>Interno (shop_cost_per_min)</strong> — esclude costi NON produttivi esterni:</p>
+        <p class="mb-1"><strong>Interno (shop_cost_per_min)</strong> — excluye costes NO productivos externos:</p>
         <div class="formula mb-3">
-          Base interno = (Totale voci <u>abilitate</u> − Ingredienti − Noleggio furgone − Stipendi fornitura esterna) ÷ (Minuti totali × Pasticceri)
+          Base interno = (Total partidas <u>habilitadas</u> − Ingredientes − Alquiler furgoneta − Salarios suministro externo) ÷ (Minutos totales × Pasteleros)
         </div>
 
-        <p class="mb-1"><strong>Esterno (external_cost_per_min)</strong> — esclude ciò che non pesa su fornitori:</p>
+        <p class="mb-1"><strong>Externo (external_cost_per_min)</strong> — excluye lo que no pesa sobre proveedores:</p>
         <div class="formula mb-3">
-          Base esterno = (Totale voci <u>abilitate</u> − Ingredienti − Addetti vendita<span class="text-muted">*</span>) ÷ (Minuti totali × Pasticceri)
+          Base externo = (Total partidas <u>habilitadas</u> − Ingredientes − Dependientes de tienda<span class="text-muted">*</span>) ÷ (Minutos totales × Pasteleros)
         </div>
 
         <div class="callout mb-2">
-          <strong>Fattore correttivo 4/3</strong>: per coprire tempi morti, sicurezza, ferie, imprevisti, l’app applica
-          un fattore ≈ <code>× 4/3</code> alla “base”. È lo stesso che vedi nello script della pagina.
+          <strong>Factor corrector 4/3</strong>: para cubrir tiempos muertos, seguridad, vacaciones, imprevistos, la app aplica
+          un factor ≈ <code>× 4/3</code> a la “base”. Es el mismo que ves en el script de la página.
         </div>
-        <small class="text-muted d-block">* Se stai lavorando su un reparto con <em>Incidenza%</em>, l’app usa la quota degli addetti vendita proporzionata a quell’incidenza.</small>
+        <small class="text-muted d-block">* Si estás trabajando en un departamento con <em>Incidencia%</em>, la app usa la cuota de los dependientes de tienda proporcional a esa incidencia.</small>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Tutto chiaro</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Todo claro</button>
       </div>
     </div>
   </div>
 </div>
 
-{{-- 2) Voci Condivise vs Reparto --}}
+{{-- 2) Partidas compartidas vs departamento --}}
 <div class="modal fade" id="lcBuckets" tabindex="-1" aria-hidden="true" aria-labelledby="lcBucketsLabel">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="lcBucketsLabel" class="modal-title fw-bold">Voci: Condivise e di Reparto — cosa entra nel calcolo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="lcBucketsLabel" class="modal-title fw-bold">Partidas: compartidas y de departamento — qué entra en el cálculo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <ul class="mb-3">
-          <li><strong>Condivise</strong>: elettricità, affitto/mutuo, proprietario, tasse, noleggio furgone, addetti vendita.
-              In modalità “reparto”, queste sono <em>bloccate</em> e applicate in quota (vedi Incidenza%).</li>
-          <li><strong>Reparto</strong>: ingredienti, imballaggio, pasticceri, altri stipendi, driver fornitura esterna, altre categorie.
-              Sono modificabili per singolo reparto.</li>
+          <li><strong>Compartidas</strong>: electricidad, alquiler/hipoteca, propietario, impuestos, alquiler furgoneta, dependientes de tienda.
+              En modo “departamento”, estas están <em>bloqueadas</em> y se aplican en proporción (ver Incidencia%).</li>
+          <li><strong>Departamento</strong>: ingredientes, embalaje, pasteleros, otros salarios, conductor suministro externo, otras categorías.
+              Son modificables por departamento.</li>
         </ul>
         <div class="callout mb-0">
-          Il totale “abilitato” è la base da cui sottraiamo alcune voci (vedi scheda precedente) per ottenere le due tariffe €/min coerenti.
+          El total “habilitado” es la base desde la que restamos algunas partidas (ver ficha anterior) para obtener las dos tarifas €/min coherentes.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Ok, grazie</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Ok, gracias</button>
       </div>
     </div>
   </div>
 </div>
 
-{{-- 3) Incidenza reparto (%) --}}
+{{-- 3) Incidencia del departamento (%) --}}
 <div class="modal fade" id="lcIncidenza" tabindex="-1" aria-hidden="true" aria-labelledby="lcIncidenzaLabel">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="lcIncidenzaLabel" class="modal-title fw-bold">Incidenza reparto (%) — come funziona la ripartizione</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="lcIncidenzaLabel" class="modal-title fw-bold">Incidencia del departamento (%) — cómo funciona el reparto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <p>Quando selezioni un <strong>reparto</strong>, le voci condivise diventano di sola lettura. Viene applicata la quota:</p>
+        <p>Cuando seleccionas un <strong>departamento</strong>, las partidas compartidas pasan a ser de solo lectura. Se aplica la cuota:</p>
         <div class="formula mb-3">
-          Quota condivise per reparto = Valore condiviso × (Incidenza% ÷ 100)
+          Cuota compartidas por departamento = Valor compartido × (Incidencia% ÷ 100)
         </div>
-        <p class="mb-0">Esempio: se il reparto “Pasticceria” ha Incidenza 40%, dell’affitto da 2.000€ vengono imputati <strong>800€</strong> (2.000 × 0,40).</p>
+        <p class="mb-0">Ejemplo: si el departamento “Pastelería” tiene una incidencia del 40 %, de un alquiler de 2.000 € se imputan <strong>800 €</strong> (2.000 × 0,40).</p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Ho capito</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Entendido</button>
       </div>
     </div>
   </div>
@@ -200,73 +198,73 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="lcBEPLabel" class="modal-title fw-bold">Punto di Pareggio (BEP)</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="lcBEPLabel" class="modal-title fw-bold">Punto de equilibrio (BEP)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <p class="mb-2">Il BEP mostrato in pagina è un riferimento di <strong>fatturato minimo</strong> necessario a coprire i costi fissi/variabili indicati.</p>
+        <p class="mb-2">El BEP mostrado en la página es una referencia de <strong>facturación mínima</strong> necesaria para cubrir los costes fijos/variables indicados.</p>
         <div class="formula mb-3">
-          BEP <em>mensile</em> ≈ Somma voci (condivise + reparto) del mese<br>
-          BEP <em>giornaliero</em> = BEP mensile ÷ Giorni apertura
+          BEP <em>mensual</em> ≈ Suma de partidas (compartidas + departamento) del mes<br>
+          BEP <em>diario</em> = BEP mensual ÷ Días de apertura
         </div>
         <div class="callout mb-0">
-          Usa il BEP come bussola: se il fatturato medio giornaliero è sotto il BEP giornaliero, rivedi volumi, prezzi o costi.
+          Usa el BEP como brújula: si la facturación media diaria está por debajo del BEP diario, revisa volúmenes, precios o costes.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Perfetto</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Perfecto</button>
       </div>
     </div>
   </div>
 </div>
 
-{{-- 5) Consigli pratici --}}
+{{-- 5) Consejos prácticos --}}
 <div class="modal fade" id="lcConsigli" tabindex="-1" aria-hidden="true" aria-labelledby="lcConsigliLabel">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="lcConsigliLabel" class="modal-title fw-bold">Consigli pratici per tariffe sane</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="lcConsigliLabel" class="modal-title fw-bold">Consejos prácticos para tarifas saludables</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <ul class="mb-0">
-          <li><strong>Batching</strong>: aumentare la dose riduce €/pz perché diluisce i minuti.</li>
-          <li><strong>Dati realistici</strong>: giorni/ore troppo ottimisti falsano il costo minuto.</li>
-          <li><strong>Reparti separati</strong>: usa Incidenza% solo se davvero condividi risorse.</li>
-          <li><strong>Controllo trimestrale</strong>: aggiorna prezzi energia, affitti, stipendi.</li>
+          <li><strong>Batching</strong>: aumentar la producción por tanda reduce €/pieza porque diluye los minutos.</li>
+          <li><strong>Datos realistas</strong>: días/horas demasiado optimistas falsean el coste por minuto.</li>
+          <li><strong>Departamentos separados</strong>: usa Incidencia% solo si realmente compartes recursos.</li>
+          <li><strong>Control trimestral</strong>: actualiza precios de energía, alquileres, salarios.</li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Benissimo</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Muy bien</button>
       </div>
     </div>
   </div>
 </div>
 
-{{-- 6) Esempio pratico --}}
+{{-- 6) Ejemplo práctico --}}
 <div class="modal fade" id="lcEsempio" tabindex="-1" aria-hidden="true" aria-labelledby="lcEsempioLabel">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-glass rounded-4 shadow-lg">
       <div class="modal-header">
-        <h5 id="lcEsempioLabel" class="modal-title fw-bold">Esempio passo-passo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+        <h5 id="lcEsempioLabel" class="modal-title fw-bold">Ejemplo paso a paso</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <ol class="mb-3">
-          <li>Apertura: <strong>22 gg</strong>, <strong>8 ore/gg</strong> → 22×8×60 = <strong>10.560 min</strong>.</li>
-          <li>Pasticceri: <strong>2</strong>.</li>
-          <li>Totale voci abilitate (dopo incidenza): <strong>€ 18.000</strong>.</li>
+          <li>Apertura: <strong>22 días</strong>, <strong>8 horas/día</strong> → 22×8×60 = <strong>10.560 min</strong>.</li>
+          <li>Pasteleros: <strong>2</strong>.</li>
+          <li>Total partidas habilitadas (tras incidencia): <strong>18.000 €</strong>.</li>
         </ol>
         <div class="formula mb-2">
-          Base interno = (€18.000 − ingredienti − furgone − driver esterno) ÷ (10.560 × 2)
+          Base interno = (18.000 € − ingredientes − furgoneta − conductor externo) ÷ (10.560 × 2)
         </div>
         <div class="formula mb-3">
-          Base esterno = (€18.000 − ingredienti − quota addetti vendita) ÷ (10.560 × 2)
+          Base externo = (18.000 € − ingredientes − cuota dependientes de tienda) ÷ (10.560 × 2)
         </div>
-        <div class="callout">Tariffa finale ≈ Base × <strong>4/3</strong>. Confronta il risultato con quello mostrato nei campi “€/min”.</div>
+        <div class="callout">Tarifa final ≈ Base × <strong>4/3</strong>. Compara el resultado con el que se muestra en los campos “€/min”.</div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-accent" data-bs-dismiss="modal">Chiaro</button>
+        <button class="btn btn-accent" data-bs-dismiss="modal">Claro</button>
       </div>
     </div>
   </div>

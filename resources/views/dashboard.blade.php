@@ -1,10 +1,10 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Pasticcere Pro | Cruscotto')
+@section('title', 'Pasticcere Pro | Panel de control')
 
 @section('content')
     <style>
-        /* Force donut labels, datalabels and legends to black (fallback) */
+        /* Forzar etiquetas de dona, datalabels y leyendas a negro (respaldo) */
         .apexcharts-legend-text,
         .apexcharts-datalabel text,
         .apexcharts-datalabel-value,
@@ -15,27 +15,27 @@
             color: #000 !important;
         }
     </style>
-    {{-- Beautiful Welcome Banner --}}
+    {{-- Hermoso banner de bienvenida --}}
     <div class="col-12 mb-4">
         <div class="alert text-center fw-bold fs-4 rounded-pill" style="background-color: #041930; color: #e2ae76;">
-            Benvenuto, {{ auth()->user()->name }}!
+            ¡Bienvenido, {{ auth()->user()->name }}!
         </div>
     </div>
 
     <div class="dashboard-main-body">
 
-        <!-- ====================== TOOLBAR ====================== -->
+        <!-- ====================== BARRA DE HERRAMIENTAS ====================== -->
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
-            <!-- Left: title + breadcrumb -->
+            <!-- Izquierda: título + breadcrumb -->
             <div class="d-flex align-items-center gap-2">
-                <h6 class="fw-semibold mb-0">Cruscotto</h6>
+                <h6 class="fw-semibold mb-0">Panel de control</h6>
 
                 <ul class="d-flex align-items-center gap-2 mb-0 small text-secondary breadcrumb-lite">
                     <li class="fw-medium">
                         <a href="index.html"
                             class="d-flex align-items-center gap-1 link-underline-opacity-0 link-underline-opacity-75-hover">
                             <iconify-icon icon="solar:home-smile-angle-outline" class="icon"></iconify-icon>
-                            Home
+                            Inicio
                         </a>
                     </li>
                     <li class="opacity-50">-</li>
@@ -43,17 +43,17 @@
                 </ul>
             </div>
 
-            {{-- Global date filter – right aligned on lg+, full width on mobile --}}
+            {{-- Filtro de fecha global – alineado a la derecha en lg+, ancho completo en móvil --}}
             <form class="ms-lg-auto w-100 w-lg-auto">
                 <div class="row g-2 align-items-center justify-content-end">
                     <div class="col-12 col-sm-6 col-md-4 col-lg-auto">
                         <select id="globalRange" class="form-select form-select-sm">
-                            <option value="custom" selected>Personalizzato</option>
-                            <option value="this_month">Questo mese</option>
-                            <option value="last_month">Mese scorso</option>
-                            <option value="this_quarter">Questo trimestre</option>
-                            <option value="this_year">Questo anno</option>
-                            <option value="last_12m">Ultimi 12 mesi</option>
+                            <option value="custom" selected>Personalizado</option>
+                            <option value="this_month">Este mes</option>
+                            <option value="last_month">Mes pasado</option>
+                            <option value="this_quarter">Este trimestre</option>
+                            <option value="this_year">Este año</option>
+                            <option value="last_12m">Últimos 12 meses</option>
                         </select>
                     </div>
                     <div class="col-6 col-md-4 col-lg-auto">
@@ -64,7 +64,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-4 col-lg-auto">
                         <button id="applyGlobalFilters" class="btn btn-sm btn-primary w-100 w-lg-auto btn-lift">
-                            Applica
+                            Aplicar
                         </button>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                 margin-bottom: 2vw;
             }
 
-            /* visual polish only */
+            /* solo pulido visual */
             .btn-lift {
                 transition: transform .12s ease, box-shadow .12s ease;
             }
@@ -90,11 +90,11 @@
 
             {{-- resources/views/dashboard.blade.php --}}
             <div class="col-12">
-                <!-- Use row-cols to make cards flow perfectly on all screens -->
+                <!-- Usar row-cols para que las tarjetas fluyan perfectamente en todas las pantallas -->
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4">
 
                     @if ($isSuper)
-                        {{-- Total Admins (system-wide) --}}
+                        {{-- Administradores totales (a nivel de sistema) --}}
                         <div class="col">
                             <div class="card card-kpi h-100 bg-gradient-end-1">
                                 <div class="card-body">
@@ -104,17 +104,17 @@
                                                 <iconify-icon icon="mdi:account-cog"></iconify-icon>
                                             </span>
                                             <div>
-                                                <small class="text-secondary d-block">Total Admins</small>
+                                                <small class="text-secondary d-block">Total de administradores</small>
                                                 <h6 class="fw-semibold mb-0">{{ number_format($adminsCount) }}</h6>
                                             </div>
                                         </div>
                                     </div>
-                                    <p class="text-secondary small mb-0">Tutti gli admin del sistema</p>
+                                    <p class="text-secondary small mb-0">Todos los administradores del sistema</p>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Total Users (all roles, system-wide) --}}
+                        {{-- Usuarios totales (todos los roles, a nivel de sistema) --}}
                         <div class="col my-20" style="margin-bottom: 3vw">
                             <div class="card card-kpi h-100 bg-gradient-end-2">
                                 <div class="card-body">
@@ -124,18 +124,19 @@
                                                 <iconify-icon icon="mdi:account-group"></iconify-icon>
                                             </span>
                                             <div>
-                                                <small class="text-secondary d-block">Total Users (All Roles)</small>
+                                                <small class="text-secondary d-block">Usuarios totales (todos los
+                                                    roles)</small>
                                                 <h6 class="fw-semibold mb-0">{{ number_format($allUsersCount) }}</h6>
                                             </div>
                                         </div>
                                     </div>
-                                    <p class="text-secondary small mb-0">Utenti di tutti i ruoli</p>
+                                    <p class="text-secondary small mb-0">Usuarios de todos los roles</p>
                                 </div>
                             </div>
                         </div>
                     @endif
 
-                    {{-- Utenti Totali --}}
+                    {{-- Usuarios totales --}}
                     <div class="col">
                         <div class="card card-kpi h-100 bg-gradient-end-1">
                             <div class="card-body">
@@ -145,18 +146,18 @@
                                             <iconify-icon icon="mingcute:user-follow-fill"></iconify-icon>
                                         </span>
                                         <div>
-                                            <small class="text-secondary d-block">Personale personale totale</small>
+                                            <small class="text-secondary d-block">Personal total</small>
                                             <h6 class="fw-semibold mb-0">{{ number_format($totalUsers) }}</h6>
                                         </div>
                                     </div>
                                     <div id="total-users-chart" class="w-100 w-sm-auto"></div>
                                 </div>
-                                <p class="text-secondary small mb-0">Da creazione del gruppo</p>
+                                <p class="text-secondary small mb-0">Desde la creación del grupo</p>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Ricette Totali --}}
+                    {{-- Recetas totales --}}
                     <div class="col">
                         <div class="card card-kpi h-100 bg-gradient-end-2">
                             <div class="card-body">
@@ -166,18 +167,18 @@
                                             <iconify-icon icon="uis:box"></iconify-icon>
                                         </span>
                                         <div>
-                                            <small class="text-secondary d-block">Ricette Totali</small>
+                                            <small class="text-secondary d-block">Recetas totales</small>
                                             <h6 class="fw-semibold mb-0">{{ number_format($totalRecipes) }}</h6>
                                         </div>
                                     </div>
                                     <div id="total-recipes-chart" class="w-100 w-sm-auto"></div>
                                 </div>
-                                <p class="text-secondary small mb-0">Tra tutti gli utenti del gruppo</p>
+                                <p class="text-secondary small mb-0">Entre todos los usuarios del grupo</p>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Vetrine Totali --}}
+                    {{-- Escaparates totales --}}
                     <div class="col">
                         <div class="card card-kpi h-100 bg-gradient-end-3">
                             <div class="card-body">
@@ -187,19 +188,19 @@
                                             <iconify-icon icon="mdi:television-ambient-light"></iconify-icon>
                                         </span>
                                         <div>
-                                            <small class="text-secondary d-block">Vetrine Totali</small>
+                                            <small class="text-secondary d-block">Escaparates totales</small>
                                             <h6 class="fw-semibold mb-0">{{ number_format($totalShowcases) }}</h6>
                                         </div>
                                     </div>
                                     <div id="total-showcase-chart" class="w-100 w-sm-auto"></div>
                                 </div>
-                                <p class="text-secondary small mb-0">Conteggio totale</p>
+                                <p class="text-secondary small mb-0">Recuento total</p>
                             </div>
                         </div>
                     </div>
 
                     @can('Dashboard(Sales, Costs)')
-                        {{-- Vendite (Anno) --}}
+                        {{-- Ventas (Año) --}}
                         <div class="col">
                             <div class="card card-kpi h-100 bg-gradient-end-4">
                                 <div class="card-body">
@@ -209,19 +210,19 @@
                                                 <iconify-icon icon="iconamoon:discount-fill"></iconify-icon>
                                             </span>
                                             <div>
-                                                <small class="text-secondary d-block">Vendite ({{ $year }})</small>
+                                                <small class="text-secondary d-block">Ventas ({{ $year }})</small>
                                                 <h6 class="fw-semibold mb-0">€{{ number_format($totalSaleThisYear, 2) }}</h6>
                                             </div>
                                         </div>
                                         <div id="total-sales-chart" class="w-100 w-sm-auto"></div>
                                     </div>
-                                    <p class="text-secondary small mb-0">Anno in corso</p>
+                                    <p class="text-secondary small mb-0">Año en curso</p>
                                 </div>
                             </div>
                         </div>
                     @endcan
 
-                    {{-- Sprechi (Anno) --}}
+                    {{-- Desperdicios (Año) --}}
                     <div class="col">
                         <div class="card card-kpi h-100 bg-gradient-end-5">
                             <div class="card-body">
@@ -231,19 +232,19 @@
                                             <iconify-icon icon="fluent:trash-24-regular"></iconify-icon>
                                         </span>
                                         <div>
-                                            <small class="text-secondary d-block">Sprechi ({{ $year }})</small>
+                                            <small class="text-secondary d-block">Desperdicios ({{ $year }})</small>
                                             <h6 class="fw-semibold mb-0">{{ number_format($totalWasteThisYear) }}</h6>
                                         </div>
                                     </div>
                                     <div id="total-waste-chart" class="w-100 w-sm-auto"></div>
                                 </div>
-                                <p class="text-secondary small mb-0">Quantità anno in corso</p>
+                                <p class="text-secondary small mb-0">Cantidad en el año en curso</p>
                             </div>
                         </div>
                     </div>
 
                     @can('Dashboard(Sales, Costs)')
-                        {{-- Profitto (Anno) --}}
+                        {{-- Beneficio (Año) --}}
                         <div class="col">
                             <div class="card card-kpi h-100 bg-gradient-end-6">
                                 <div class="card-body">
@@ -253,14 +254,14 @@
                                                 <iconify-icon icon="streamline:bag-dollar-solid"></iconify-icon>
                                             </span>
                                             <div>
-                                                <small class="text-secondary d-block">Profitto ({{ $year }})</small>
+                                                <small class="text-secondary d-block">Beneficio ({{ $year }})</small>
                                                 <h6 class="fw-semibold mb-0">€{{ number_format($totalProfitThisYear, 2) }}
                                                 </h6>
                                             </div>
                                         </div>
                                         <div id="total-profit-chart" class="w-100 w-sm-auto"></div>
                                     </div>
-                                    <p class="text-secondary small mb-0">Margine anno in corso</p>
+                                    <p class="text-secondary small mb-0">Margen del año en curso</p>
                                 </div>
                             </div>
                         </div>
@@ -269,16 +270,16 @@
                 </div>
             </div>
         </div>
-        <!-- ====================== ORDERED (1 → 12) ====================== -->
+        <!-- ====================== ORDENADO (1 → 12) ====================== -->
         <div class="row g-4">
 
-            {{-- 1) Averages by Category (all) --}}
+            {{-- 1) Promedios por categoría (todas) --}}
             <div class="col-12 col-lg-6 col-xxl-4">
                 <div class="card h-100 border-0 shadow-sm rounded-3">
                     <div class="card-body p-3 p-md-4">
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                            <h6 class="mb-0">Medie per categoria <span class="text-secondary">(tutte)</span></h6>
-                            <span class="badge bg-light text-dark">Media globale:
+                            <h6 class="mb-0">Promedios por categoría <span class="text-secondary">(todas)</span></h6>
+                            <span class="badge bg-light text-dark">Media global:
                                 {{ number_format($globalAvgMarginPos, 2) }}%</span>
                         </div>
 
@@ -286,9 +287,9 @@
                             <table data-page-length="25"class="table table-sm align-middle mb-0">
                                 <thead class="text-secondary">
                                     <tr>
-                                        <th>Categoria</th>
-                                        <th class="text-end">Media margine %</th>
-                                        <th class="text-end"># Prodotti</th>
+                                        <th>Categoría</th>
+                                        <th class="text-end">Margen medio %</th>
+                                        <th class="text-end"># Productos</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -301,7 +302,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="3" class="py-3 text-secondary">Nessun dato disponibile.</td>
+                                            <td colspan="3" class="py-3 text-secondary">No hay datos disponibles.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -309,17 +310,17 @@
                         </div>
 
                         <small class="text-secondary d-block mt-3">
-                            Mostrando max 8 categorie. I valori medi escludono margini negativi.
+                            Mostrando un máximo de 8 categorías. Los valores medios excluyen márgenes negativos.
                         </small>
                     </div>
                 </div>
             </div>
 
-            {{-- 2) Earnings by Category --}}
+            {{-- 2) Ingresos por categoría --}}
             <div class="col-12 col-sm-6 col-xxl-4">
                 <div class="card card-elevated h-100">
                     <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
-                        <h6 class="fw-semibold mb-0">💰 Incassi per Categoria</h6>
+                        <h6 class="fw-semibold mb-0">💰 Ingresos por categoría</h6>
                         <div class="row g-2 align-items-center">
                             <div class="col-6 col-md-auto">
                                 <input type="date" id="revStart" class="form-control form-control-sm" />
@@ -341,11 +342,11 @@
                 </div>
             </div>
 
-            {{-- 3) Costs by Category --}}
+            {{-- 3) Costes por categoría --}}
             <div class="col col-lg-5 col-xxl-4">
                 <div class="card card-elevated h-100">
                     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
-                        <h6 class="fw-semibold mb-0">Costi per Categoria</h6>
+                        <h6 class="fw-semibold mb-0">Costes por categoría</h6>
 
                         <div class="row g-2 align-items-center">
                             <div class="col-6 col-md-auto">
@@ -368,12 +369,12 @@
                 </div>
             </div>
 
-            {{-- 4) Cost vs Revenue Ratio --}}
+            {{-- 4) Incidencia costes vs ingresos --}}
             @can('Dashboard(Sales, Costs)')
                 <div class="col-12">
                     <div class="card card-elevated h-100">
                         <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
-                            <h6 class="fw-semibold mb-0">Incidenza Costi vs Ricavi</h6>
+                            <h6 class="fw-semibold mb-0">Incidencia costes vs ingresos</h6>
                             <div class="row g-2 align-items-center">
                                 <div class="col-6 col-md-auto">
                                     <input type="date" id="incStart" class="form-control form-control-sm" />
@@ -383,7 +384,7 @@
                                 </div>
                                 <div class="col-12 col-md-auto">
                                     <button id="incFilter"
-                                        class="btn btn-sm btn-primary w-100 w-md-auto btn-lift">Applica</button>
+                                        class="btn btn-sm btn-primary w-100 w-md-auto btn-lift">Aplicar</button>
                                 </div>
                             </div>
                         </div>
@@ -394,9 +395,9 @@
                 </div>
             @endcan
 
-            {{-- 5–7) Costs vs. income (current month) + Annual costs + Annual incomes --}}
+            {{-- 5–7) Costes vs ingresos (mes actual) + Costes anuales + Ingresos anuales --}}
             @can('Dashboard(Sales, Costs)')
-                <!-- 3 charts row -->
+                <!-- fila de 3 gráficos -->
                 <div class="col-12 col-lg-6 col-xxl-4">
                     <div class="card h-100 border-0 shadow-sm rounded-3">
                         <div class="card-body p-3 p-md-4">
@@ -422,7 +423,7 @@
                 </div>
             @endcan
 
-            {{-- 8) Earning statistics --}}
+            {{-- 8) Estadísticas de ganancias --}}
             @can('Dashboard(Sales, Costs)')
                 <div class="col-12">
                     <div class="card h-100 border-0 shadow-sm rounded-3">
@@ -430,8 +431,8 @@
                             <div
                                 class="d-flex align-items-start align-items-md-center flex-column flex-md-row gap-2 justify-content-between">
                                 <div>
-                                    <h6 class="mb-1 fw-bold">Statistiche Guadagni</h6>
-                                    <span class="text-secondary small">Panoramica vendite mensili</span>
+                                    <h6 class="mb-1 fw-bold">Estadísticas de ganancias</h6>
+                                    <span class="text-secondary small">Resumen de ventas mensuales</span>
                                 </div>
 
                                 <div class="ms-md-auto">
@@ -444,7 +445,7 @@
                                         </div>
                                         <div class="col-12 col-md-auto">
                                             <button id="applyDateFilter"
-                                                class="btn btn-sm btn-primary w-100 w-md-auto btn-lift">Applica</button>
+                                                class="btn btn-sm btn-primary w-100 w-md-auto btn-lift">Aplicar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -457,7 +458,7 @@
                                         <iconify-icon icon="fluent:cart-16-filled"></iconify-icon>
                                     </span>
                                     <div>
-                                        <small class="text-secondary d-block">Vendite</small>
+                                        <small class="text-secondary d-block">Ventas</small>
                                         <h6 class="mb-0">€{{ number_format($sales, 2) }}</h6>
                                     </div>
                                 </div>
@@ -468,7 +469,7 @@
                                         <iconify-icon icon="uis:chart"></iconify-icon>
                                     </span>
                                     <div>
-                                        <small class="text-secondary d-block">Margine Lordo</small>
+                                        <small class="text-secondary d-block">Margen bruto</small>
                                         <h6 class="mb-0">€{{ number_format($plus, 2) }}</h6>
                                     </div>
                                 </div>
@@ -479,7 +480,7 @@
                                         <iconify-icon icon="ph:arrow-fat-up-fill"></iconify-icon>
                                     </span>
                                     <div>
-                                        <small class="text-secondary d-block">Profitto Netto</small>
+                                        <small class="text-secondary d-block">Beneficio neto</small>
                                         <h6 class="mb-0">€{{ number_format($realMargin, 2) }}</h6>
                                     </div>
                                 </div>
@@ -493,12 +494,12 @@
                 </div>
             @endcan
 
-            {{-- 9) Top 5 sold products --}}
+            {{-- 9) Top 5 productos vendidos --}}
             <div class="col-12 col-lg-6 col-xxl-8">
                 <div class="card h-100 border-0 shadow-sm rounded-3">
                     <div
                         class="card-header bg-body-tertiary py-2 px-3 px-md-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
-                        <h6 class="mb-0">Top 5 Prodotti Venduti</h6>
+                        <h6 class="mb-0">Top 5 productos vendidos</h6>
                         <div class="row g-2 align-items-center">
                             <div class="col-6 col-md-auto">
                                 <input type="date" id="soldStart" class="form-control form-control-sm" />
@@ -508,7 +509,7 @@
                             </div>
                             <div class="col-12 col-md-auto">
                                 <button id="soldFilter"
-                                    class="btn btn-sm btn-primary w-100 w-md-auto btn-lift">Applica</button>
+                                    class="btn btn-sm btn-primary w-100 w-md-auto btn-lift">Aplicar</button>
                             </div>
                         </div>
                     </div>
@@ -517,8 +518,8 @@
                             <table data-page-length="25"class="table table-hover mb-0" id="soldTable">
                                 <thead>
                                     <tr>
-                                        <th>Prodotto</th>
-                                        <th class="text-end">Quantità Venduta</th>
+                                        <th>Producto</th>
+                                        <th class="text-end">Cantidad vendida</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -536,12 +537,12 @@
                 </div>
             </div>
 
-            {{-- 10) Top 5 waste products --}}
+            {{-- 10) Top 5 productos desperdiciados --}}
             <div class="col-12 col-lg-12 col-xxl-12 offset-xxl-12 my-14">
                 <div class="card h-100 border-0 shadow-sm rounded-3">
                     <div
                         class="card-header bg-body-tertiary py-2 px-3 px-md-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
-                        <h6 class="mb-0">Top 5 Prodotti Sprecati</h6>
+                        <h6 class="mb-0">Top 5 productos desperdiciados</h6>
                         <div class="row g-2 align-items-center">
                             <div class="col-6 col-md-auto">
                                 <input type="date" id="wastedStart" class="form-control form-control-sm" />
@@ -551,7 +552,7 @@
                             </div>
                             <div class="col-12 col-md-auto">
                                 <button id="wastedFilter"
-                                    class="btn btn-sm btn-primary w-100 w-md-auto btn-lift">Applica</button>
+                                    class="btn btn-sm btn-primary w-100 w-md-auto btn-lift">Aplicar</button>
                             </div>
                         </div>
                     </div>
@@ -560,8 +561,8 @@
                             <table data-page-length="25"class="table table-hover mb-0" id="wastedTable">
                                 <thead>
                                     <tr>
-                                        <th>Prodotto</th>
-                                        <th class="text-end">Quantità Sprecata</th>
+                                        <th>Producto</th>
+                                        <th class="text-end">Cantidad desperdiciada</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -579,11 +580,11 @@
                 </div>
             </div>
 
-            {{-- 11) Production vs waste --}}
+            {{-- 11) producción vs. desperdicio --}}
             <div class="col-12">
                 <div class="card card-elevated h-100">
                     <div class="card-header">
-                        <h6 class="fw-semibold mb-0">Produzione vs Spreco</h6>
+                        <h6 class="fw-semibold mb-0">producción vs. desperdicio</h6>
                     </div>
                     <div class="card-body">
                         {!! $prodWasteChart->container() !!}
@@ -594,7 +595,7 @@
             <div class="my-20 col-12 col-sm-6 col-xxl-4">
                 <div class="card card-elevated h-100">
                     <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
-                        <h6 class="fw-semibold mb-0">Produzione per Pasticcere</h6>
+                        <h6 class="fw-semibold mb-0">Producción por pastelero</h6>
                         <div class="row g-2 align-items-center">
                             <div class="col-6 col-md-auto">
                                 <input type="date" id="chefStart" class="form-control form-control-sm" />
@@ -612,7 +613,7 @@
                     <div class="card-body">
                         <div id="chefProdChart" class="chart-min-260"></div>
 
-                        {{-- keep the original Larapex container so no code is “missed”, but hide it to prevent double charts --}}
+                        {{-- mantener el contenedor Larapex original para que no se “pierda” código, pero ocultarlo para evitar gráficos duplicados --}}
                         <div class="visually-hidden">
                             {!! $chefChart->container() !!}
                         </div>
@@ -627,7 +628,7 @@
                     const data = rows
                         .map(r => ({
                             date: r.date,
-                            chef: r.chef_name || 'Sconosciuto',
+                            chef: r.chef_name || 'Desconocido',
                             qty: Number(r.qty) || 0
                         }))
                         .sort((a, b) => a.date.localeCompare(b.date));
@@ -642,7 +643,7 @@
                                 agg[x.chef] = (agg[x.chef] || 0) + x.qty;
                             }
                         });
-                        const ordered = Object.entries(agg).sort((a, b) => b[1] - a[1]); // highest first
+                        const ordered = Object.entries(agg).sort((a, b) => b[1] - a[1]); // primero el más alto
                         return {
                             labels: ordered.map(([name]) => name),
                             series: ordered.map(([, val]) => val)
@@ -662,7 +663,7 @@
 
                         if (!series.length) {
                             document.querySelector('#chefProdChart').innerHTML =
-                                '<div class="text-muted py-3">Nessun dato per l\'intervallo selezionato.</div>';
+                                '<div class="text-muted py-3">No hay datos para el intervalo seleccionado.</div>';
                             return;
                         }
 
@@ -672,7 +673,7 @@
                                 height: 320
                             },
                             series: [{
-                                name: 'Unità prodotte',
+                                name: 'Unidades producidas',
                                 data: series
                             }],
                             xaxis: {
@@ -744,11 +745,11 @@
 
 
 
-            {{-- Returns vs. Restocks (Larapex donut) --}}
+            {{-- Devoluciones vs reposiciones (donut Larapex) --}}
             <div class="col-12 col-sm-6 col-xxl-4">
                 <div class="card card-elevated h-100">
                     <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
-                        <h6 class="fw-semibold mb-0">Resi vs Rifornimenti</h6>
+                        <h6 class="fw-semibold mb-0">Devoluciones vs reposiciones</h6>
                         <div class="row g-2 align-items-center">
                             <div class="col-6 col-md-auto">
                                 <input type="date" id="retStart" class="form-control form-control-sm" />
@@ -766,10 +767,10 @@
                     </div>
 
                     <div class="card-body">
-                        <p class="mb-1">Totale Fornito: <strong>{{ number_format($totalSupplied) }}</strong></p>
-                        <p class="mb-3">Totale Resi: <strong>{{ number_format($totalReturned) }}</strong></p>
+                        <p class="mb-1">Total suministrado: <strong>{{ number_format($totalSupplied) }}</strong></p>
+                        <p class="mb-3">Total devuelto: <strong>{{ number_format($totalReturned) }}</strong></p>
 
-                        {{-- Larapex container (same pattern as the other charts) --}}
+                        {{-- Contenedor Larapex (mismo patrón que los otros gráficos) --}}
                         <div style="min-height:260px">
                             {!! $returnRateChart->container() !!}
                         </div>
@@ -779,13 +780,13 @@
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     try {
-                        const id = @json($returnRateChart->id); // Larapex container id
+                        const id = @json($returnRateChart->id); // id del contenedor Larapex
                         const supplied = Number({{ (int) $totalSupplied }});
                         const returned = Number({{ (int) $totalReturned }});
                         const restocked = Math.max(0, supplied - returned);
                         const el = document.getElementById(id);
 
-                        // if Larapex didn't render anything, draw it manually
+                        // si Larapex no ha renderizado nada, dibujarlo manualmente
                         if (el && el.innerHTML.trim() === '') {
                             const chart = new ApexCharts(el, {
                                 chart: {
@@ -793,7 +794,7 @@
                                     height: 300
                                 },
                                 series: [returned, restocked],
-                                labels: ['Resi', 'Riforniti'],
+                                labels: ['Devoluciones', 'Reposiciones'],
                                 legend: {
                                     position: 'bottom'
                                 },
@@ -805,7 +806,7 @@
                                                 show: true,
                                                 total: {
                                                     show: true,
-                                                    label: 'Fornito',
+                                                    label: 'Suministrado',
                                                     formatter: () => supplied.toLocaleString()
                                                 }
                                             }
@@ -813,7 +814,7 @@
                                     }
                                 },
                                 title: {
-                                    text: 'Resi vs Rifornimenti'
+                                    text: 'Devoluciones vs reposiciones'
                                 },
                                 tooltip: {
                                     y: {
@@ -824,10 +825,10 @@
                             chart.render();
                         }
                     } catch (e) {
-                        console.error('Return/Restock chart fallback error:', e);
+                        console.error('Error de respaldo del gráfico Devoluciones/Reposiciones:', e);
                     }
 
-                    // prevent accidental form submit on the small filter UI
+                    // evitar envío accidental del formulario en la pequeña IU de filtro
                     document.getElementById('retFilter')?.addEventListener('click', e => e.preventDefault());
                 });
             </script>
@@ -883,12 +884,12 @@
 
         </div>
 
-        <!-- ====================== (KEEPING EVERY OTHER ORIGINAL BLOCK) ====================== -->
+        <!-- ====================== (MANTENIENDO CADA OTRO BLOQUE ORIGINAL) ====================== -->
 
-        <!-- ====================== KPI CARDS (kept intact) ====================== -->
+        <!-- ====================== TARJETAS KPI (mantenidas intactas) ====================== -->
 
 
-        <!-- ====================== POLISH CSS (visual only; responsiveness handled by Bootstrap) ====================== -->
+        <!-- ====================== CSS DE PULIDO (solo visual; respuesta manejada por Bootstrap) ====================== -->
 
         {{-- resources/views/dashboard.blade.php --}}
         {{-- resources/views/dashboard.blade.php --}}
@@ -897,16 +898,16 @@
 
 
 
-            {{-- Sprechi + Costi side-by-side --}}
+            {{-- Desperdicios + costes lado a lado --}}
             <div class="col-12">
                 <div class="row row-cols-1 row-cols-lg-2 g-4 align-items-stretch">
 
-                    {{-- Top 5 Sprechi (donut) --}}
+                    {{-- Top 5 desperdicios (donut) --}}
                     <div class="col col-lg-7 col-xxl-8">
                         <div class="card card-elevated h-100">
                             <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
                                 <div class="d-flex align-items-center gap-2">
-                                    <h6 class="fw-semibold mb-0">Prodotti con Sprechi</h6>
+                                    <h6 class="fw-semibold mb-0">Productos con desperdicio</h6>
                                     <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis px-3">Top
                                         5</span>
                                 </div>
@@ -930,7 +931,7 @@
                             <div class="card-body">
                                 <div id="wastedRowPie" class="chart-min-260"></div>
                                 <small class="text-secondary d-block mt-2">
-                                    * Mostriamo i 5 prodotti con maggiore spreco nel periodo selezionato.
+                                    * Mostramos los 5 productos con mayor desperdicio en el periodo seleccionado.
                                 </small>
                             </div>
                         </div>
@@ -941,14 +942,14 @@
             </div>
 
             @can('Dashboard(Sales, Costs)')
-                {{-- Incidenza Costi vs Ricavi (already moved to #4) --}}
+                {{-- Incidencia costes vs ingresos (ya movido al #4) --}}
             @endcan
 
-            {{-- Production vs Waste Trend (already shown in #11) --}}
+            {{-- Tendencia producción vs. desperdicio (ya mostrada en #11) --}}
             <div class="col-12">
                 <div class="card card-elevated h-100">
                     <div class="card-header">
-                        <h6 class="fw-semibold mb-0">Produzione vs Spreco</h6>
+                        <h6 class="fw-semibold mb-0">producción vs. desperdicio</h6>
                     </div>
                     <div class="card-body">
                         {!! $prodWasteChart->container() !!}
@@ -958,9 +959,9 @@
 
         </div>
 
-        <!-- ===================== JS (unchanged IDs; your existing logic remains) ===================== -->
+        <!-- ===================== JS (IDs sin cambios; tu lógica existente permanece) ===================== -->
 
-        {{-- === Averages by Category (compact, positives only) === --}}
+        {{-- === Promedios por categoría (compacto, solo positivos) === --}}
 
     </div>
 
@@ -971,7 +972,7 @@
 
 @section('styles')
     <style>
-        /* KPI cards look */
+        /* aspecto de las tarjetas KPI */
         .card-kpi {
             border: 0;
             border-radius: 1rem;
@@ -1023,7 +1024,7 @@
             vertical-align: middle
         }
 
-        /* soft gradients to match your classes */
+        /* degradados suaves para coincidir con tus clases */
         .bg-gradient-end-1 {
             background: linear-gradient(180deg, #fff, #f7fbff)
         }
@@ -1076,10 +1077,10 @@
 @endsection
 
 @section('scripts')
-    {{-- === SCRIPTS START === --}}
+    {{-- === INICIO DE SCRIPTS === --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-    {{-- Larapex (server-rendered) chart scripts --}}
+    {{-- Scripts de gráficos Larapex (renderizados en servidor) --}}
     {!! $chart->script() !!}
     {!! $comparisonChart->script() !!}
     {!! $yearlyCostChart->script() !!}
@@ -1108,7 +1109,7 @@
                     type: 'donut',
                     height: 300
                 },
-                labels: ['Resi', 'Utilizzati'],
+                labels: ['Devoluciones', 'Utilizados'],
                 series: [returned, used],
                 legend: {
                     position: 'bottom'
@@ -1126,7 +1127,7 @@
                                 show: true,
                                 total: {
                                     show: true,
-                                    label: 'Fornito',
+                                    label: 'Suministrado',
                                     formatter: () => supplied.toLocaleString()
                                 }
                             }
@@ -1134,17 +1135,17 @@
                     }
                 },
                 title: {
-                    text: 'Resi vs. Utilizzo'
+                    text: 'Devoluciones vs. uso'
                 }
             });
             window.retRateChart.render();
 
-            // (Optional) prevent page reload if user clicks the filter button now
+            // (Opcional) evitar recarga de página si el usuario hace clic ahora en el botón de filtro
             const btn = document.getElementById('retFilter');
             if (btn) btn.addEventListener('click', e => e.preventDefault());
         });
     </script>
-    {{-- 💰 Incassi per Categoria (donut) – with date filters --}}
+    {{-- 💰 Ingresos por categoría (donut) – con filtros de fecha --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const incomesRaw = @json($fullIncomeData ?? []);
@@ -1152,10 +1153,9 @@
                 .map(i => ({
                     date: i.date,
                     amount: Number(i.amount) || 0,
-                    // Blade JS (Incassi per Categoria) — change ONLY the category mapping line
-
+                    // Blade JS (Incassi per Categoria) — solo cambiar la línea de mapeo de categoría
                     category: (i.category && i.category !== '—' && i.category.toLowerCase() !==
-                        'uncategorized') ? i.category : 'Senza categoria'
+                        'uncategorized') ? i.category : 'Sin categoría'
                 }))
                 .sort((a, b) => a.date.localeCompare(b.date));
 
@@ -1195,7 +1195,7 @@
 
                 if (!series.length || total === 0) {
                     document.querySelector('#revCategoryChart').innerHTML =
-                        '<div class="text-muted py-3">Nessun dato per l\'intervallo selezionato.</div>';
+                        '<div class="text-muted py-3">No hay datos para el intervalo seleccionado.</div>';
                     return;
                 }
                 window.revChart = new ApexCharts(document.querySelector("#revCategoryChart"), {
@@ -1209,7 +1209,7 @@
                         position: 'bottom',
                         labels: {
                             colors: '#000'
-                        } // legend text black
+                        } // texto de la leyenda en negro
                     },
                     tooltip: {
                         y: {
@@ -1217,14 +1217,14 @@
                         }
                     },
 
-                    // data labels inside slices (value + percent)
+                    // etiquetas de datos dentro de los segmentos (valor + porcentaje)
                     dataLabels: {
                         formatter: (percent, opts) => {
                             const val = opts.w.config.series[opts.seriesIndex];
                             return `${val.toLocaleString()}€ (${percent.toFixed(1)}%)`;
                         },
                         style: {
-                            colors: ['#000'] // force black
+                            colors: ['#000'] // forzar negro
                         }
                     },
 
@@ -1292,13 +1292,13 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Costi per Categoria ---
+            // --- Costes por categoría ---
             const costsRaw = @json($fullCostData ?? []); // [{date, amount, category}]
             const costs = costsRaw
                 .map(c => ({
                     date: c.date,
                     amount: Number(c.amount) || 0,
-                    category: c.category || 'Senza categoria'
+                    category: c.category || 'Sin categoría'
                 }))
                 .sort((a, b) => a.date.localeCompare(b.date));
 
@@ -1338,7 +1338,7 @@
 
                 if (!series.length || total === 0) {
                     document.querySelector('#costByCategoryDonut').innerHTML =
-                        '<div class="text-muted py-3">Nessun dato per l\'intervallo selezionato.</div>';
+                        '<div class="text-muted py-3">No hay datos para el intervalo seleccionado.</div>';
                     return;
                 }
 
@@ -1354,7 +1354,7 @@
                         position: 'right',
                         labels: {
                             colors: '#000'
-                        } // legend text black
+                        } // texto de la leyenda en negro
                     },
                     tooltip: {
                         y: {
@@ -1368,7 +1368,7 @@
                             return `€ ${Number(val).toFixed(2)} (${percent.toFixed(1)}%)`;
                         },
                         style: {
-                            colors: ['#000'] // <-- black
+                            colors: ['#000'] // <-- negro
                         }
                     },
 
@@ -1380,11 +1380,11 @@
                                     show: true,
                                     total: {
                                         show: true,
-                                        label: 'Totale',
+                                        label: 'Total',
                                         formatter: () => '€ ' + total.toFixed(2),
                                         style: {
                                             color: '#000'
-                                        } // total color
+                                        } // color del total
                                     },
                                     value: {
                                         formatter: val => '€ ' + Number(val).toFixed(2),
@@ -1426,11 +1426,11 @@
                 }
             }
 
-            // --- Top 5 Sprechi (card in the row with its own donut) ---
+            // --- Top 5 desperdicios (tarjeta en la fila con su propio donut) ---
             const wastedRaw = @json($fullWastedData ?? []); // [{recipe_name, waste, date}]
             const wasted = wastedRaw
                 .map(w => ({
-                    name: w.recipe_name || 'Sconosciuto',
+                    name: w.recipe_name || 'Desconocido',
                     waste: Number(w.waste) || 0,
                     date: w.date
                 }))
@@ -1465,7 +1465,7 @@
 
                 if (!top.length) {
                     document.querySelector('#wastedRowPie').innerHTML =
-                        '<div class="text-muted py-3">Nessun dato per l\'intervallo selezionato.</div>';
+                        '<div class="text-muted py-3">No hay datos para el intervalo seleccionado.</div>';
                     return;
                 }
 
@@ -1492,7 +1492,7 @@
                                     show: true,
                                     total: {
                                         show: true,
-                                        label: 'Totale',
+                                        label: 'Total',
                                         formatter: w => {
                                             const t = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                                             return t.toLocaleString();
@@ -1526,11 +1526,11 @@
                 }
             }
 
-            // Stub to avoid errors for server-rendered "Resi vs Riforniti"
+            // Stub para evitar errores con el gráfico renderizado en servidor "Devoluciones vs Reposiciones"
             const $retBtn = document.getElementById('retFilter');
             if ($retBtn) {
                 $retBtn.addEventListener('click', () => {
-                    console.log('Apply filter Resi vs Riforniti', {
+                    console.log('Aplicar filtro Devoluciones vs Reposiciones', {
                         from: document.getElementById('retStart')?.value,
                         to: document.getElementById('retEnd')?.value
                     });
@@ -1545,7 +1545,7 @@
 
             window.barChart = new ApexCharts($barEl, {
                 series: [{
-                    name: 'Guadagni',
+                    name: 'Ganancias',
                     data: fullData.map(i => i.total)
                 }],
                 chart: {
@@ -1579,7 +1579,7 @@
                         }
                     });
                     window.barChart.updateSeries([{
-                        name: 'Guadagni',
+                        name: 'Ganancias',
                         data: fd.map(i => i.total)
                     }]);
                 });
@@ -1602,7 +1602,7 @@
                     .slice(0, 5);
             }
 
-            // init Sold donut
+            // init donut de vendidos
             const soldTop = aggregateTop(fullSold, 'sold');
             window.soldChart = new ApexCharts(document.querySelector('#soldPie'), {
                 chart: {
@@ -1614,7 +1614,7 @@
             });
             window.soldChart.render();
 
-            // init Wasted donut
+            // init donut de desperdiciados
             const wastedTop = aggregateTop(fullWasted, 'waste');
             window.wastedChart = new ApexCharts(document.querySelector('#wastedPie'), {
                 chart: {
@@ -1626,7 +1626,7 @@
             });
             window.wastedChart.render();
 
-            // bind Sold filter
+            // enlazar filtro de vendidos
             const $soldBtn = document.getElementById('soldFilter');
             if ($soldBtn) {
                 $soldBtn.addEventListener('click', () => {
@@ -1647,7 +1647,7 @@
                 });
             }
 
-            // bind Wasted filter
+            // enlazar filtro de desperdiciados
             const $wastedBtn = document.getElementById('wastedFilter');
             if ($wastedBtn) {
                 $wastedBtn.addEventListener('click', () => {
@@ -1669,12 +1669,12 @@
             }
         });
 
-     // === Incidenza Costi vs Ricavi — single source of truth ===
+     // === Incidencia costes vs ingresos — fuente única de verdad ===
 document.addEventListener('DOMContentLoaded', function () {
   const costs   = @json($fullCostData ?? []);   // [{date, amount, category}]
   const incomes = @json($fullIncomeData ?? []); // [{date, amount, category}]
 
-  const CATS       = ['Materie prime', 'Stipendi + TFR', 'Affitto', 'Energia elettrica', 'Altri costi'];
+  const CATS       = ['Materie prime', 'Sueldos + TFR', 'Alquiler', 'Energía eléctrica', 'Otros costes'];
   const baseColors = ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'];
   const zeroColor  = '#e0e0e0';
 
@@ -1683,7 +1683,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const $incBtn   = document.getElementById('incFilter');
   const $el       = document.querySelector('#incomeCostDonut');
 
-  // income category dropdown (optional, keeps existing behavior)
+  // desplegable de categoría de ingresos (opcional, mantiene el comportamiento existente)
   let $incomeSel = document.getElementById('incIncomeCategory');
   if (!$incomeSel) {
     $incomeSel = document.createElement('select');
@@ -1696,8 +1696,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (row) row.insertBefore(wrap, $incBtn.closest('.col-12') || row.lastChild);
   }
 
-  const catsIncome = Array.from(new Set(incomes.map(i => (i.category || 'Senza categoria').trim()))).sort();
-  $incomeSel.innerHTML = ['<option value="__all__">Tutte le entrate</option>']
+  const catsIncome = Array.from(new Set(incomes.map(i => (i.category || 'Sin categoría').trim()))).sort();
+  $incomeSel.innerHTML = ['<option value="__all__">Todos los ingresos</option>']
     .concat(catsIncome.map(c => `<option value="${String(c).replace(/"/g,'&quot;')}">${String(c).replace(/</g,'&lt;')}</option>`))
     .join('');
 
@@ -1708,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let tot = 0;
     for (const i of incomes) {
       const m = toMs(i.date); if (isNaN(m) || m < s || m > e) continue;
-      const label = (i.category || 'Senza categoria').trim();
+      const label = (i.category || 'Sin categoría').trim();
       if (cat && cat !== '__all__' && label !== cat) continue;
       tot += Number(i.amount) || 0;
     }
@@ -1723,10 +1723,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const amt = Number(c.amount) || 0;
       const cat = (c.category || '').toLowerCase();
       if (cat.includes('materie prime') || cat.includes('raw materials')) out['Materie prime'] += amt;
-      else if (cat.includes('stipendi') || cat.includes('tfr') || cat.includes('salary')) out['Stipendi + TFR'] += amt;
-      else if (cat.includes('affitto')) out['Affitto'] += amt;
-      else if (cat.includes('energia elettrica') || cat.includes('electricity')) out['Energia elettrica'] += amt;
-      else out['Altri costi'] += amt;
+      else if (cat.includes('stipendi') || cat.includes('tfr') || cat.includes('salary')) out['Sueldos + TFR'] += amt;
+      else if (cat.includes('affitto')) out['Alquiler'] += amt;
+      else if (cat.includes('energia elettrica') || cat.includes('electricity')) out['Energía eléctrica'] += amt;
+      else out['Otros costes'] += amt;
     }
     return out;
   }
@@ -1740,11 +1740,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.incChart) { try { window.incChart.destroy(); } catch(_){} window.incChart = null; }
 
     if (!incomeTotal) {
-      $el.innerHTML = '<div class="text-muted py-3">Nessun ricavo nel periodo selezionato.</div>';
+      $el.innerHTML = '<div class="text-muted py-3">No hay ingresos en el periodo seleccionado.</div>';
       return;
     }
 
-    // slices = cost amounts; percentages = cost / total income
+    // segmentos = importes de coste; porcentajes = coste / ingresos totales
     const series = rawSeries.map(v => v > 0 ? v : 0.0001);
     const colors = rawSeries.map((v,i) => v === 0 ? zeroColor : baseColors[i]);
 
@@ -1761,7 +1761,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const pct = (val / incomeTotal) * 100;
             return (val > incomeTotal)
               ? `€ ${val.toLocaleString(undefined,{minimumFractionDigits:2})}`
-              : `€ ${val.toLocaleString(undefined,{minimumFractionDigits:2})} · ${pct.toFixed(1)}% dei ricavi`;
+              : `€ ${val.toLocaleString(undefined,{minimumFractionDigits:2})} · ${pct.toFixed(1)}% de los ingresos`;
           }
         }
       },
@@ -1775,12 +1775,12 @@ document.addEventListener('DOMContentLoaded', function () {
               name: { show: false },
               value: {
                 show: true,
-                formatter: () => `€ ${incomeTotal.toLocaleString(undefined,{minimumFractionDigits:2})}`, // center = income
+                formatter: () => `€ ${incomeTotal.toLocaleString(undefined,{minimumFractionDigits:2})}`, // centro = ingresos
                 style: { fontSize: '18px', fontWeight: 700, color: '#000' }
               },
               total: {
                 show: true,
-                label: 'Netto',
+                label: 'Neto',
                 formatter: () => `€ ${(incomeTotal - costTotal).toLocaleString(undefined,{minimumFractionDigits:2})}`,
                 style: { fontSize: '13px', fontWeight: 600, color: '#000' }
               }
@@ -1793,7 +1793,7 @@ document.addEventListener('DOMContentLoaded', function () {
         enabled: true,
         formatter: (_ignoredPercent, opts) => {
           const val = rawSeries[opts.seriesIndex] || 0;
-          if (val > incomeTotal) return `€ ${Number(val).toLocaleString()}`; // hide % when > income
+          if (val > incomeTotal) return `€ ${Number(val).toLocaleString()}`; // ocultar % cuando sea > ingresos
           const pct = (val / incomeTotal) * 100;
           return `€ ${Number(val).toLocaleString()} (${pct.toFixed(1)}%)`;
         },
@@ -1806,7 +1806,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.incChart.render();
   }
 
-  // initial range from income data
+  // rango inicial desde los datos de ingresos
   const dates = incomes.map(i => i.date).filter(Boolean).sort();
   const d0 = dates[0] || new Date().toISOString().slice(0,10);
   const d1 = dates[dates.length-1] || d0;
@@ -1876,7 +1876,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         s.setDate(s.getDate() + 1);
                         break;
                     default:
-                        return; // custom
+                        return; // personalizado
                 }
                 $start.value = iso(s);
                 $end.value = iso(e);
@@ -1892,7 +1892,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const e = $end?.value;
                     if (!s || !e) return;
 
-                    // Push range into each card's local filter and click its "Applica" button
+                    // Empujar rango a cada filtro local de tarjeta y hacer clic en su botón "Aplicar"
                     const setVal = (id, val) => {
                         const el = document.getElementById(id);
                         if (el) el.value = val;
@@ -1902,12 +1902,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (btn) btn.click();
                     };
 
-                    // Monthly bar chart
+                    // gráfico de barras mensual
                     setVal('startDate', s);
                     setVal('endDate', e);
                     click('applyDateFilter');
 
-                    // Sold + Wasted (cards)
+                    // Vendidos + desperdiciados (tarjetas)
                     setVal('soldStart', s);
                     setVal('soldEnd', e);
                     click('soldFilter');
@@ -1915,12 +1915,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     setVal('wastedEnd', e);
                     click('wastedFilter');
 
-                    // Incassi per categoria
+                    // Ingresos por categoría
                     setVal('revStart', s);
                     setVal('revEnd', e);
                     click('revFilter');
 
-                    // Costi per categoria (right donut) + Top 5 Sprechi in row
+                    // Costes por categoría (donut derecho) + Top 5 desperdicios en fila
                     setVal('costStart', s);
                     setVal('costEnd', e);
                     click('costFilter');
@@ -1928,12 +1928,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     setVal('wastedRowEnd', e);
                     click('wastedRowFilter');
 
-                    // Incidenza costi vs ricavi
+                    // Incidencia costes vs ingresos
                     setVal('incStart', s);
                     setVal('incEnd', e);
                     click('incFilter');
 
-                    // Resi vs Riforniti (server-rendered; stub)
+                    // Devoluciones vs Reposiciones (renderizado en servidor; stub)
                     setVal('retStart', s);
                     setVal('retEnd', e);
                     click('retFilter');
@@ -1942,14 +1942,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Incassi per Categoria ---
+            // --- Ingresos por categoría ---
             const incomesRaw = @json($fullIncomeData ?? []);
             const incomes = incomesRaw.map(i => ({
                 date: i.date,
                 amount: Number(i.amount) || 0,
-                // Blade JS (Incassi per Categoria) — change ONLY the category mapping line
+                // Blade JS (Incassi per Categoria) — solo cambiar la línea de mapeo de categoría
                 category: (i.category && i.category !== '—' && i.category.toLowerCase() !==
-                    'uncategorized') ? i.category : 'Senza categoria'
+                    'uncategorized') ? i.category : 'Sin categoría'
             })).sort((a, b) => a.date.localeCompare(b.date));
 
             function incFilterAndGroup(start, end) {
@@ -1983,7 +1983,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     series = Object.values(grouped);
                 if (!series.length || total === 0) {
                     document.querySelector('#revCategoryChart').innerHTML =
-                        '<div class="text-muted py-3">Nessun dato per l\'intervallo selezionato.</div>';
+                        '<div class="text-muted py-3">No hay datos para el intervalo seleccionado.</div>';
                     return;
                 }
                 window.revChart = new ApexCharts(document.querySelector("#revCategoryChart"), {
@@ -1997,7 +1997,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         position: 'bottom',
                         labels: {
                             colors: '#000'
-                        } // legend text black
+                        } // texto de la leyenda en negro
                     },
                     tooltip: {
                         y: {
@@ -2005,14 +2005,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     },
 
-                    // data labels inside slices (value + percent)
+                    // etiquetas de datos dentro de los segmentos (valor + porcentaje)
                     dataLabels: {
                         formatter: (percent, opts) => {
                             const val = opts.w.config.series[opts.seriesIndex];
                             return `${val.toLocaleString()}€ (${percent.toFixed(1)}%)`;
                         },
                         style: {
-                            colors: ['#000'] // force black
+                            colors: ['#000'] // forzar negro
                         }
                     },
 
@@ -2076,12 +2076,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            // --- Costi per Categoria ---
+            // --- Costes por categoría ---
             const costsRaw = @json($fullCostData ?? []);
             const costs = costsRaw.map(c => ({
                 date: c.date,
                 amount: Number(c.amount) || 0,
-                category: c.category || 'Senza categoria'
+                category: c.category || 'Sin categoría'
             })).sort((a, b) => a.date.localeCompare(b.date));
 
             function groupCosts(start, end) {
@@ -2115,7 +2115,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     series = Object.values(grouped);
                 if (!series.length || total === 0) {
                     document.querySelector('#costByCategoryDonut').innerHTML =
-                        '<div class="text-muted py-3">Nessun dato per l\'intervallo selezionato.</div>';
+                        '<div class="text-muted py-3">No hay datos para el intervalo seleccionado.</div>';
                     return;
                 }
                 window.costCatChart = new ApexCharts(document.querySelector('#costByCategoryDonut'), {
@@ -2130,7 +2130,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         position: 'right',
                         labels: {
                             colors: '#000'
-                        } // legend text black
+                        } // texto de la leyenda en negro
                     },
                     tooltip: {
                         y: {
@@ -2144,7 +2144,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             return `€ ${Number(val).toFixed(2)} (${percent.toFixed(1)}%)`;
                         },
                         style: {
-                            colors: ['#000'] // <-- black
+                            colors: ['#000'] // <-- negro
                         }
                     },
 
@@ -2156,11 +2156,11 @@ document.addEventListener('DOMContentLoaded', function () {
                                     show: true,
                                     total: {
                                         show: true,
-                                        label: 'Totale',
+                                        label: 'Total',
                                         formatter: () => '€ ' + total.toFixed(2),
                                         style: {
                                             color: '#000'
-                                        } // total color
+                                        } // color del total
                                     },
                                     value: {
                                         formatter: val => '€ ' + Number(val).toFixed(2),
@@ -2200,10 +2200,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            // --- Top 5 Sprechi ---
+            // --- Top 5 desperdicios ---
             const wastedRaw = @json($fullWastedData ?? []);
             const wasted = wastedRaw.map(w => ({
-                name: w.recipe_name || 'Sconosciuto',
+                name: w.recipe_name || 'Desconocido',
                 waste: Number(w.waste) || 0,
                 date: w.date
             })).sort((a, b) => a.date.localeCompare(b.date));
@@ -2235,7 +2235,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 if (!top.length) {
                     document.querySelector('#wastedRowPie').innerHTML =
-                        '<div class="text-muted py-3">Nessun dato per l\'intervallo selezionato.</div>';
+                        '<div class="text-muted py-3">No hay datos para el intervalo seleccionado.</div>';
                     return;
                 }
                 window.wastedRowChart = new ApexCharts(document.querySelector('#wastedRowPie'), {
@@ -2261,7 +2261,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     show: true,
                                     total: {
                                         show: true,
-                                        label: 'Totale',
+                                        label: 'Total',
                                         formatter: w => {
                                             const t = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                                             return t.toLocaleString();
@@ -2293,13 +2293,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            // (Optional) Stub for Ret filter to avoid errors; server-side chart stays as-is.
+            // (Opcional) Stub para el filtro de devoluciones para evitar errores; el gráfico del lado del servidor permanece igual.
             const $retBtn = document.getElementById('retFilter');
             if ($retBtn) {
                 $retBtn.addEventListener('click', () => {
                     const $retStart = document.getElementById('retStart');
                     const $retEnd = document.getElementById('retEnd');
-                    console.log('Apply filter Resi vs Riforniti', {
+                    console.log('Aplicar filtro Devoluciones vs Reposiciones', {
                         from: $retStart ? $retStart.value : null,
                         to: $retEnd ? $retEnd.value : null
                     });

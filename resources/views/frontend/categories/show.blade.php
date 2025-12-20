@@ -7,46 +7,46 @@
 <div class="container py-5 px-md-5">
   <div class="card border-primary shadow-sm rounded-3 overflow-hidden">
 
-    <!-- Header -->
+    <!-- Encabezado -->
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-list fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        Categoria — {{ $costCategory->name }}
+        Categoría — {{ $costCategory->name }}
       </h5>
     </div>
 
     <div class="card-body">
-      <!-- Dettagli -->
+      <!-- Detalles -->
       <div class="row row-cols-1 row-cols-md-2 g-4 mb-4" style="width: 70%;">
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Nome Categoria</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Nombre de la categoría</h6>
           <p class="fs-3 fw-bold mb-0">{{ $costCategory->name }}</p>
         </div>
         <div class="col">
-          <h6 class="text-uppercase text-muted small mb-1">Ultimo Aggiornamento</h6>
+          <h6 class="text-uppercase text-muted small mb-1">Última actualización</h6>
           <p class="fs-5 mb-0">{{ optional($costCategory->updated_at)?->format('Y-m-d H:i') ?? '—' }}</p>
         </div>
       </div>
 
       <hr class="border-secondary">
 
-      <!-- Pulsanti Azione -->
+      <!-- Botones de acción -->
       <div class="d-flex justify-content-end gap-2">
         <a href="{{ route('cost_categories.edit', $costCategory) }}" class="btn btn-gold btn-lg">
-          <i class="bi bi-pencil me-1"></i> Modifica
+          <i class="bi bi-pencil me-1"></i> Modificar
         </a>
 
         <a href="{{ route('cost_categories.index') }}" class="btn btn-deepblue btn-lg">
-          <i class="bi bi-arrow-left me-1"></i> Indietro alla lista
+          <i class="bi bi-arrow-left me-1"></i> Volver a la lista
         </a>
 
         <form action="{{ route('cost_categories.destroy', $costCategory) }}"
               method="POST" class="d-inline"
-              onsubmit="return confirm('Eliminare questa categoria?');">
+              onsubmit="return confirm('¿Eliminar esta categoría?');">
           @csrf
           @method('DELETE')
           <button type="submit" class="btn btn-red btn-lg">
-            <i class="bi bi-trash me-1"></i> Elimina
+            <i class="bi bi-trash me-1"></i> Eliminar
           </button>
         </form>
       </div>

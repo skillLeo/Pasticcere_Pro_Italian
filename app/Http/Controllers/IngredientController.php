@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Recipe;               // ← servono anche le ricette
+use App\Models\Recipe;               // ← también se necesitan las recetas
 
 class IngredientController extends Controller
 {
@@ -17,7 +17,7 @@ class IngredientController extends Controller
     {
         $user = Auth::user();
 
-        // 1) Calcolo id utenti visibili
+        // 1) Cálculo de IDs de usuarios visibles
         if (is_null($user->created_by)) {
             $visibleUserIds = User::where('created_by', $user->id)
                                   ->pluck('id')
@@ -27,7 +27,7 @@ class IngredientController extends Controller
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 2) Prendo ingredienti + eventuale relazione recipe
+        // 2) Obtengo ingredientes + posible relación recipe
         $ingredients = Ingredient::with('recipe')
                                  ->whereIn('user_id', $visibleUserIds)
                                  ->get();
@@ -44,7 +44,7 @@ class IngredientController extends Controller
     {
         $user = Auth::user();
 
-        // validazione
+        // validación
         $data = $request->validate([
             'ingredient_name' => [
                 'required','string','max:255',
@@ -56,18 +56,18 @@ class IngredientController extends Controller
             'price_per_kg'    => 'required|numeric|min:0',
         ]);
 
-        // aggiungo user_id
+        // añado user_id
         $data['user_id'] = $user->id;
 
-        // creo l'ingrediente
+        // creo el ingrediente
         $ingredient = Ingredient::create($data);
 
-        // se è una chiamata AJAX (modal “aggiungi ingrediente”)
+        // si es una llamada AJAX (modal “añadir ingrediente”)
         if ($request->expectsJson()) {
             return response()->json($ingredient, 201);
         }
 
-        return back()->with('success', 'Ingrediente salvato con successo.');
+        return back()->with('success', 'Ingrediente guardado con éxito.');
     }
 
     public function show(Ingredient $ingredient)
@@ -100,30 +100,30 @@ class IngredientController extends Controller
         ]);
 
         DB::transaction(function () use ($ingredient, $data, $user) {
-            // 1) Update base ingredient
+            // 1) Actualizar ingrediente base
             $ingredient->update($data);
 
-            // 2) If this ingredient is a “recipe-as-ingredient”, sync the recipe’s base €/kg
+            // 2) Si este ingrediente es una “receta-como-ingrediente”, sincronizar el €/kg base de la receta
             if ($ingredient->recipe_id) {
                 Recipe::where('id', $ingredient->recipe_id)
                       ->update(['production_cost_per_kg' => $data['price_per_kg']]);
             }
 
-            // 3) Cascade: any recipe that uses THIS ingredient gets recalculated.
-            //    If that recipe is also saved as an ingredient, update that ingredient's price
-            //    to the recipe's unit_ing_cost, then keep cascading upwards.
-            $visited = []; // avoid cycles
+            // 3) En cascada: cualquier receta que use ESTE ingrediente se recalcula.
+            //    Si esa receta también está guardada como ingrediente, se actualiza el precio
+            //    del ingrediente al unit_ing_cost de la receta y se sigue la cascada hacia arriba.
+            $visited = []; // evitar ciclos
             $this->cascadeFromIngredient($ingredient, $visited);
         });
 
         return redirect()
             ->route('ingredients.index')
-            ->with('success', 'Ingrediente aggiornato e costi ricalcolati in cascata!');
+            ->with('success', 'Ingrediente actualizado y costes recalculados en cascada.');
     }
 
     /**
-     * Recalculate all recipes that use $ingredient; if any recipe has a linked ingredient row,
-     * update that ingredient's price to the recipe's unit_ing_cost, and recurse upward.
+     * Recalcular todas las recetas que usan $ingredient; si alguna receta tiene una fila de ingrediente
+     * vinculada, actualizar el precio de ese ingrediente al unit_ing_cost de la receta y recursar hacia arriba.
      */
     private function cascadeFromIngredient(Ingredient $ingredient, array &$visited): void
     {
@@ -132,37 +132,37 @@ class IngredientController extends Controller
         }
         $visited[$ingredient->id] = true;
 
-        // find recipes that include this ingredient
+        // encontrar recetas que incluyen este ingrediente
         $recipes = Recipe::whereHas('ingredients', function ($q) use ($ingredient) {
                 $q->where('ingredient_id', $ingredient->id);
             })
-            ->with(['ingredients.ingredient']) // need all ingredient prices to recalc
+            ->with(['ingredients.ingredient']) // necesitamos todos los precios de los ingredientes para recalcular
             ->get();
 
         foreach ($recipes as $recipe) {
-            // Recalc unit_ing_cost (same logic as in your recipe list)
+            // Recalcular unit_ing_cost (misma lógica que en tu lista de recetas)
             $this->recalcAndPersistRecipeUnitIngCost($recipe);
 
-            // If this recipe is also saved as an ingredient, update that ingredient’s price
-            // to MATCH the recipe’s unit_ing_cost (your “Costo ingr.” shown in list)
+            // Si esta receta también está guardada como ingrediente, actualizar el precio de ese ingrediente
+            // para QUE COINCIDA con el unit_ing_cost de la receta (tu “Costo ingr.” mostrado en la lista)
             $linkedIng = Ingredient::where('recipe_id', $recipe->id)
                                    ->where('user_id', $recipe->user_id)
                                    ->first();
 
             if ($linkedIng) {
-                // Important: set ingredient's price to the recipe's unit-ing-cost
+                // Importante: establecer el precio del ingrediente al coste de ingrediente unitario de la receta
                 $linkedIng->update(['price_per_kg' => $recipe->unit_ing_cost]);
 
-                // Recurse: recipes that use this newly-updated ingredient must be recalculated too
+                // Recurre: las recetas que usan este ingrediente actualizado también deben recalcularse
                 $this->cascadeFromIngredient($linkedIng, $visited);
             }
         }
     }
 
     /**
-     * Compute batch ingredient cost and unit_ing_cost exactly like recipe index and persist.
+     * Calcula batch ingredient cost y unit_ing_cost exactamente como en el índice de recetas y lo guarda.
      * - batchIngCost = sum(quantity_g/1000 * ingredient.price_per_kg)
-     * - unitIngCost depends on sell_mode:
+     * - unitIngCost depende de sell_mode:
      *     piece: batchIngCost / total_pieces (>=1)
      *     kg:    batchIngCost / (recipe_weight>0 ? recipe_weight/1000 : sumQty/1000)
      */
@@ -191,11 +191,11 @@ class IngredientController extends Controller
             $unitIngCost = round($batchIngCost / $kg, 2);
         }
 
-        // Persist both so list & ingredient sync are reliable
+        // Guardar ambos para que la lista y la sincronización con ingredientes sean fiables
         $recipe->update([
             'unit_ing_cost'   => $unitIngCost,
-            // keep this if you use it elsewhere:
-            // 'batch_ing_cost'   => $batchIngCost,  // only if you have this column
+            // mantiene esto si lo usas en otro sitio:
+            // 'batch_ing_cost'   => $batchIngCost,  // solo si tienes esta columna
         ]);
     }
 
@@ -203,12 +203,12 @@ class IngredientController extends Controller
     {
         abort_unless($ingredient->user_id === Auth::id(), 403);
 
-        // se era legato ad una recipe pivot, stacco
-        $ingredient->recipes()->detach();
+        // si estaba vinculado a una receta pivot, desligar
+        $ingredient->recipe()->dissociate(); // establece recipe_id = null
         $ingredient->delete();
 
         return redirect()
             ->route('ingredients.index')
-            ->with('success', 'Ingrediente eliminato con successo!');
+            ->with('success', 'Ingrediente eliminado con éxito.');
     }
 }

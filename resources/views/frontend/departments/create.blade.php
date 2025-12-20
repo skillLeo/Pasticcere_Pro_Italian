@@ -1,7 +1,7 @@
 {{-- resources/views/frontend/departments/form.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', isset($department) ? 'Modifica Reparto' : 'Aggiungi Reparto')
+@section('title', isset($department) ? 'Editar Departamento' : 'Agregar Departamento')
 
 @section('content')
 <div class="container py-5 px-md-5">
@@ -9,7 +9,7 @@
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-building fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($department) ? 'Modifica Reparto' : 'Aggiungi Reparto' }}
+        {{ isset($department) ? 'Editar Departamento' : 'Agregar Departamento' }}
       </h5>
     </div>
 
@@ -24,23 +24,23 @@
         @if(isset($department)) @method('PUT') @endif
 
         <div class="mb-4">
-          <label for="name" class="form-label fw-semibold">Nome Reparto</label>
+          <label for="name" class="form-label fw-semibold">Nombre del Departamento</label>
           <input
             type="text"
             name="name"
             id="name"
             class="form-control form-control-lg"
-            placeholder="es. Produzione, Logistica"
+            placeholder="p. ej. Producción, Logística"
             value="{{ old('name', $department->name ?? '') }}"
             required
           >
-          <div class="invalid-feedback">Per favore inserisci il nome del reparto.</div>
+          <div class="invalid-feedback">Por favor, introduce el nombre del departamento.</div>
         </div>
 
         <div class="text-end">
           <button type="submit" class="btn btn-gold-filled btn-lg">
             <i class="bi bi-save2 me-1"></i>
-            {{ isset($department) ? 'Aggiorna Reparto' : 'Salva Reparto' }}
+            {{ isset($department) ? 'Actualizar Departamento' : 'Guardar Departamento' }}
           </button>
         </div>
       </form>
@@ -72,7 +72,7 @@
 
 @section('scripts')
 <script>
-  // Bootstrap validation
+  // Validación de Bootstrap
   (() => {
     'use strict';
     const forms = document.querySelectorAll('.needs-validation');

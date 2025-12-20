@@ -15,27 +15,27 @@ class RecordFilterController extends Controller
         $user = Auth::user();
 
         //
-        // 1) Build “visible” user IDs
+        // 1) Construir los IDs de usuarios “visibles”
         //
         if (is_null($user->created_by)) {
-            // root → self + direct children
+            // root → yo mismo + hijos directos
             $children = User::where('created_by', $user->id)->pluck('id');
             $visibleUserIds = $children->isEmpty()
                 ? collect([$user->id])
                 : $children->push($user->id);
         } else {
-            // child → self + your creator
+            // hijo → yo mismo + mi creador
             $visibleUserIds = collect([$user->id, $user->created_by]);
         }
 
         //
-        // 2) Date filters
+        // 2) Filtros de fecha
         //
         $from = $request->query('from');
         $to   = $request->query('to');
 
         //
-        // 3) Fetch & group Showcase
+        // 3) Obtener y agrupar Showcase
         //
         $showcases = Showcase::with('recipes.recipe.category','recipes.recipe.department')
             ->whereIn('user_id', $visibleUserIds)
@@ -46,7 +46,7 @@ class RecordFilterController extends Controller
         $showcaseGroups = $showcases->groupBy(fn($sc) => $sc->showcase_date->format('Y-m-d'));
 
         //
-        // 4) Fetch & group ExternalSupply
+        // 4) Obtener y agrupar ExternalSupply
         //
         $externals = ExternalSupply::with('client','recipes.recipe.category','recipes.recipe.department','recipes.returns')
             ->whereIn('user_id', $visibleUserIds)
@@ -57,7 +57,7 @@ class RecordFilterController extends Controller
         $externalGroups = $externals->groupBy(fn($es) => $es->supply_date->format('Y-m-d'));
 
         //
-        // 5) Grand totals (used in summaries and footers)
+        // 5) Totales generales (usados en resúmenes y pies de tabla)
         //
         $totalShowcaseRevenue = $showcases
             ->flatMap(fn($sc) => $sc->recipes->pluck('actual_revenue'))

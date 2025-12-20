@@ -12,25 +12,25 @@ use Symfony\Component\HttpFoundation\Response;
 class PastryChefController extends Controller
 {
     /**
-     * Visualizza l’elenco di tutti i pasticceri visibili all’utente.
+     * Muestra el listado de todos los pasteleros visibles para el usuario.
      */
     public function index()
     {
         $user = Auth::user();
 
-        // 1) Costruisci il gruppo di user_id visibili
+        // 1) Construir el grupo de user_id visibles
         if (is_null($user->created_by)) {
-            // ROOT user: me + chi ho creato
+            // ROOT user: yo + a quienes he creado
             $visibleUserIds = User::where('created_by', $user->id)
                                   ->pluck('id')
                                   ->push($user->id)
                                   ->unique();
         } else {
-            // CHILD user: me + chi mi ha creato
+            // CHILD user: yo + quien me ha creado
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 2) Prendi i pasticceri del gruppo o quelli di default globali
+        // 2) Obtener los pasteleros del grupo o los globales por defecto
         $pastryChefs = PastryChef::with('user')
             ->where(function($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds);
@@ -46,7 +46,7 @@ class PastryChefController extends Controller
     }
 
     /**
-     * Mostra il form per creare un nuovo pasticcere.
+     * Muestra el formulario para crear un nuevo pastelero.
      */
     public function create()
     {
@@ -54,7 +54,7 @@ class PastryChefController extends Controller
     }
 
     /**
-     * Salva un nuovo pasticcere.
+     * Guarda un nuevo pastelero.
      */
     public function store(Request $request)
     {
@@ -64,24 +64,24 @@ class PastryChefController extends Controller
             'phone' => 'nullable|string|max:20',
         ]);
 
-        // Assegna l’utente corrente
+        // Asignar el usuario actual
         $data['user_id'] = Auth::id();
 
         PastryChef::create($data);
 
         return redirect()
             ->route('pastry-chefs.index')
-            ->with('success', 'Pasticcere aggiunto con successo!');
+            ->with('success', 'Pastelero añadido con éxito!');
     }
 
     /**
-     * Mostra il form per modificare un pasticcere (solo se di sua proprietà).
+     * Muestra el formulario para editar un pastelero (solo si es de su propiedad).
      */
     public function edit(PastryChef $pastryChef)
     {
         $user = Auth::user();
 
-        // Permetti al super admin o al creatore
+        // Permitir al super admin o al creador
         if (!$user->hasRole('super') && $pastryChef->user_id !== $user->id) {
             abort(Response::HTTP_FORBIDDEN);
         }
@@ -90,7 +90,7 @@ class PastryChefController extends Controller
     }
 
     /**
-     * Aggiorna un pasticcere esistente.
+     * Actualiza un pastelero existente.
      */
     public function update(Request $request, PastryChef $pastryChef)
     {
@@ -108,11 +108,11 @@ class PastryChefController extends Controller
 
         return redirect()
             ->route('pastry-chefs.index')
-            ->with('success', 'Pasticcere aggiornato con successo!');
+            ->with('success', 'Pastelero actualizado con éxito!');
     }
 
     /**
-     * Visualizza i dettagli di un pasticcere.
+     * Muestra los detalles de un pastelero.
      */
     public function show(PastryChef $pastryChef)
     {
@@ -120,7 +120,7 @@ class PastryChefController extends Controller
     }
 
     /**
-     * Elimina un pasticcere (solo se di sua proprietà).
+     * Elimina un pastelero (solo si es de su propiedad).
      */
     public function destroy(PastryChef $pastryChef)
     {
@@ -132,6 +132,6 @@ class PastryChefController extends Controller
 
         return redirect()
             ->route('pastry-chefs.index')
-            ->with('success', 'Pasticcere eliminato con successo!');
+            ->with('success', 'Pastelero eliminado con éxito!');
     }
 }

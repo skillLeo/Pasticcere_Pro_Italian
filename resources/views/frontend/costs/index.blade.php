@@ -1,18 +1,18 @@
-{{-- resources/views/frontend/costs/index.blade.php (Tutti i Costi) --}}
+{{-- resources/views/frontend/costs/index.blade.php (Todos los Costes) --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Tutti i Costi')
+@section('title', 'Todos los Costes')
 
 @section('content')
     <div class="container py-5 px-md-5">
 
-        <!-- Aggiungi / Modifica Costo -->
+        <!-- Añadir / Modificar Coste -->
         <div class="card mb-5 border-warning shadow-sm">
             <div class="card-header d-flex align-items-center" style="background-color: #041930;">
                 <iconify-icon icon="mdi:format-list-bulleted" class="me-2"
                               style="width: 1.0em; height: 1.0em; color: #e2ae76; font-size: 1.6vw;"></iconify-icon>
                 <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-                    {{ isset($cost) ? 'Modifica Costo' : 'Aggiungi Costo' }}
+                    {{ isset($cost) ? 'Modificar Coste' : 'Añadir Coste' }}
                 </h5>
             </div>
 
@@ -27,7 +27,7 @@
 
                     <div class="col-md-6">
                         <label for="cost_identifier" class="form-label fw-semibold">
-                            Identificatore Costo <small class="text-muted">(facoltativo)</small>
+                            Identificador de Coste <small class="text-muted">(opcional)</small>
                         </label>
                         <input type="text"
                                id="cost_identifier"
@@ -37,18 +37,18 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="supplier" class="form-label fw-semibold">Fornitore</label>
+                        <label for="supplier" class="form-label fw-semibold">Proveedor</label>
                         <input type="text"
                                id="supplier"
                                name="supplier"
                                class="form-control form-control-lg"
                                value="{{ old('supplier', $cost->supplier ?? '') }}"
                                required>
-                        <div class="invalid-feedback">Inserisci un fornitore.</div>
+                        <div class="invalid-feedback">Introduce un proveedor.</div>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="amount" class="form-label fw-semibold">Importo</label>
+                        <label for="amount" class="form-label fw-semibold">Importe</label>
                         <div class="input-group input-group-lg has-validation">
                             <span class="input-group-text">€</span>
                             <input type="number"
@@ -58,28 +58,28 @@
                                    class="form-control"
                                    value="{{ old('amount', $cost->amount ?? '') }}"
                                    required>
-                            <div class="invalid-feedback">Inserisci un importo valido.</div>
+                            <div class="invalid-feedback">Introduce un importe válido.</div>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="due_date" class="form-label fw-semibold">Data di scadenza</label>
+                        <label for="due_date" class="form-label fw-semibold">Fecha de vencimiento</label>
                         <input type="date"
                                id="due_date"
                                name="due_date"
                                class="form-control form-control-lg"
                                value="{{ old('due_date', $cost->due_date ?? '') }}"
                                required>
-                        <div class="invalid-feedback">Seleziona una data.</div>
+                        <div class="invalid-feedback">Selecciona una fecha.</div>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="category_id" class="form-label fw-semibold">Categoria</label>
+                        <label for="category_id" class="form-label fw-semibold">Categoría</label>
                         <select id="category_id"
                                 name="category_id"
                                 class="form-select form-select-lg"
                                 required>
-                            <option value="">Seleziona…</option>
+                            <option value="">Selecciona…</option>
                             @foreach ($categories as $c)
                                 <option value="{{ $c->id }}"
                                     {{ old('category_id', $cost->category_id ?? '') == $c->id ? 'selected' : '' }}>
@@ -87,23 +87,23 @@
                                 </option>
                             @endforeach
                         </select>
-                        <div class="invalid-feedback">Seleziona una categoria.</div>
+                        <div class="invalid-feedback">Selecciona una categoría.</div>
                     </div>
 
                     <div class="col-12 text-end">
                         <button type="submit" class="btn btn-gold-filled btn-lg">
                             <i class="bi bi-save2 me-1"></i>
-                            {{ isset($cost) ? 'Aggiorna Costo' : 'Salva Costo' }}
+                            {{ isset($cost) ? 'Actualizar Coste' : 'Guardar Coste' }}
                         </button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- Filtra per mese -->
+        <!-- Filtrar por mes -->
         <div class="row g-2 align-items-end mb-4">
             <div class="col-auto">
-                <label for="filterMonth" class="form-label fw-semibold">Mostra mese</label>
+                <label for="filterMonth" class="form-label fw-semibold">Mostrar mes</label>
                 <input type="month"
                        id="filterMonth"
                        class="form-control form-control-lg"
@@ -111,26 +111,26 @@
             </div>
         </div>
 
-        <!-- Tabella Costi -->
+        <!-- Tabla de Costes -->
         <div class="card border-warning shadow-sm">
             <div class="card-header d-flex align-items-center" style="background-color: #041930;">
                 <h5 class="mb-0 fw-bold d-flex align-items-center" style="color: #e2ae76; font-size: 1.6vw;">
                     <iconify-icon icon="mdi:table" class="me-2" style="font-size: 1.7vw; color: #e2ae76;"></iconify-icon>
-                    Tutti i Costi
+                    Todos los Costes
                 </h5>
             </div>
             <div class="card-body table-responsive">
-                <table  data-page-length="25"id="costTable"
+                <table data-page-length="25" id="costTable"
                        class="table table-bordered table-striped table-hover align-middle text-center mb-0"
                        data-page-length="25">
                     <thead>
                         <tr>
-                            <th class="sortable" style="width:20px;">Identificatore <span class="sort-indicator"></span></th>
-                            <th class="sortable">Fornitore <span class="sort-indicator"></span></th>
-                            <th class="sortable text-end">Importo <span class="sort-indicator"></span></th>
-                            <th class="sortable">Scadenza <span class="sort-indicator"></span></th>
-                            <th class="sortable">Categoria <span class="sort-indicator"></span></th>
-                            <th class="text-center">Azioni</th>
+                            <th class="sortable" style="width:20px;">Identificador <span class="sort-indicator"></span></th>
+                            <th class="sortable">Proveedor <span class="sort-indicator"></span></th>
+                            <th class="sortable text-end">Importe <span class="sort-indicator"></span></th>
+                            <th class="sortable">Vencimiento <span class="sort-indicator"></span></th>
+                            <th class="sortable">Categoría <span class="sort-indicator"></span></th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -146,20 +146,20 @@
                                 <td class="text-center">
                                     <a href="{{ route('costs.show', $item) }}"
                                        class="btn btn-sm btn-deepblue me-1"
-                                       title="Visualizza Costo">
+                                       title="Ver Coste">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     <a href="{{ route('costs.edit', $item) }}"
                                        class="btn btn-sm btn-gold me-1"
-                                       title="Modifica Costo">
+                                       title="Editar Coste">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('costs.destroy', $item) }}"
                                           method="POST"
                                           class="d-inline"
-                                          onsubmit="return confirm('Eliminare questo costo?');">
+                                          onsubmit="return confirm('¿Eliminar este coste?');">
                                         @csrf @method('DELETE')
-                                        <button class="btn btn-sm btn-red" title="Elimina Costo">
+                                        <button class="btn btn-sm btn-red" title="Eliminar Coste">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
@@ -211,7 +211,7 @@
       vertical-align: middle;
   }
 
-  /* Custom 2‑state sorting visuals */
+  /* Custom 2-state sorting visuals */
   #costTable thead th.sortable {
       cursor: pointer;
       user-select: none;
@@ -253,23 +253,23 @@
                 var table = $('#costTable').DataTable({
                     paging: true,
                     ordering: true,
-                    orderMulti: false,          // single-column ordering only
+                    orderMulti: false,          // ordenación de una sola columna
                     responsive: true,
                     pageLength: $('#costTable').data('page-length') || 10,
-                    order: [[3, 'desc']],       // default: sort by Scadenza desc
+                    order: [[3, 'desc']],       // por defecto: ordenar por Vencimiento desc
                     columnDefs: [
-                        { orderable: false, targets: 5 } // Azioni non ordinabile
+                        { orderable: false, targets: 5 } // Acciones no ordenable
                     ],
                     language: {
-                        search: "Cerca:",
-                        lengthMenu: "Mostra _MENU_ voci per pagina",
-                        info: "Visualizzati da _START_ a _END_ di _TOTAL_ costi",
+                        search: "Buscar:",
+                        lengthMenu: "Mostrar _MENU_ registros por página",
+                        info: "Mostrando de _START_ a _END_ de _TOTAL_ costes",
                         paginate: { previous: "«", next: "»" },
-                        zeroRecords: "Nessun costo trovato"
+                        zeroRecords: "No se encontraron costes"
                     }
                 });
 
-                // Restore previous 2‑state sort (if saved)
+                // Restaurar orden 2-estado previo (si existe)
                 try {
                     const saved = sessionStorage.getItem(STORAGE_KEY);
                     if (saved) {
@@ -295,7 +295,7 @@
                 }
                 updateIndicators();
 
-                // 2‑state (asc <-> desc) header click
+                // Click de cabecera 2-estado (asc <-> desc)
                 $('#costTable thead').on('click', 'th.sortable', function() {
                     const idx = $(this).index();
                     const colSettings = table.settings()[0].aoColumns[idx];
@@ -315,12 +315,12 @@
                     } catch(e){}
                 });
 
-                // Prevent shift multi-order
+                // Evitar multi-orden con shift
                 $('#costTable thead').on('mousedown', 'th', function(e) {
                     if (e.shiftKey) e.preventDefault();
                 });
 
-                // Month filter
+                // Filtro por mes
                 $.fn.dataTable.ext.search.push(function(settings, data) {
                     if (settings.nTable.id !== 'costTable') return true;
                     var selected = $('#filterMonth').val();
@@ -334,7 +334,7 @@
                 });
             }
 
-            // Bootstrap validation
+            // Validación Bootstrap
             const forms = document.querySelectorAll('.needs-validation');
             Array.from(forms).forEach(form => {
                 form.addEventListener('submit', e => {

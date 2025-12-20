@@ -1,17 +1,17 @@
 {{-- resources/views/frontend/departments/index.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', 'Tutti i Reparti')
+@section('title', 'Todos los Departamentos')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Aggiungi / Modifica Reparto -->
+  <!-- Agregar / Editar Departamento -->
   <div class="card mb-5 border-primary shadow-sm">
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-building fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($department) ? 'Modifica Reparto' : 'Aggiungi Reparto' }}
+        {{ isset($department) ? 'Editar Departamento' : 'Agregar Departamento' }}
       </h5>
     </div>
     <div class="card-body">
@@ -24,36 +24,36 @@
         @if(isset($department)) @method('PUT') @endif
 
         <div class="col-md-8">
-          <label for="name" class="form-label fw-semibold">Nome Reparto</label>
+          <label for="name" class="form-label fw-semibold">Nombre del Departamento</label>
           <input
             type="text"
             name="name"
             id="name"
             class="form-control form-control-lg"
-            placeholder="es. Pasticceria, Pizzeria, Cioccolateria"
+            placeholder="p. ej. Pastelería, Pizzería, Chocolatería"
             value="{{ old('name', $department->name ?? '') }}"
             required>
-          <div class="invalid-feedback">Per favore inserisci il nome del reparto.</div>
+          <div class="invalid-feedback">Por favor, introduce el nombre del departamento.</div>
         </div>
 
         <div class="col-12 text-end">
           <button type="submit" class="btn btn-gold-filled btn-lg">
             <i class="bi bi-save2 me-2"></i>
-            {{ isset($department) ? 'Aggiorna Reparto' : 'Salva Reparto' }}
+            {{ isset($department) ? 'Actualizar Departamento' : 'Guardar Departamento' }}
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Tabella Reparti -->
+  <!-- Tabla Departamentos -->
   <div class="card border-primary shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #041930;">
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        <i class="bi bi-building me-2"></i> Tutti i Reparti
+        <i class="bi bi-building me-2"></i> Todos los Departamentos
       </h5>
       <a href="{{ route('departments.create') }}" class="btn btn-gold btn-sm">
-        <i class="bi bi-plus-circle me-1"></i> Nuovo Reparto
+        <i class="bi bi-plus-circle me-1"></i> Nuevo Departamento
       </a>
     </div>
     <div class="card-body table-responsive">
@@ -63,8 +63,8 @@
         data-page-length="25">
         <thead>
           <tr>
-            <th class="sortable">Nome Reparto <span class="sort-indicator"></span></th>
-            <th>Azioni</th>
+            <th class="sortable">Nombre del Departamento <span class="sort-indicator"></span></th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -72,20 +72,20 @@
             <tr>
               <td>{{ $department->name ?? '—' }}</td>
               <td>
-                <a href="{{ route('departments.show', $department) }}" class="btn btn-sm btn-deepblue me-1" title="Visualizza">
+                <a href="{{ route('departments.show', $department) }}" class="btn btn-sm btn-deepblue me-1" title="Ver">
                   <i class="bi bi-eye"></i>
                 </a>
-                <a href="{{ route('departments.edit', $department) }}" class="btn btn-sm btn-gold me-1" title="Modifica">
+                <a href="{{ route('departments.edit', $department) }}" class="btn btn-sm btn-gold me-1" title="Editar">
                   <i class="bi bi-pencil-square"></i>
                 </a>
                 <form
                   action="{{ route('departments.destroy', $department) }}"
                   method="POST"
                   class="d-inline"
-                  onsubmit="return confirm('Eliminare questo reparto?');">
+                  onsubmit="return confirm('¿Eliminar este departamento?');">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-red" title="Elimina">
+                  <button type="submit" class="btn btn-sm btn-red" title="Eliminar">
                     <i class="bi bi-trash"></i>
                   </button>
                 </form>
@@ -93,7 +93,7 @@
             </tr>
           @empty
             <tr>
-              <td colspan="2" class="text-center text-muted">Nessun reparto trovato.</td>
+              <td colspan="2" class="text-center text-muted">No se encontraron departamentos.</td>
             </tr>
           @endforelse
         </tbody>
@@ -147,7 +147,7 @@
   }
   table td { vertical-align: middle !important; }
 
-  /* Custom 2‑state sort indicators */
+  /* Indicadores de orden personalizado de 2 estados */
   #departmentsTable thead th.sortable {
     cursor: pointer;
     user-select: none;
@@ -167,7 +167,7 @@
   }
   #departmentsTable thead th[data-sort-dir] .sort-indicator { opacity: 1; }
 
-  /* Remove default DataTables arrows */
+  /* Eliminar las flechas por defecto de DataTables */
   table.dataTable thead .sorting:after,
   table.dataTable thead .sorting_asc:after,
   table.dataTable thead .sorting_desc:after,
@@ -194,32 +194,32 @@
         pageLength: $('#departmentsTable').data('page-length') || 10,
         order: [[0,'asc']],
         columnDefs: [
-          { orderable: false, targets: -1 } // Azioni
+          { orderable: false, targets: -1 } // Acciones
         ],
         language: {
-          lengthMenu:    "Mostra _MENU_ elementi per pagina",
-            zeroRecords:   "Nessun record trovato",
-            info:          "Mostra _START_ a _END_ di _TOTAL_ elementi",
-            infoEmpty:     "Mostra 0 a 0 di 0 elementi",
-            infoFiltered:  "(filtrati da _MAX_ totali)",
-            search:        "Cerca:",
-            paginate: {
-              first:    "Primo",
-              previous: "←",
-              next:     "→",
-              last:     "Ultimo"
-            }
+          lengthMenu:    "Mostrar _MENU_ elementos por página",
+          zeroRecords:   "No se encontraron registros",
+          info:          "Mostrando de _START_ a _END_ de _TOTAL_ elementos",
+          infoEmpty:     "Mostrando 0 a 0 de 0 elementos",
+          infoFiltered:  "(filtrado de _MAX_ elementos en total)",
+          search:        "Buscar:",
+          paginate: {
+            first:    "Primero",
+            previous: "←",
+            next:     "→",
+            last:     "Último"
+          }
         }
       });
 
-      // Restore previous sort
+      // Restaurar orden previo
       try {
         const saved = sessionStorage.getItem(STORE_KEY);
         if (saved) {
           const { col, dir } = JSON.parse(saved);
-            if (typeof col === 'number' && (dir === 'asc' || dir === 'desc')) {
-              table.order([col, dir]).draw();
-            }
+          if (typeof col === 'number' && (dir === 'asc' || dir === 'desc')) {
+            table.order([col, dir]).draw();
+          }
         }
       } catch(e){}
 
@@ -238,7 +238,7 @@
       }
       updateIndicators();
 
-      // 2‑state toggle
+      // Toggle de 2 estados
       $('#departmentsTable thead').on('click', 'th.sortable', function() {
         const idx = $(this).index();
         const colSettings = table.settings()[0].aoColumns[idx];
@@ -258,13 +258,13 @@
         } catch(e){}
       });
 
-      // Prevent shift multi-order
+      // Evitar multi-orden con Shift
       $('#departmentsTable thead').on('mousedown', 'th', function(e){
         if (e.shiftKey) e.preventDefault();
       });
     }
 
-    // Validazione client-side Bootstrap
+    // Validación del lado del cliente con Bootstrap
     const forms = document.querySelectorAll('.needs-validation');
     Array.from(forms).forEach(form => {
       form.addEventListener('submit', function(e) {

@@ -1,16 +1,16 @@
 @extends('frontend.layouts.app')
 
-@section('title', isset($equipment) ? 'Modifica Attrezzatura' : 'Aggiungi Attrezzatura')
+@section('title', isset($equipment) ? 'Editar Equipamiento' : 'Agregar Equipamiento')
 
 @section('content')
 <div class="container py-5 px-md-5">
   <div class="card border-primary shadow-sm rounded-3">
     
-    <!-- Intestazione -->
+    <!-- Encabezado -->
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-tools fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($equipment) ? 'Modifica Attrezzatura' : 'Aggiungi Attrezzatura' }}
+        {{ isset($equipment) ? 'Editar Equipamiento' : 'Agregar Equipamiento' }}
       </h5>
     </div>
 
@@ -25,22 +25,22 @@
         @if(isset($equipment)) @method('PUT') @endif
 
         <div class="col-md-8">
-          <label for="name" class="form-label fw-semibold">Nome Attrezzatura</label>
+          <label for="name" class="form-label fw-semibold">Nombre del Equipamiento</label>
           <input 
             type="text"
             id="name"
             name="name"
             class="form-control form-control-lg"
-            placeholder="es. Impastatrice, Forno"
+            placeholder="ej. Amasadora, Horno"
             value="{{ old('name', $equipment->name ?? '') }}"
             required>
-          <div class="invalid-feedback">Inserisci il nome dell’attrezzatura.</div>
+          <div class="invalid-feedback">Introduce el nombre del equipamiento.</div>
         </div>
 
         <div class="col-12 text-end">
           <button type="submit" class="btn btn-gold-filled btn-lg">
             <i class="bi bi-save2 me-2"></i>
-            {{ isset($equipment) ? 'Aggiorna Attrezzatura' : 'Salva Attrezzatura' }}
+            {{ isset($equipment) ? 'Actualizar Equipamiento' : 'Guardar Equipamiento' }}
           </button>
         </div>
       </form>
@@ -74,7 +74,7 @@
 
 @section('scripts')
 <script>
-  // Validazione Bootstrap
+  // Validación de Bootstrap
   (() => {
     'use strict';
     const forms = document.querySelectorAll('.needs-validation');

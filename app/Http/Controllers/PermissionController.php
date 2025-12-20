@@ -24,15 +24,15 @@ class PermissionController extends Controller
         $request->validate([
             'name' => 'required|unique:permissions,name'
         ], [
-            'name.required' => 'Il nome del permesso è obbligatorio.',
-            'name.unique'   => 'Questo permesso esiste già.'
+            'name.required' => 'El nombre del permiso es obligatorio.',
+            'name.unique'   => 'Este permiso ya existe.'
         ]);
 
         Permission::create(['name' => $request->name]);
 
         return redirect()
             ->route('permissions.index')
-            ->with('success', 'Permesso creato con successo.');
+            ->with('success', 'Permiso creado con éxito.');
     }
 
     public function edit(Permission $permission)
@@ -48,15 +48,15 @@ class PermissionController extends Controller
         $request->validate([
             'name' => "required|unique:permissions,name,{$permission->id}"
         ], [
-            'name.required' => 'Il nome del permesso è obbligatorio.',
-            'name.unique'   => 'Questo permesso esiste già.'
+            'name.required' => 'El nombre del permiso es obligatorio.',
+            'name.unique'   => 'Este permiso ya existe.'
         ]);
 
         $permission->update(['name' => $request->name]);
 
         return redirect()
             ->route('permissions.index')
-            ->with('success', 'Permesso aggiornato con successo.');
+            ->with('success', 'Permiso actualizado con éxito.');
     }
 
     public function destroy(Permission $permission)
@@ -65,6 +65,6 @@ class PermissionController extends Controller
 
         return redirect()
             ->route('permissions.index')
-            ->with('success', 'Permesso eliminato con successo.');
+            ->with('success', 'Permiso eliminado con éxito.');
     }
 }

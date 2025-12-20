@@ -1,13 +1,13 @@
 {{-- resources/views/frontend/recipe/show.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title','Ricetta: '.$recipe->recipe_name)
+@section('title','Receta: '.$recipe->recipe_name)
 
 @section('content')
 <div class="container py-5">
   <div class="card shadow-lg">
     <div class="card-header bg-dark text-gold d-flex align-items-center">
-      <h5 class="mb-0" style="color: #e2ae76;">Ricetta: {{ $recipe->recipe_name }}</h5>
+      <h5 class="mb-0" style="color: #e2ae76;">Receta: {{ $recipe->recipe_name }}</h5>
     </div>
 
     <div class="card-body">
@@ -62,7 +62,7 @@
 
       <div class="row text-center mb-4">
         <div class="col-md-2">
-          <strong>Prezzo</strong><br>
+          <strong>Precio</strong><br>
           <div class="d-flex flex-column align-items-center">
             <span>€{{ number_format($unitSell,2) }}</span>
             <small class="text-muted">(100%)</small>
@@ -76,21 +76,21 @@
           </div>
         </div>
         <div class="col-md-2">
-          <strong>Costo lavoro</strong><br>
+          <strong>Costo mano de obra</strong><br>
           <div class="d-flex flex-column align-items-center">
             <span>€{{ number_format($unitLabCost,2) }}</span>
             <small class="text-muted">({{ $labPct }}%)</small>
           </div>
         </div>
         <div class="col-md-2">
-          <strong>Costo totale</strong><br>
+          <strong>Costo total</strong><br>
           <div class="d-flex flex-column align-items-center">
             <span>€{{ number_format($unitTotalCost,2) }}</span>
             <small class="text-muted">({{ $totalPct }}%)</small>
           </div>
         </div>
         <div class="col-md-2">
-          <strong>Margine</strong><br>
+          <strong>Margen</strong><br>
           <div class="d-flex flex-column align-items-center">
             <span class="{{ $unitMargin >= 0 ? 'text-success' : 'text-danger' }}">
               €{{ number_format($unitMargin,2) }}
@@ -99,21 +99,21 @@
           </div>
         </div>
         <div class="col-md-2">
-          <strong>% margine</strong><br>
+          <strong>% margen</strong><br>
           {{ number_format($unitMarginPct,2) }}%
         </div>
       </div>
 
       <hr>
 
-      {{-- Dettaglio ingredienti --}}
-      <h6>Dettaglio ingredienti</h6>
+      {{-- Detalle ingredientes --}}
+      <h6>Detalle ingredientes</h6>
       <div class="table-responsive">
         <table  data-page-length="25"class="table table-bordered mb-0">
           <thead class="table-light">
             <tr>
               <th>Ingrediente</th>
-              <th class="text-end">Qtà (g)</th>
+              <th class="text-end">Cant. (g)</th>
               <th class="text-end">Costo (€)</th>
             </tr>
           </thead>
@@ -131,7 +131,7 @@
           </tbody>
           <tfoot class="table-warning">
             <tr>
-              <td class="text-end"><strong>Totale:</strong></td>
+              <td class="text-end"><strong>Total:</strong></td>
               <td class="text-end"><strong>{{ $totalQty }}</strong></td>
               <td class="text-end"><strong>€{{ number_format($totalCost,2) }}</strong></td>
             </tr>
@@ -139,22 +139,22 @@
         </table>
       </div>
 
-      {{-- New feature: batch labor, total w/loss & multiplier (view‐only) --}}
+      {{-- Nueva función: mano de obra por lote, total con pérdida y multiplicador (solo lectura) --}}
       @php
         $origIng = $totalCost;
         $origLab = $batchLabCost;
       @endphp
       <div class="mt-3">
         <p>
-          <strong>Totale manodopera:</strong>
+          <strong>Total mano de obra:</strong>
           €<span id="labor-total">{{ number_format($origLab,2) }}</span>
         </p>
         <p>
-          <strong>Peso/perdita totale:</strong>
+          <strong>Peso/pérdida total:</strong>
           €<span id="total-loss">{{ number_format($origIng + $origLab,2) }}</span>
         </p>
         <div class="d-flex align-items-center">
-          <label for="multiplier" class="me-2 mb-0"><strong>Moltiplicatore:</strong></label>
+          <label for="multiplier" class="me-2 mb-0"><strong>Multiplicador:</strong></label>
           <input
             type="number"
             id="multiplier"
@@ -165,10 +165,10 @@
         </div>
       </div>
 
-      {{-- Azioni --}}
+      {{-- Acciones --}}
       <div class="mt-4 text-end">
-        <a href="{{ route('recipes.edit',$recipe->id) }}" class="btn btn-outline-gold">Modifica</a>
-        <a href="{{ route('recipes.index') }}" class="btn btn-outline-deepblue">Indietro</a>
+        <a href="{{ route('recipes.edit',$recipe->id) }}" class="btn btn-outline-gold">Editar</a>
+        <a href="{{ route('recipes.index') }}" class="btn btn-outline-deepblue">Volver</a>
       </div>
     </div>
   </div>

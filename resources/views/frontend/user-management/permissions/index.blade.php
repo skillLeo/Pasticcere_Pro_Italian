@@ -1,32 +1,32 @@
 {{-- resources/views/frontend/user-management/permissions/index.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title','Permessi')
+@section('title','Permisos')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Intestazione -->
+  <!-- Encabezado -->
   <div class="page-header d-flex align-items-center mb-4" style="background-color: #041930; border-radius: 0.75rem; padding: 1rem 2rem;">
     <i class="bi bi-shield-lock-fill me-2 fs-3" style="color: #e2ae76;"></i>
-    <h4 class="mb-0 fw-bold" style="color: #e2ae76;">Permessi</h4>
+    <h4 class="mb-0 fw-bold" style="color: #e2ae76;">Permisos</h4>
   </div>
 
-  <!-- Pulsante Azione -->
+  <!-- Botón de acción -->
   <div class="text-end mb-4">
     <a href="{{ route('permissions.create') }}" class="btn btn-gold-blue">
-      <i class="bi bi-plus-lg me-2"></i> Aggiungi Permesso
+      <i class="bi bi-plus-lg me-2"></i> Añadir permiso
     </a>
   </div>
 
-  <!-- Tabella Permessi -->
+  <!-- Tabla permisos -->
   <div class="card shadow-sm border-0 rounded-3">
     <div class="card-body p-0">
       <table  data-page-length="25"class="table table-hover table-bordered table-striped mb-0">
         <thead style="background-color: #e2ae76; color: #041930;" class="text-center">
           <tr>
-            <th style="font-size: 16px; font-weight: 600;">Nome Permesso</th>
-            <th style="font-size: 16px; font-weight: 600;" class="text-end">Azioni</th>
+            <th style="font-size: 16px; font-weight: 600;">Nombre del permiso</th>
+            <th style="font-size: 16px; font-weight: 600;" class="text-end">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -35,13 +35,13 @@
             <td class="align-middle">{{ $perm->name }}</td>
             <td class="text-end align-middle">
               <a href="{{ route('permissions.edit', $perm) }}" class="btn btn-sm btn-gold me-2">
-                <i class="bi bi-pencil me-1"></i> Modifica
+                <i class="bi bi-pencil me-1"></i> Editar
               </a>
-              <form action="{{ route('permissions.destroy', $perm) }}" method="POST" class="d-inline" onsubmit="return confirm('Eliminare questo permesso?');">
+              <form action="{{ route('permissions.destroy', $perm) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este permiso?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-sm btn-red">
-                  <i class="bi bi-trash me-1"></i> Elimina
+                  <i class="bi bi-trash me-1"></i> Eliminar
                 </button>
               </form>
             </td>

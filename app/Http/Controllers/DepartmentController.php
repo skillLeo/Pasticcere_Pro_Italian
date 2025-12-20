@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 class DepartmentController extends Controller
 {
     /**
-     * Visualizza l'elenco dei reparti per l'utente loggato.
+     * Muestra el listado de departamentos para el usuario conectado.
      */
     public function index()
     {
         $user = Auth::user();
 
-        // 1) Gruppo di utenti visibili (te + figli o creatore)
+        // 1) Grupo de usuarios visibles (tú + hijos o creador)
         if (is_null($user->created_by)) {
             $visibleUserIds = User::where('created_by', $user->id)
                                   ->pluck('id')
@@ -28,7 +28,7 @@ class DepartmentController extends Controller
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 2) Carica reparti di quei user o globali (user_id NULL)
+        // 2) Cargar departamentos de esos usuarios o globales (user_id NULL)
         $departments = Department::with('user')
                             ->where(function($q) use ($visibleUserIds) {
                                 $q->whereIn('user_id', $visibleUserIds)
@@ -41,7 +41,7 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Mostra il form per creare un nuovo reparto.
+     * Muestra el formulario para crear un nuevo departamento.
      */
     public function create()
     {
@@ -49,7 +49,7 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Memorizza un nuovo reparto per l'utente.
+     * Guarda un nuevo departamento para el usuario.
      */
     public function store(Request $request)
     {
@@ -63,36 +63,36 @@ class DepartmentController extends Controller
 
         return redirect()
             ->route('departments.index')
-            ->with('success', 'Reparto creato con successo!');
+            ->with('success', '¡Departamento creado correctamente!');
     }
 
     /**
-     * Mostra il form per modificare un reparto esistente.
+     * Muestra el formulario para editar un departamento existente.
      */
     public function edit(Department $department)
     {
         $user = Auth::user();
 
-        // Autorizzazione: proprietario o ruoli speciali
+        // Autorización: propietario o roles especiales
         if (
             $department->user_id !== $user->id &&
             !$user->hasRole('admin') &&
             !$user->hasRole('super') &&
             !$user->hasRole('master')
         ) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada.');
         }
 
         return view('frontend.departments.create', compact('department'));
     }
 
     /**
-     * Aggiorna il reparto (solo se di proprietà dell'utente).
+     * Actualiza el departamento (solo si es propiedad del usuario).
      */
     public function update(Request $request, Department $department)
     {
         if ($department->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizzata.');
         }
 
         $data = $request->validate([
@@ -103,11 +103,11 @@ class DepartmentController extends Controller
 
         return redirect()
             ->route('departments.index')
-            ->with('success', 'Reparto aggiornato con successo!');
+            ->with('success', '¡Departamento actualizado correctamente!');
     }
 
     /**
-     * Visualizza i dettagli di un reparto.
+     * Muestra los detalles de un departamento.
      */
     public function show(Department $department)
     {
@@ -115,18 +115,18 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Elimina un reparto (solo se di proprietà dell'utente).
+     * Elimina un departamento (solo si es propiedad del usuario).
      */
     public function destroy(Department $department)
     {
         if ($department->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizzata.');
         }
 
         $department->delete();
 
         return redirect()
             ->route('departments.index')
-            ->with('success', 'Reparto eliminato con successo!');
+            ->with('success', '¡Departamento eliminado correctamente!');
     }
 }

@@ -1,7 +1,7 @@
 {{-- resources/views/frontend/recipe-categories/index.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title','Gestione Categorie Ricette')
+@section('title','Gestión Categorías Recetas')
 
 @section('content')
 
@@ -52,7 +52,7 @@
     vertical-align: middle !important;
   }
 
-  /* Sorting arrows color */
+  /* Color de las flechas de ordenación */
   table.dataTable thead .sorting:after,
   table.dataTable thead .sorting_asc:after,
   table.dataTable thead .sorting_desc:after {
@@ -61,12 +61,12 @@
 </style>
 
 <div class="container py-5 px-md-5">
-  <!-- Form Card -->
+  <!-- Tarjeta de formulario -->
   <div class="card border-primary shadow-sm mb-5">
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-tags fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($category) ? 'Modifica Categoria Ricetta' : 'Aggiungi Categoria Ricetta' }}
+        {{ isset($category) ? 'Editar Categoría Receta' : 'Añadir Categoría Receta' }}
       </h5>
     </div>
     <div class="card-body">
@@ -79,34 +79,34 @@
         @if(isset($category)) @method('PUT') @endif
 
         <div class="col-md-8">
-          <label for="categoryName" class="form-label fw-semibold">Nome Categoria</label>
+          <label for="categoryName" class="form-label fw-semibold">Nombre categoría</label>
           <input
             type="text"
             id="categoryName"
             name="name"
             class="form-control form-control-lg"
-            placeholder="es. Dessert"
+            placeholder="ej. Postre"
             value="{{ old('name', $category->name ?? '') }}"
             required>
-          <div class="invalid-feedback">Inserisci un nome per la categoria.</div>
+          <div class="invalid-feedback">Introduce un nombre para la categoría.</div>
         </div>
 
         <div class="col-12 text-end">
           <button type="submit" class="btn btn-lg" style="background-color: #e2ae76; color: #041930;">
             <i class="bi bi-save2 me-2" style="color: #041930;"></i>
-            {{ isset($category) ? 'Aggiorna Categoria' : 'Salva Categoria' }}
+            {{ isset($category) ? 'Actualizar categoría' : 'Guardar categoría' }}
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Table Card -->
+  <!-- Tarjeta de tabla -->
   <div class="card border-primary shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #041930;">
       <h5 class="mb-0 fw-bold d-flex align-items-center" style="color: #e2ae76;">
         <i class="bi bi-tags fs-4 me-2" style="color: #e2ae76;"></i>
-        Elenco Categorie Ricette
+        Listado categorías de recetas
       </h5>
     </div>
 
@@ -117,9 +117,9 @@
                data-page-length="25">
           <thead style="background-color: #e2ae76; color: #041930;">
             <tr>
-              <th>Nome</th>
-              <th>Ultimo Aggiornamento</th>
-              <th>Azioni</th>
+              <th>Nombre</th>
+              <th>Última actualización</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -128,19 +128,19 @@
                 <td>{{ $cat->name }}</td>
                 <td>{{ $cat->updated_at->format('Y-m-d H:i') }}</td>
                 <td>
-                  <a href="{{ route('recipe-categories.edit', $cat) }}" class="btn btn-sm btn-gold me-1" title="Modifica">
+                  <a href="{{ route('recipe-categories.edit', $cat) }}" class="btn btn-sm btn-gold me-1" title="Editar">
                     <i class="bi bi-pencil"></i>
                   </a>
-                  <a href="{{ route('recipe-categories.show', $cat) }}" class="btn btn-sm btn-deepblue me-1" title="Visualizza">
+                  <a href="{{ route('recipe-categories.show', $cat) }}" class="btn btn-sm btn-deepblue me-1" title="Ver">
                     <i class="bi bi-eye"></i>
                   </a>
                   <form action="{{ route('recipe-categories.destroy', $cat) }}"
                         method="POST"
                         class="d-inline"
-                        onsubmit="return confirm('Eliminare questa categoria?');">
+                        onsubmit="return confirm('¿Eliminar esta categoría?');">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-red" title="Elimina">
+                    <button type="submit" class="btn btn-sm btn-red" title="Eliminar">
                       <i class="bi bi-trash"></i>
                     </button>
                   </form>
@@ -159,19 +159,19 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     if (window.$ && $.fn.DataTable) {
-      // Initialize DataTable (single-column order only)
+      // Inicializar DataTable (orden de una sola columna)
       var table = $('#categoryTable').DataTable({
         paging:     true,
         ordering:   true,
         responsive: true,
         pageLength: $('#categoryTable').data('page-length') || 25,
         order:      [[0, 'asc']],
-        orderMulti: false, // prevent multi-column
+        orderMulti: false, // evitar multi-columna
         language: {
-          lengthMenu:    "Mostra _MENU_ elementi per pagina",
-          search:        "Cerca:",
-          info:          "Mostra _START_ a _END_ di _TOTAL_ elementi",
-          zeroRecords:   "Nessun record trovato",
+          lengthMenu:    "Mostrar _MENU_ elementos por página",
+          search:        "Buscar:",
+          info:          "Mostrando de _START_ a _END_ de _TOTAL_ elementos",
+          zeroRecords:   "No se encontraron registros",
           paginate: {
             first:    "<<",
             previous: "<",
@@ -180,11 +180,11 @@
           }
         },
         columnDefs: [
-          { targets: 2, orderable: false } // Azioni non ordinabile
+          { targets: 2, orderable: false } // Acciones no ordenable
         ]
       });
 
-      // Restore previous sort (session)
+      // Restaurar orden previo (session)
       try {
         var savedCol = sessionStorage.getItem('cat_sort_col');
         var savedDir = sessionStorage.getItem('cat_sort_dir');
@@ -193,10 +193,10 @@
         }
       } catch(e){}
 
-      // 2-state toggle override (asc <-> desc only)
+      // Alternancia de 2 estados (asc <-> desc únicamente)
       $('#categoryTable thead').on('click', 'th', function(e) {
         var colIdx = $(this).index();
-        // Ignore non-orderable (Azioni)
+        // Ignorar no ordenable (Acciones)
         var colSettings = table.settings()[0].aoColumns[colIdx];
         if (colSettings.bSortable === false) return;
 
@@ -211,7 +211,7 @@
           table.order([colIdx, 'asc']).draw();
         }
 
-        // Persist
+        // Persistir
         try {
           var ord = table.order();
           sessionStorage.setItem('cat_sort_col', ord[0][0]);
@@ -219,13 +219,13 @@
         } catch(e){}
       });
 
-      // Prevent shift multi-ordering
+      // Evitar multi-orden con shift
       $('#categoryTable thead').on('mousedown', 'th', function(e){
         if (e.shiftKey) e.preventDefault();
       });
     }
 
-    // Form validation
+    // Validación de formulario
     const forms = document.querySelectorAll('.needs-validation');
     Array.from(forms).forEach(form => {
       form.addEventListener('submit', e => {
@@ -239,4 +239,3 @@
   });
 </script>
 @endsection
-

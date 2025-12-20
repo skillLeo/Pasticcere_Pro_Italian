@@ -1,41 +1,41 @@
-<!-- meta tags and other links -->
+<!-- metadatos y otros enlaces -->
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasticcere Pro | Forget Password</title>
+    <title>Pasticcere Pro | Restablecer contraseña</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.ico') }}" sizes="16x16">
-    <!-- remix icon font css  -->
+    <!-- css de fuente de iconos remix  -->
     <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
-    <!-- BootStrap css -->
+    <!-- css de BootStrap -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/bootstrap.min.css') }}">
-    <!-- Apex Chart css -->
+    <!-- css de Apex Chart -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/apexcharts.css') }}">
-    <!-- Data Table css -->
+    <!-- css de Data Table -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/dataTables.min.css') }}">
-    <!-- Text Editor css -->
+    <!-- css del editor de texto -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/editor-katex.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/lib/editor.atom-one-dark.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/lib/editor.quill.snow.css') }}">
-    <!-- Date picker css -->
+    <!-- css del selector de fecha -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/flatpickr.min.css') }}">
-    <!-- Calendar css -->
+    <!-- css del calendario -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/full-calendar.css') }}">
-    <!-- Vector Map css -->
+    <!-- css del mapa vectorial -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/jquery-jvectormap-2.0.5.css') }}">
-    <!-- Popup css -->
+    <!-- css de la ventana emergente -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/magnific-popup.css') }}">
-    <!-- Slick Slider css -->
+    <!-- css de Slick Slider -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/slick.css') }}">
-    <!-- prism css -->
+    <!-- css de prism -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/prism.css') }}">
-    <!-- file upload css -->
+    <!-- css de carga de archivos -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/file-upload.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/lib/audioplayer.css') }}">
-    <!-- main css -->
+    <!-- css principal -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 
@@ -54,8 +54,8 @@
                 <a href="{{ url('/') }}" class="mb-40 max-w-290-px">
                     <img src="{{ asset('assets/images/asset/logo.jpg') }}" alt="">
                 </a>
-                <h4 class="mb-12">Password dimenticata</h4>
-                <p class="mb-32 text-secondary-light text-lg">Inserisci la tua email per reimpostare la password</p>
+                <h4 class="mb-12">Contraseña olvidada</h4>
+                <p class="mb-32 text-secondary-light text-lg">Introduce tu correo electrónico para restablecer la contraseña</p>
             </div>
 
             @if(session('status'))
@@ -70,7 +70,7 @@
                     </span>
                     <input type="email"
                         class="form-control h-56-px bg-neutral-50 radius-12 @error('email') is-invalid @enderror"
-                        placeholder="Email" name="email" value="{{ old('email') }}" required autofocus>
+                        placeholder="Correo electrónico" name="email" value="{{ old('email') }}" required autofocus>
                     @error('email')
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
@@ -78,7 +78,7 @@
 
                 <button type="submit" class="btn text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32"
                     style="background-color: #e2ae76; color: #041930; border: 2px solid #e2ae76;">
-                    Invia link di reimpostazione
+                    Enviar enlace de restablecimiento
                 </button>
             </form>
         </div>
@@ -86,7 +86,7 @@
 </section>
 
 </body>
-    <!-- jQuery library js -->
+    <!-- biblioteca jQuery js -->
     <script src="{{ asset('assets/js/lib/jquery-3.7.1.min.js') }}"></script>
     <!-- Bootstrap js -->
     <script src="{{ asset('assets/js/lib/bootstrap.bundle.min.js') }}"></script>
@@ -109,10 +109,10 @@
     <script src="{{ asset('assets/js/lib/prism.js') }}"></script>
     <!-- file upload js -->
     <script src="{{ asset('assets/js/lib/file-upload.js') }}"></script>
-    <!-- audioplayer -->
+    <!-- reproductor de audio -->
     <script src="{{ asset('assets/js/lib/audioplayer.js') }}"></script>
 
-    <!-- main js -->
+    <!-- js principal -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
 
 

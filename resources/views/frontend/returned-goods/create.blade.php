@@ -1,12 +1,12 @@
 {{-- resources/views/frontend/returned-goods/form.blade.php --}}
 @extends('frontend.layouts.app')
 
-@section('title', $returnedGood->exists ? 'Edit Returned Goods' : 'Create Returned Goods')
+@section('title', $returnedGood->exists ? 'Editar productos devueltos' : 'Crear productos devueltos')
 
 @section('content')
 <div class="container py-5">
   <h2 class="mb-4">
-    {{ $returnedGood->exists ? 'Edit' : 'Create' }} Returned Goods
+    {{ $returnedGood->exists ? 'Editar' : 'Crear' }} productos devueltos
   </h2>
 
   <form
@@ -19,12 +19,12 @@
       @method('PUT')
     @endif
 
-    {{-- 1) Client & Return Date --}}
+    {{-- 1) Cliente y fecha de devolución --}}
     <div class="row mb-4 g-3">
       <div class="col-md-6">
-        <label class="form-label">Client</label>
+        <label class="form-label">Cliente</label>
         <select name="client_id" class="form-select" required>
-          <option value="">Select…</option>
+          <option value="">Seleccionar…</option>
           @foreach($clients as $c)
             <option value="{{ $c->id }}"
               {{ old('client_id', $returnedGood->client_id) == $c->id ? 'selected' : '' }}>
@@ -34,7 +34,7 @@
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label">Return Date</label>
+        <label class="form-label">Fecha de devolución</label>
         <input
           type="date"
           name="return_date"
@@ -49,23 +49,23 @@
       </div>
     </div>
 
-    {{-- 2) Returned Items --}}
+    {{-- 2) Artículos devueltos --}}
     <div class="card mb-4">
-      <div class="card-header bg-secondary text-white"><strong>Returned Items</strong></div>
+      <div class="card-header bg-secondary text-white"><strong>Artículos devueltos</strong></div>
       <div class="card-body p-0">
         <table  data-page-length="25"class="table mb-0 align-middle">
           <thead class="table-light">
             <tr>
-              <th>Recipe</th>
-              <th>Price</th>
-              <th>Qty</th>
+              <th>Receta</th>
+              <th>Precio</th>
+              <th>Cant.</th>
               <th>Total</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="linesTable">
             @php
-              // decide which set of lines to render:
+              // decidir qué conjunto de líneas renderizar:
               if(old('recipes')) {
                 $lines = old('recipes');
               } elseif($returnedGood->exists) {
@@ -84,7 +84,7 @@
               <tr class="line-row">
                 <td>
                   <select name="recipes[{{ $i }}][id]" class="form-select recipe-select" required>
-                    <option value="">Select…</option>
+                    <option value="">Seleccionar…</option>
                     @foreach($recipes as $r)
                       <option
                         value="{{ $r->id }}"
@@ -141,15 +141,15 @@
         </table>
         <div class="p-3 text-end">
           <button type="button" id="addLineBtn" class="btn btn-sm btn-outline-success">
-            <i class="bi bi-plus-lg"></i> Add Item
+            <i class="bi bi-plus-lg"></i> Añadir artículo
           </button>
         </div>
       </div>
     </div>
 
-    {{-- 3) Grand Total --}}
+    {{-- 3) Total general --}}
     <div class="mb-4">
-      <label class="form-label">Total Returned (€)</label>
+      <label class="form-label">Total devuelto (€)</label>
       <input
         type="text"
         name="total_amount"
@@ -162,7 +162,7 @@
 
     <button type="submit" class="btn btn-primary">
       <i class="bi bi-save2 me-1"></i>
-      {{ $returnedGood->exists ? 'Update' : 'Save' }}
+      {{ $returnedGood->exists ? 'Actualizar' : 'Guardar' }}
     </button>
   </form>
 </div>
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const table   = document.getElementById('linesTable');
   const addBtn  = document.getElementById('addLineBtn');
 
-  // 1) Add new blank row
+  // 1) Añadir nueva fila en blanco
   addBtn.addEventListener('click', () => {
     const first = table.querySelector('.line-row');
     const tr    = first.cloneNode(true);
@@ -193,11 +193,11 @@ document.addEventListener('DOMContentLoaded', () => {
     idx++;
   });
 
-  // 2) Recalc a single row
+  // 2) Recalcular una sola fila
   function recalc(tr) {
     const opt   = tr.querySelector('.recipe-select').selectedOptions[0];
     const price = parseFloat(opt.dataset.price||0).toFixed(2);
-    const unit  = opt.dataset.unit==='kg' ? '/kg' : '/pz';
+    const unit  = opt.dataset.unit==='kg' ? '/kg' : '/ud';
     tr.querySelector('.price-field').value = price;
     tr.querySelector('.unit-span').textContent = unit;
     const qty   = parseFloat(tr.querySelector('.qty-field').value||0);
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     recalcGrand();
   }
 
-  // 3) Grand total
+  // 3) Total general
   function recalcGrand(){
     let sum = 0;
     document.querySelectorAll('.total-field')
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('grandTotal').value = sum.toFixed(2);
   }
 
-  // 4) Delegate
+  // 4) Delegar
   table.addEventListener('change', e => {
     if (e.target.classList.contains('recipe-select'))
       recalc(e.target.closest('tr'));
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 5) Initialize existing rows on load
+  // 5) Inicializar filas existentes al cargar
   document.querySelectorAll('.line-row').forEach(r => recalc(r));
 });
 </script>

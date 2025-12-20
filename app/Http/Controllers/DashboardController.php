@@ -25,7 +25,7 @@
 
             $user = Auth::user();
 
-            // 1) Determine visible users
+            // 1) Determinar los usuarios visibles
             if (is_null($user->created_by)) {
                 $children = User::where('created_by', $user->id)->pluck('id');
                 $visibleUserIds = $children->isEmpty()
@@ -35,7 +35,7 @@
                 $visibleUserIds = collect([$user->id, $user->created_by]);
             }
 
-            // 2) Core metrics
+            // 2) Métricas principales
             $totalUsers          = User::whereIn('id', $visibleUserIds)->count();
             $totalRecipes        = Recipe::whereIn('user_id', $visibleUserIds)->count();
             $totalShowcases      = Showcase::whereIn('user_id', $visibleUserIds)->count();
@@ -53,12 +53,12 @@
                 ->whereYear('showcase_date', $year)
                 ->sum('real_margin');
 
-            // 2) Earnings metrics
+            // 2) Métricas de ganancias
             $sales      = Showcase::whereIn('user_id', $visibleUserIds)->sum('total_revenue');
             $plus       = Showcase::whereIn('user_id', $visibleUserIds)->sum('plus');
             $realMargin = Showcase::whereIn('user_id', $visibleUserIds)->sum('real_margin');
 
-            // 3) Vendite Mensili (anno corrente)
+            // 3) Ventas mensuales (año actual)
             $monthlyData = Showcase::selectRaw("MONTH(showcase_date) AS month, SUM(total_revenue) AS total")
                 ->whereIn('user_id', $visibleUserIds)
                 ->whereYear('showcase_date', Carbon::now()->year)
@@ -75,12 +75,12 @@
             $values = $monthlyData->pluck('total')->toArray();
 
             $chart = (new LarapexChart)->barChart()
-                ->setTitle('Vendite Mensili')
-                ->setSubtitle('Anno Corrente')
-                ->addData('Ricavi', $values)
+                ->setTitle('Ventas mensuales')
+                ->setSubtitle('Año actual')
+                ->addData('Ingresos', $values)
                 ->setXAxis($labels);
 
-            // 4) Costi e Ricavi (mese corrente)
+            // 4) Costes e ingresos (mes actual)
             $start = Carbon::now()->startOfMonth();
             $end   = Carbon::now()->endOfMonth();
             $monthlyCost   = Cost::whereIn('user_id', $visibleUserIds)
@@ -89,13 +89,13 @@
                 ->whereBetween('date', [$start, $end])->sum('amount');
 
             $comparisonChart = (new LarapexChart)->barChart()
-                ->setTitle('Costi e Ricavi')
+                ->setTitle('Costes e ingresos')
                 ->setSubtitle(Carbon::now()->locale('it')->isoFormat('MMMM YYYY'))
-                ->addData('Costi', [$monthlyCost])
-                ->addData('Ricavi', [$monthlyIncome])
+                ->addData('Costes', [$monthlyCost])
+                ->addData('Ingresos', [$monthlyIncome])
                 ->setXAxis([Carbon::now()->locale('it')->isoFormat('MMMM')]);
 
-            // 5) Confronto Costi Annuali
+            // 5) Comparación de costes anuales
             $thisYear       = Carbon::now()->year;
             $lastYear       = Carbon::now()->subYear()->year;
             $yearlyCostThis = Cost::whereIn('user_id', $visibleUserIds)
@@ -104,24 +104,24 @@
                 ->whereYear('due_date', $lastYear)->sum('amount');
 
             $yearlyCostChart = (new LarapexChart)->barChart()
-                ->setTitle('Costi Annuali')
+                ->setTitle('Costes anuales')
                 ->setSubtitle("$lastYear vs $thisYear")
-                ->addData('Costi', [$yearlyCostLast, $yearlyCostThis])
+                ->addData('Costes', [$yearlyCostLast, $yearlyCostThis])
                 ->setXAxis([$lastYear, $thisYear]);
 
-            // 6) Confronto Ricavi Annuali
+            // 6) Comparación de ingresos anuales
             $yearlyIncomeThis = Income::whereIn('user_id', $visibleUserIds)
                 ->whereYear('date', $thisYear)->sum('amount');
             $yearlyIncomeLast = Income::whereIn('user_id', $visibleUserIds)
                 ->whereYear('date', $lastYear)->sum('amount');
 
             $yearlyIncomeChart = (new LarapexChart)->barChart()
-                ->setTitle('Ricavi Annuali')
+                ->setTitle('Ingresos anuales')
                 ->setSubtitle("$lastYear vs $thisYear")
-                ->addData('Ricavi', [$yearlyIncomeLast, $yearlyIncomeThis])
+                ->addData('Ingresos', [$yearlyIncomeLast, $yearlyIncomeThis])
                 ->setXAxis([$lastYear, $thisYear]);
 
-            // 7) Top 5 Prodotti Venduti & Sprechi
+            // 7) Top 5 productos vendidos y desperdicios
             $topSold = ShowcaseRecipe::with(['recipe' => function ($query) {
                     $query->select('id', 'recipe_name');
                 }])
@@ -143,32 +143,32 @@
                 ->get();
 
             $soldValues = $topSold->pluck('sold')->map(fn($v) => (int) $v)->toArray();
-            $soldLabels = $topSold->map(fn($item) => $item->recipe->recipe_name ?? 'Sconosciuto')->toArray();
+            $soldLabels = $topSold->map(fn($item) => $item->recipe->recipe_name ?? 'Desconocido')->toArray();
 
             $soldPieChart = (new LarapexChart)->donutChart()
-                ->setTitle('Distribuzione Vendite')
+                ->setTitle('Distribución de ventas')
                 ->addData($soldValues)
                 ->setLabels($soldLabels);
 
-            $wastedLabels = $topWasted->map(fn($item) => $item->recipe->recipe_name ?? 'Sconosciuto')->toArray();
+            $wastedLabels = $topWasted->map(fn($item) => $item->recipe->recipe_name ?? 'Desconocido')->toArray();
             $wastedValues = $topWasted->pluck('waste')->toArray();
 
             $wastedPieChart = (new LarapexChart)->donutChart()
-                ->setTitle('Distribuzione Sprechi')
+                ->setTitle('Distribución de desperdicios')
                 ->addData($wastedValues)
                 ->setLabels($wastedLabels);
 
-            // 8) Incidenza Costi vs Ricavi
+            // 8) Incidencia costes vs ingresos
             $totalCost   = $monthlyCost;
             $totalRev    = $monthlyIncome;
             $nettoAmount = $totalRev - $totalCost;
 
             $incidenceChart = (new LarapexChart)->pieChart()
-                ->setTitle('Incidenza Costi vs Ricavi')
+                ->setTitle('Impacto de costes vs ingresos')
                 ->addData([$totalCost, $totalRev, $nettoAmount])
-                ->setLabels(['Costi', 'Ricavi', 'Netto']);
+                ->setLabels(['Costes', 'Ingresos', 'Neto']);
 
-            // 9) Produzione per Pasticcere
+            // 9) Producción por pastelero
             $prodByChef = ProductionDetail::selectRaw('pastry_chef_id, SUM(quantity) AS qty')
                 ->whereIn('user_id', $visibleUserIds)
                 ->groupBy('pastry_chef_id')
@@ -180,11 +180,11 @@
             $chefValues = $prodByChef->pluck('qty')->toArray();
 
             $chefChart = (new LarapexChart)->barChart()
-                ->setTitle('Produzione per Pasticcere')
-                ->addData('Unità', $chefValues)
+                ->setTitle('Producción por pastelero')
+                ->addData('Unidades', $chefValues)
                 ->setXAxis($chefLabels);
 
-            // 10) Andamento Produzione vs Spreco (annuale)
+            // 10) Tendencia de producción vs. desperdicio (anual)
             $prodTrend  = ProductionDetail::selectRaw('MONTH(production_date) AS m, SUM(quantity) AS produced')
                 ->join('productions','productions.id','production_details.production_id')
                 ->whereIn('production_details.user_id',$visibleUserIds)
@@ -208,12 +208,12 @@
             $wasteVals = $wasteTrend->pluck('waste')->toArray();
 
             $prodWasteChart = (new LarapexChart)->areaChart()
-                ->setTitle('Produzione vs Spreco')
-                ->addData('Prodotto', $prodVals)
-                ->addData('Spreco',   $wasteVals)
+                ->setTitle('producción vs. desperdicio')
+                ->addData('Producido', $prodVals)
+                ->addData('Desperdicio',   $wasteVals)
                 ->setXAxis($labelsTrend);
 
-            // 11) Ripartizione dei costi per categoria
+            // 11) Reparto de los costes por categoría
             $costByCategory = Cost::join('cost_categories', 'costs.category_id', '=', 'cost_categories.id')
                 ->whereIn('costs.user_id', $visibleUserIds)
                 ->groupBy('cost_categories.id', 'cost_categories.name')
@@ -226,7 +226,7 @@
             $categoryLabels = $costByCategory->pluck('category')->toArray();
             $categoryValues = $costByCategory->pluck('total')->map(fn($v) => (float) $v)->toArray();
 
-        // 11) Ripartizione dei costi per categoria
+        // 11) Reparto de los costes por categoría
     $costByCategory = Cost::join('cost_categories', 'costs.category_id', '=', 'cost_categories.id')
         ->whereIn('costs.user_id', $visibleUserIds)
         ->groupBy('cost_categories.id', 'cost_categories.name')
@@ -235,10 +235,10 @@
 
     $categoryLabels = $costByCategory->pluck('category')->toArray();
     $categoryValues = $costByCategory->pluck('total')->map(fn($v) => (float) $v)->toArray();
-    $categoryTotal  = array_sum($categoryValues); // optional, if you also want to print it as text
+    $categoryTotal  = array_sum($categoryValues); // opcional, si también quieres mostrarlo como texto
 
 
-// totals (keep these as you already have)
+// totales (mantén estos como ya los tienes)
 $totalSupplied = ExternalSupplyRecipe::whereIn('user_id', $visibleUserIds)->sum('qty');
 $totalReturned = ReturnedGoodRecipe::join('returned_goods','returned_goods.id','=','returned_good_recipes.returned_good_id')
     ->whereIn('returned_goods.user_id', $visibleUserIds)
@@ -246,12 +246,12 @@ $totalReturned = ReturnedGoodRecipe::join('returned_goods','returned_goods.id','
 
 $restocked = max(0, (int)$totalSupplied - (int)$totalReturned);
 
-// ✅ Build the chart exactly like the others (Larapex donut)
+// ✅ Construir el gráfico exactamente como los otros (Larapex donut)
 $returnRateChart = (new \ArielMejiaDev\LarapexCharts\LarapexChart)
     ->donutChart()
-    ->setTitle('Resi vs Rifornimenti')
+    ->setTitle('Devoluciones vs reabastecimiento')
     ->addData([(int)$totalReturned, (int)$restocked])
-    ->setLabels(['Resi', 'Riforniti'])
+    ->setLabels(['Devoluciones', 'Reabastecidos'])
     ->setHeight(300);
 
             // $returnRateChart = (new LarapexChart)->pieChart()
@@ -262,7 +262,7 @@ $returnRateChart = (new \ArielMejiaDev\LarapexCharts\LarapexChart)
             //     ])
             //     ->setLabels(['Resi', 'Utilizzati']);
 
-            // 13) Full datasets for JS filtering
+            // 13) Conjuntos de datos completos para filtrado JS
             $fullMonthlyData = $monthlyData->map(fn($row) => [
                 'date'  => Carbon::createFromDate(null, $row->month, 1)->format('Y-m-d'),
                 'total' => $row->total,
@@ -295,32 +295,32 @@ $returnRateChart = (new \ArielMejiaDev\LarapexCharts\LarapexChart)
                     'category' => $c->category->name,
                 ])->toArray();
 
-        // DashboardController.php — replace ONLY the $fullIncomeData block with this
+        // DashboardController.php — sustituir SOLO el bloque $fullIncomeData por este
 
     $fullIncomeData = Income::leftJoin('income_categories as ic', 'incomes.income_category_id', '=', 'ic.id')
         ->whereIn('incomes.user_id', $visibleUserIds)
         ->select([
             'incomes.date',
             'incomes.amount',
-            DB::raw('COALESCE(ic.name, "Senza categoria") as category'),
+            DB::raw('COALESCE(ic.name, "Sin categoría") as category'),
         ])
         ->get()
         ->map(fn($i) => [
             'date'     => Carbon::parse($i->date)->format('Y-m-d'),
             'amount'   => (float) $i->amount,
-            'category' => $i->category, // already normalized by COALESCE
+            'category' => $i->category, // ya normalizado por COALESCE
         ])->toArray();
 
 
             // ---------------------------------------------------------------------
-            // [NEW / FIXED] Category averages for dashboard (exclude negatives)
-            // Uses `recipee_categories` (aliased as rc)
+            // [NUEVO / CORREGIDO] Promedios por categoría para el dashboard (excluye negativos)
+            // Usa `recipe_categories` (alias rc)
             // ---------------------------------------------------------------------
             $categoryAvgRaw = Recipe::whereIn('recipes.user_id', $visibleUserIds)
                 ->leftJoin('recipe_categories as rc', 'recipes.recipe_category_id', '=', 'rc.id')
                 ->groupBy('rc.id', 'rc.name')
                 ->selectRaw('
-                    COALESCE(rc.name, "Senza categoria") AS name,
+                    COALESCE(rc.name, "Sin categoría") AS name,
                     COUNT(*) AS total_cnt,
                     SUM(CASE WHEN recipes.potential_margin_pct >= 0 THEN 1 ELSE 0 END) AS pos_cnt,
                     ROUND(AVG(CASE WHEN recipes.potential_margin_pct >= 0
@@ -328,26 +328,26 @@ $returnRateChart = (new \ArielMejiaDev\LarapexCharts\LarapexChart)
                 ')
                 ->get();
 
-            // keep it short: show the 8 categories with the most positive items (or all if less)
+            // mantenerlo corto: mostrar las 8 categorías con más ítems positivos (o todas si son menos)
             $categoryAvgTop = $categoryAvgRaw
                 ->sortByDesc('pos_cnt')
                 ->take(8)
                 ->values();
 
-            // Global average of positive margins across all recipes
+            // Promedio global de márgenes positivos en todas las recetas
             $globalAvgMarginPos = Recipe::whereIn('user_id', $visibleUserIds)
                 ->avg(DB::raw('CASE WHEN potential_margin_pct >= 0 THEN potential_margin_pct END'));
             $globalAvgMarginPos = round($globalAvgMarginPos ?? 0, 2);
             // ---------------------------------------------------------------------
 
-            // 14) Render
+            // 14) Renderizado
 
 
-    // add right after $user = Auth::user();
-    // show extra counters only to Super
-    $isSuper = $user->hasRole('super'); // using spatie/permission
+    // añadir justo después de $user = Auth::user();
+    // mostrar contadores extra solo al Super
+    $isSuper = $user->hasRole('super'); // usando spatie/permission
 
-    // counts across the whole system (all tenants/users)
+    // conteos en todo el sistema (todos los tenants/usuarios)
     $adminsCount   = $isSuper
         ? User::whereHas('roles', fn($q) => $q->where('name','admin')->where('guard_name','web'))->count()
         : 0;
@@ -356,13 +356,13 @@ $returnRateChart = (new \ArielMejiaDev\LarapexCharts\LarapexChart)
 
 
 
-    // === Full per-chef production rows for JS date filtering ===
+    // === Filas completas de producción por pastelero para filtrado JS por fecha ===
 $fullChefData = ProductionDetail::join('productions','productions.id','=','production_details.production_id')
     ->leftJoin('users as u','u.id','=','production_details.pastry_chef_id')
     ->whereIn('production_details.user_id', $visibleUserIds)
     ->select([
         DB::raw('DATE(productions.production_date) as date'),
-        DB::raw('COALESCE(u.name, "Sconosciuto") as chef_name'),
+        DB::raw('COALESCE(u.name, "Desconocido") as chef_name'),
         'production_details.quantity as qty',
     ])
     ->orderBy('productions.production_date')
@@ -385,7 +385,7 @@ $fullChefData = ProductionDetail::join('productions','productions.id','=','produ
                 'chefChart','prodWasteChart','returnRateChart',
                 'fullMonthlyData','fullSoldData','fullWastedData',
                 'fullCostData','fullIncomeData','fullChefData',
-                // [NEW] pass to blade
+                // [NUEVO] pasar a la vista
                 'categoryAvgTop','globalAvgMarginPos','categoryLabels','categoryValues','categoryTotal','isSuper','adminsCount','allUsersCount',
 
             ));

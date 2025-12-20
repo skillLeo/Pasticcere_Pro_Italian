@@ -12,25 +12,25 @@ use Symfony\Component\HttpFoundation\Response;
 class CostCategoryController extends Controller
 {
     /**
-     * Visualizza l'elenco delle categorie di costo per l'utente loggato.
+     * Muestra la lista de las categorías de costo para el usuario autenticado.
      */
     public function index()
     {
         $user = Auth::user();
 
-        // 1) Gruppo di utenti visibili
+        // 1) Grupo de usuarios visibles
         if (is_null($user->created_by)) {
-            // Utente root → te stesso + eventuali figli diretti
+            // Usuario raíz → tú mismo + posibles hijos directos
             $visibleUserIds = User::where('created_by', $user->id)
                                   ->pluck('id')
                                   ->push($user->id)
                                   ->unique();
         } else {
-            // Utente figlio → te stesso + il tuo creatore
+            // Usuario hijo → tú mismo + tu creador
             $visibleUserIds = collect([$user->id, $user->created_by])->unique();
         }
 
-        // 2) Carica categorie di questi utenti o globali (user_id NULL)
+        // 2) Cargar categorías de estos usuarios o globales (user_id NULL)
         $categories = CostCategory::with('user')
                          ->where(function($q) use ($visibleUserIds) {
                              $q->whereIn('user_id', $visibleUserIds)
@@ -43,7 +43,7 @@ class CostCategoryController extends Controller
     }
 
     /**
-     * Il create reindirizza all'indice: il form è incluso in index.
+     * El create redirige al índice: el formulario está incluido en index.
      */
     public function create()
     {
@@ -51,7 +51,7 @@ class CostCategoryController extends Controller
     }
 
     /**
-     * Mostra una singola categoria.
+     * Muestra una sola categoría.
      */
     public function show(CostCategory $costCategory)
     {
@@ -59,7 +59,7 @@ class CostCategoryController extends Controller
     }
 
     /**
-     * Memorizza una nuova categoria per l'utente.
+     * Guarda una nueva categoría para el usuario.
      */
     public function store(Request $request)
     {
@@ -73,16 +73,16 @@ class CostCategoryController extends Controller
 
         return redirect()
             ->route('cost_categories.index')
-            ->with('success', 'Categoria aggiunta con successo!');
+            ->with('success', 'Categoría añadida con éxito!');
     }
 
     /**
-     * Mostra il form di modifica (il form è incluso in index).
+     * Muestra el formulario de edición (el formulario está incluido en index).
      */
     public function edit(CostCategory $cost_category)
     {
         if ($cost_category->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada.');
         }
 
         $categories = CostCategory::where('user_id', Auth::id())
@@ -96,12 +96,12 @@ class CostCategoryController extends Controller
     }
 
     /**
-     * Aggiorna la categoria (solo se di proprietà dell'utente).
+     * Actualiza la categoría (solo si es propiedad del usuario).
      */
     public function update(Request $request, CostCategory $cost_category)
     {
         if ($cost_category->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada.');
         }
 
         $data = $request->validate([
@@ -112,22 +112,22 @@ class CostCategoryController extends Controller
 
         return redirect()
             ->route('cost_categories.index')
-            ->with('success', 'Categoria aggiornata con successo!');
+            ->with('success', 'Categoría actualizada con éxito!');
     }
 
     /**
-     * Elimina la categoria (solo se di proprietà dell'utente).
+     * Elimina la categoría (solo si es propiedad del usuario).
      */
     public function destroy(CostCategory $cost_category)
     {
         if ($cost_category->user_id !== Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'Operazione non autorizzata.');
+            abort(Response::HTTP_FORBIDDEN, 'Operación no autorizada.');
         }
 
         $cost_category->delete();
 
         return redirect()
             ->route('cost_categories.index')
-            ->with('success', 'Categoria eliminata con successo!');
+            ->with('success', 'Categoría eliminada con éxito!');
     }
 }

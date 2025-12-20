@@ -1,16 +1,16 @@
 @extends('frontend.layouts.app')
 
-@section('title','Showcase Pasticceri')
+@section('title','Escaparate de Pasteleros')
 
 @section('content')
 <div class="container py-5 px-md-5">
 
-  <!-- Form Aggiungi/Modifica Pasticcere -->
+  <!-- Formulario Añadir/Editar Pastelero -->
   <div class="card mb-4 border-primary shadow-sm">
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-egg-fried fs-4 me-2" style="color: #e2ae76;"></i>
       <h5 class="mb-0 fw-bold" style="color: #e2ae76;">
-        {{ isset($pastryChef) ? 'Modifica Pasticceri' : 'Aggiungi Pasticceri' }}
+        {{ isset($pastryChef) ? 'Editar pastelero' : 'Añadir pastelero' }}
       </h5>
     </div>
     <div class="card-body">
@@ -23,57 +23,57 @@
         @if(isset($pastryChef)) @method('PUT') @endif
 
         <div class="col-md-4">
-          <label for="Name" class="form-label fw-semibold">Nome Pasticceri</label>
+          <label for="Name" class="form-label fw-semibold">Nombre del pastelero</label>
           <input 
             type="text" 
             id="Name" 
             name="name" 
             class="form-control form-control-lg"
             value="{{ old('name', $pastryChef->name ?? '') }}"
-            placeholder="Inserisci Nome Pasticceri" 
+            placeholder="Introduce el nombre del pastelero" 
             required>
-          <div class="invalid-feedback">Per favore inserisci il nome del Chef.</div>
+          <div class="invalid-feedback">Por favor introduce el nombre del chef.</div>
         </div>
 
         <div class="col-md-4">
-          <label for="Email" class="form-label fw-semibold">Email Pasticceri</label>
+          <label for="Email" class="form-label fw-semibold">Correo electrónico del pastelero</label>
           <input 
             type="email" 
             id="Email" 
             name="email" 
             class="form-control form-control-lg"
             value="{{ old('email', $pastryChef->email ?? '') }}"
-            placeholder="Inserisci Email Pasticceri">
-          <div class="invalid-feedback">Per favore inserisci l'email del Chef.</div>
+            placeholder="Introduce el correo electrónico del pastelero">
+          <div class="invalid-feedback">Por favor introduce el correo electrónico del chef.</div>
         </div>
 
         <div class="col-md-4">
-          <label for="Phone" class="form-label fw-semibold">Telefono</label>
+          <label for="Phone" class="form-label fw-semibold">Teléfono del pastelero</label>
           <input 
             type="text" 
             id="Phone" 
             name="phone" 
             class="form-control form-control-lg"
             value="{{ old('phone', $pastryChef->phone ?? '') }}"
-            placeholder="Inserisci Telefono Pasticceri">
-          <div class="invalid-feedback">Per favore inserisci il telefono del Pasticceri.</div>
+            placeholder="Introduce el teléfono del pastelero">
+          <div class="invalid-feedback">Por favor introduce el teléfono del pastelero.</div>
         </div>
 
         <div class="col-12 text-end">
           <button type="submit" class="btn btn-gold-filled btn-lg">
             <i class="bi bi-save2 me-2"></i>
-            {{ isset($pastryChef) ? 'Aggiorna Chef' : 'Salva Chef' }}
+            {{ isset($pastryChef) ? 'Actualizar pastelero' : 'Guardar pastelero' }}
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Tabella Pasticceri -->
+  <!-- Tabla de Pasteleros -->
   <div class="card border-primary shadow-sm">
     <div class="card-header d-flex align-items-center" style="background-color: #041930;">
       <i class="bi bi-people fs-4 me-2" style="color: #e2ae76;"></i>
-      <h5 class="mb-0 fw-bold" style="color: #e2ae76;">Lista Pasticceri</h5>
+      <h5 class="mb-0 fw-bold" style="color: #e2ae76;">Lista de pasteleros</h5>
     </div>
     <div class="card-body table-responsive">
       <table
@@ -82,11 +82,11 @@
         data-page-length="25">
         <thead>
           <tr>
-            <th class="sortable">Nome</th>
-            <th class="sortable">Email</th>
-            <th class="sortable">Telefono</th>
-            <th class="sortable">Ultimo Aggiornamento</th>
-            <th>Azioni</th>
+            <th class="sortable">Nombre</th>
+            <th class="sortable">Correo electrónico</th>
+            <th class="sortable">Teléfono</th>
+            <th class="sortable">Última actualización</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -97,20 +97,20 @@
               <td>{{ $chef->phone ?? '—' }}</td>
               <td>{{ optional($chef->updated_at)?->format('Y-m-d H:i') ?? '—' }}</td>
               <td>
-                <a href="{{ route('pastry-chefs.show', $chef) }}" class="btn btn-sm btn-deepblue me-1" title="Visualizza">
+                <a href="{{ route('pastry-chefs.show', $chef) }}" class="btn btn-sm btn-deepblue me-1" title="Ver">
                   <i class="bi bi-eye"></i>
                 </a>
-                <a href="{{ route('pastry-chefs.edit', $chef) }}" class="btn btn-sm btn-gold me-1" title="Modifica">
+                <a href="{{ route('pastry-chefs.edit', $chef) }}" class="btn btn-sm btn-gold me-1" title="Editar">
                   <i class="bi bi-pencil-square"></i>
                 </a>
                 <form 
                   action="{{ route('pastry-chefs.destroy', $chef) }}" 
                   method="POST" 
                   class="d-inline"
-                  onsubmit="return confirm('Eliminare questo Chef?');">
+                  onsubmit="return confirm('¿Eliminar este chef?');">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-red" title="Elimina">
+                  <button type="submit" class="btn btn-sm btn-red" title="Eliminar">
                     <i class="bi bi-trash"></i>
                   </button>
                 </form>
@@ -118,7 +118,7 @@
             </tr>
           @empty
             <tr>
-              <td colspan="5" class="text-center text-muted">Nessun Chef trovato.</td>
+              <td colspan="5" class="text-center text-muted">No se ha encontrado ningún pastelero.</td>
             </tr>
           @endforelse
         </tbody>
@@ -174,7 +174,7 @@
   .btn-red { border-color: #ff0000 !important; color: red !important; }
   .btn-red:hover { background-color: #ff0000 !important; color: white !important; }
 
-  /* DataTables sorting arrow color (if plugin used) */
+  /* Color de las flechas de ordenación de DataTables (si se usa el plugin) */
   table.dataTable thead .sorting:after,
   table.dataTable thead .sorting_asc:after,
   table.dataTable thead .sorting_desc:after {
@@ -199,15 +199,15 @@
           { orderable: false, targets: -1 }
         ],
         language: {
-          search:        "Cerca:",
-          lengthMenu:    "Mostra _MENU_ voci",
-          info:          "Mostra _START_ di _END_ di _TOTAL_ elementi",
-          infoEmpty:     "Nessun elemento disponibile",
-          zeroRecords:   "Nessuna corrispondenza trovata"
+          search:        "Buscar:",
+          lengthMenu:    "Mostrar _MENU_ elementos",
+          info:          "Mostrando de _START_ a _END_ de _TOTAL_ elementos",
+          infoEmpty:     "No hay elementos disponibles",
+          zeroRecords:   "No se han encontrado coincidencias"
         }
       });
 
-      // Restore previous sort (session)
+      // Restaurar ordenación previa (sessionStorage)
       try {
         const sc = sessionStorage.getItem('pastry_sort_col');
         const sd = sessionStorage.getItem('pastry_sort_dir');
@@ -216,11 +216,11 @@
         }
       } catch(e){}
 
-      // 2‑state toggle header click
+      // Toggle de dos estados en el encabezado
       $('#pastryChefsTable thead').on('click', 'th', function() {
         const idx = $(this).index();
         const colSettings = table.settings()[0].aoColumns[idx];
-        if (colSettings.bSortable === false) return; // skip "Azioni"
+        if (colSettings.bSortable === false) return; // saltar "Acciones"
 
         const current = table.order();
         const currentCol = current.length ? current[0][0] : null;
@@ -240,13 +240,13 @@
         } catch(e){}
       });
 
-      // Prevent shift multi-ordering
+      // Evitar ordenación múltiple con Shift
       $('#pastryChefsTable thead').on('mousedown', 'th', function(e){
         if (e.shiftKey) e.preventDefault();
       });
     }
 
-    // Bootstrap validation
+    // Validación Bootstrap
     const forms = document.querySelectorAll('.needs-validation');
     Array.from(forms).forEach(form => {
       form.addEventListener('submit', function(e) {

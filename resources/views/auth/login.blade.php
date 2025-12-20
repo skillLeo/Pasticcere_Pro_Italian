@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pasticcere Pro | Login</title>
+  <title>Pasticcere Pro | Iniciar sesión</title>
   <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.ico') }}" sizes="16x16">
   <!-- remix icon font css  -->
   <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
@@ -52,8 +52,8 @@
           </a>
         </div>
 
-        <h4 class="mb-2">Accedi a Pasticcere Pro</h4>
-        <p class="mb-32 text-secondary-light text-lg">Bentornato! Inserisci i tuoi dati</p>
+        <h4 class="mb-2">Inicia sesión en Pasticcere Pro</h4>
+        <p class="mb-32 text-secondary-light text-lg">¡Bienvenido de nuevo! Introduce tus datos</p>
 
         @if(session('error'))
           <div class="alert alert-danger mb-3">{{ session('error') }}</div>
@@ -76,7 +76,7 @@
               required
               autofocus
               class="form-control h-56-px bg-neutral-50 radius-12 @error('email') is-invalid @enderror"
-              placeholder="Email"
+              placeholder="Correo electrónico"
             >
             @error('email')
               <div class="text-danger mt-1">{{ $message }}</div>
@@ -94,7 +94,7 @@
                 id="your-password"
                 required
                 class="form-control h-56-px bg-neutral-50 radius-12 @error('password') is-invalid @enderror"
-                placeholder="Password"
+                placeholder="Contraseña"
               >
             </div>
             <span
@@ -116,53 +116,21 @@
                 {{ old('remember') ? 'checked' : '' }}
               >
               <label class="form-check-label ms-2" for="remember">
-                Ricordati di me
+                Recuérdame
               </label>
             </div>
             <a href="{{ route('password.request') }}" class="text-sm">
-              Password dimenticata?
+              ¿Olvidaste tu contraseña?
             </a>
           </div>
 
-          <div class="d-flex flex-wrap justify-content-center gap-2 mb-24">
-            <button type="button"
-                    class="btn btn-outline-primary quick-login-btn"
-                    data-email="super@example.com"
-                    data-password="password123">
-              Super
-            </button>
-            <button type="button"
-                    class="btn btn-outline-primary quick-login-btn"
-                    data-email="admin@example.com"
-                    data-password="password123">
-              Admin
-            </button>
-            <button type="button"
-                    class="btn btn-outline-primary quick-login-btn"
-                    data-email="shop@example.com"
-                    data-password="password123">
-              Shop
-            </button>
-            <button type="button"
-                    class="btn btn-outline-primary quick-login-btn"
-                    data-email="lab@example.com"
-                    data-password="password123">
-              Lab
-            </button>
-            <button type="button"
-                    class="btn btn-outline-primary quick-login-btn"
-                    data-email="master@example.com"
-                    data-password="password123">
-              Master
-            </button>
-          </div>
 
           <button
             type="submit"
             class="btn text-sm btn-sm px-12 py-16 w-100 radius-12"
             style="background-color: #e2ae76; color: #041930; border: 2px solid #e2ae76;"
           >
-            Sign In
+            Iniciar sesión
           </button>
         </form>
       </div>
@@ -198,7 +166,7 @@
   <script src="{{ asset('assets/js/app.js') }}"></script>
 
   <script>
-    // Password toggle
+    // Alternar contraseña
     function initializePasswordToggle(sel) {
       $(sel).on('click', function() {
         $(this).toggleClass("ri-eye-off-line");
@@ -208,7 +176,7 @@
     }
     initializePasswordToggle('.toggle-password');
 
-    // Quick-login buttons
+    // Botones de inicio de sesión rápido
     $(document).on('click', '.quick-login-btn', function() {
       $('input[name="email"]').val($(this).data('email'));
       $('input[name="password"]').val($(this).data('password'));

@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title','Prodotti  Forniture Esterne & Resi
+@section('title','Productos Suministros Externos y Devoluciones
 ')
 
 @section('content')
@@ -14,15 +14,15 @@
       class="me-2"
       style="width: 1.5em; height: 1.0em; color: #e2ae76; font-size: 1.7vw;">
     </iconify-icon>
-    <h4 class="mb-0 fw-bold" style="color: #e2ae76;"> Forniture Esterne & Resi </h4>
+    <h4 class="mb-0 fw-bold" style="color: #e2ae76;"> Suministros Externos y Devoluciones </h4>
   </div>
 
-  {{-- Filters --}}
+  {{-- Filtros --}}
   <form method="GET" class="row g-3 mb-4">
     <div class="col-md-3">
       <label class="form-label">Cliente</label>
       <select name="client_id" class="form-select">
-        <option value="">Tutti i clienti</option>
+        <option value="">Todos los clientes</option>
         @foreach($clients as $c)
           <option value="{{ $c->id }}" {{ request('client_id')==$c->id?'selected':'' }}>
             {{ $c->name }}
@@ -31,12 +31,12 @@
       </select>
     </div>
     <div class="col-md-3">
-      <label class="form-label">Da</label>
+      <label class="form-label">Desde</label>
       <input type="date" name="start_date" class="form-control"
              value="{{ request('start_date') }}">
     </div>
     <div class="col-md-3">
-      <label class="form-label">A</label>
+      <label class="form-label">Hasta</label>
       <input type="date" name="end_date" class="form-control"
              value="{{ request('end_date') }}">
     </div>
@@ -51,19 +51,19 @@
         "
       >
         <i class="bi bi-funnel me-1" style="color: #041930;"></i>
-        Applica Filtri
+        Aplicar filtros
       </button>
     </div>
   </form>
 
-  {{-- Summary Cards --}}
+  {{-- Tarjetas de resumen --}}
   <div class="row g-3 mb-4">
     <div class="col-md-4">
       <div class="card h-100" style="background-color: #e2ae76;">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-box-seam fs-2 me-3" style="color: #041930;"></i>
             <div>
-              <div class="fs-5" style="color: #041930;">Totale Forniture</div>
+              <div class="fs-5" style="color: #041930;">Total suministros</div>
               <div class="fs-4" style="color: #041930;">€{{ number_format($grandSupply,2) }}</div>
             </div>
         </div>
@@ -74,7 +74,7 @@
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-arrow-counterclockwise fs-2 me-3" style="color: #ffffff;"></i>
           <div>
-            <div class="fs-5" style="color: #ffffff;">Totale Resi</div>
+            <div class="fs-5" style="color: #ffffff;">Total devoluciones</div>
             <div class="fs-4" style="color: #ffffff;">€{{ number_format($grandReturn, 2) }}</div>
           </div>
         </div>
@@ -85,7 +85,7 @@
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-cash-stack fs-2 me-3" style="color: #e2ae76;"></i>
           <div>
-            <div class="fs-5" style="color: #e2ae76;">Incasso Totale</div>
+            <div class="fs-5" style="color: #e2ae76;">Ingreso total</div>
             <div class="fs-4" style="color: #e2ae76;">€{{ number_format($grandNet,2) }}</div>
           </div>
         </div>
@@ -93,19 +93,19 @@
     </div>
   </div>
 
-  {{-- All Supplies vs Returns --}}
+  {{-- Todos los suministros vs devoluciones --}}
   <div class="row g-4">
-    {{-- A) Supplies Table --}}
+    {{-- A) Tabla de suministros --}}
     <div class="col-lg-6">
       <div class="card h-100">
-        <div class="card-header bg-dark text-gold fw-bold" style="color: #e2ae76">Tutte le Forniture</div>
+        <div class="card-header bg-dark text-gold fw-bold" style="color: #e2ae76">Todos los suministros</div>
         <div class="card-body p-0">
           <div class="table-responsive">
             <table  data-page-length="25"id="suppliesTable" class="table table-striped mb-0">
               <thead class="bg-gold text-dark">
                 <tr>
-                  <th>Data</th><th>Cliente</th><th>Fornitura (€)</th>
-                  <th>Reso (€)</th><th class="text-end">Azioni</th>
+                  <th>Fecha</th><th>Cliente</th><th>Suministro (€)</th>
+                  <th>Devolución (€)</th><th class="text-end">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -117,22 +117,22 @@
                     <td>€{{ number_format($returnsBySupply[$s->id] ?? 0,2) }}</td>
                     <td class="text-end">
                       <a href="{{ route('returned-goods.create',['external_supply_id'=>$s->id]) }}"
-                         class="btn btn-sm btn-outline-warning me-1" title="Aggiungi Reso">
+                         class="btn btn-sm btn-outline-warning me-1" title="Añadir devolución">
                         <i class="bi bi-arrow-counterclockwise"></i>
                       </a>
                       <a href="{{ route('external-supplies.show',$s->id) }}"
-                         class="btn btn-sm btn-outline-info me-1" title="Visualizza">
+                         class="btn btn-sm btn-outline-info me-1" title="Ver">
                         <i class="bi bi-eye"></i>
                       </a>
                       <a href="{{ route('external-supplies.edit',$s->id) }}"
-                         class="btn btn-sm btn-outline-primary me-1" title="Modifica">
+                         class="btn btn-sm btn-outline-primary me-1" title="Editar">
                         <i class="bi bi-pencil"></i>
                       </a>
                       <form action="{{ route('external-supplies.destroy',$s->id) }}"
                             method="POST" class="d-inline"
-                            onsubmit="return confirm('Eliminare questa fornitura?');">
+                            onsubmit="return confirm('¿Eliminar este suministro?');">
                         @csrf @method('DELETE')
-                        <button class="btn btn-sm btn-outline-danger" title="Elimina">
+                        <button class="btn btn-sm btn-outline-danger" title="Eliminar">
                           <i class="bi bi-trash"></i>
                         </button>
                       </form>
@@ -140,7 +140,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="5" class="text-center text-muted">Nessuna fornitura trovata.</td>
+                    <td colspan="5" class="text-center text-muted">No se encontró ningún suministro.</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -150,21 +150,21 @@
       </div>
     </div>
 
-    {{-- B) Daily Comparison --}}
+    {{-- B) Comparación diaria --}}
     <div class="col-lg-6">
       <div class="card h-100">
         <div class="card-header bg-dark text-gold fw-bold" style="color:#e2ae76">
-          Confronto Giornaliero (Fornito - Reso)
+          Comparación diaria (Suministrado - Devolución)
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
             <table  data-page-length="25"id="dailyCompareTable" class="table table-striped mb-0">
               <thead class="bg-gold text-dark">
                 <tr>
-                  <th>Data</th>
-                  <th>Fornitura (€)</th>
-                  <th>Reso (€)</th>
-                  <th>Netto (€)</th>
+                  <th>Fecha</th>
+                  <th>Suministro (€)</th>
+                  <th>Devolución (€)</th>
+                  <th>Neto (€)</th>
                 </tr>
               </thead>
               <tbody>
@@ -184,7 +184,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="4" class="text-center text-muted">Nessun dato da confrontare.</td>
+                    <td colspan="4" class="text-center text-muted">No hay datos para comparar.</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -207,7 +207,7 @@
     background-color: #d89d5c !important;
     color: white !important;
   }
-  /* Make headers look clickable */
+  /* Hacer que los encabezados parezcan clicables */
   #suppliesTable thead th,
   #dailyCompareTable thead th {
     cursor: pointer;
@@ -233,9 +233,9 @@ document.addEventListener('DOMContentLoaded', () => {
   endDate.     addEventListener('change', updateFilters);
 
   // =========================
-  // 2-STATE SORT + SESSION KEEP
+  // ORDEN DE 2 ESTADOS + MANTENER EN SESIÓN
   // =========================
-  // Generic sorter applied to both tables (without any external libs).
+  // Ordenador genérico aplicado a ambas tablas (sin librerías externas).
   function makeTwoStateSortable(tableId, storageKey) {
     const table = document.getElementById(tableId);
     if (!table) return;
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rows.forEach(r => tbody.appendChild(r));
     }
 
-    // Restore previous sort
+    // Restaurar orden anterior
     try {
       const saved = sessionStorage.getItem(storageKey);
       if (saved) {
@@ -274,14 +274,14 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e){}
 
     table.querySelectorAll('thead th').forEach((th, index) => {
-      // Skip "Azioni" columns (right-aligned actions)
+      // Omitir columnas "Azioni" (acciones alineadas a la derecha)
       if (th.classList.contains('text-end')) return;
 
       th.addEventListener('click', () => {
         const current = th.getAttribute('data-sort-dir');
         const newDir = current === 'asc' ? 'desc' : 'asc';
 
-        // Clear other headers' indicators
+        // Borrar indicadores de otros encabezados
         table.querySelectorAll('thead th').forEach(h => {
           if (h !== th) h.removeAttribute('data-sort-dir');
         });
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
         th.setAttribute('data-sort-dir', newDir);
         sortBy(index, newDir);
 
-        // Persist
+        // Persistir
         try {
           sessionStorage.setItem(storageKey, JSON.stringify({ col:index, dir:newDir }));
         } catch(e){}

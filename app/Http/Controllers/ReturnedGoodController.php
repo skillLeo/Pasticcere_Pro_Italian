@@ -22,24 +22,24 @@ class ReturnedGoodController extends Controller
         $user        = Auth::user();
         $groupRootId = $user->created_by ?? $user->id;
 
-        // 1) Visibility Group
+        // 1) Grupo de visibilidad
         $groupUserIds = User::where('created_by', $groupRootId)
                             ->pluck('id')
                             ->push($groupRootId)
                             ->unique();
 
-        // 2) Clients for dropdown
+        // 2) Clientes para el desplegable
         $clients = Client::whereIn('user_id', $groupUserIds)
                          ->orderBy('name')
                          ->get();
 
-        // 3) Base queries
+        // 3) Consultas base
         $suppliesQ = ExternalSupply::with('client')
                                    ->whereIn('user_id', $groupUserIds);
         $returnsQ  = ReturnedGood::with('client', 'recipes', 'externalSupply')
                                   ->whereIn('user_id', $groupUserIds);
 
-        // 4) Apply filters
+        // 4) Aplicar filtros
         if ($request->filled('client_id')) {
             $suppliesQ->where('client_id', $request->client_id);
             $returnsQ->where('client_id', $request->client_id);
@@ -53,16 +53,16 @@ class ReturnedGoodController extends Controller
             $returnsQ->where('return_date', '<=', $request->end_date);
         }
 
-        // 5) Fetch & sort
+        // 5) Obtener y ordenar
         $supplies      = $suppliesQ->orderBy('supply_date', 'desc')->get();
         $returnedGoods = $returnsQ->orderBy('return_date', 'desc')->get();
 
-        // 6) Returns mapped by supply ID
+        // 6) Devoluciones agrupadas por ID de suministro
         $returnsBySupply = $returnedGoods
             ->groupBy('external_supply_id')
             ->map(fn($grp) => $grp->sum('total_amount'));
 
-        // 7) Correct Daily Summary (group by supply date, match returns to original supply date)
+        // 7) Resumen diario correcto (agrupar por fecha de suministro y emparejar devoluciones con la fecha original del suministro)
         $supsByDate = $supplies
             ->groupBy(fn($supply) => $supply->supply_date->toDateString())
             ->map(function($group, $date) use ($returnedGoods) {
@@ -80,12 +80,12 @@ class ReturnedGoodController extends Controller
             })
             ->sortByDesc('date');
 
-        // 8) Grand totals
+        // 8) Totales generales
         $grandSupply = $supplies->sum('total_amount');
         $grandReturn = $returnedGoods->sum('total_amount');
         $grandNet    = $grandSupply - $grandReturn;
 
-        // 9) AJAX response
+        // 9) Respuesta AJAX
         if ($request->ajax()) {
             return view('frontend.returned-goods.index', compact(
                 'clients', 'supplies', 'returnedGoods', 'returnsBySupply',
@@ -93,7 +93,7 @@ class ReturnedGoodController extends Controller
             ));
         }
 
-        // 10) Full page load
+        // 10) Carga completa de la página
         return view('frontend.returned-goods.index', compact(
             'clients', 'supplies', 'returnedGoods', 'returnsBySupply',
             'supsByDate', 'grandSupply', 'grandReturn', 'grandNet'
@@ -112,7 +112,7 @@ class ReturnedGoodController extends Controller
         $externalSupplyId = $request->query('external_supply_id');
 
         if (! $externalSupplyId) {
-            abort(Response::HTTP_BAD_REQUEST, 'Parametro external_supply_id mancante');
+            abort(Response::HTTP_BAD_REQUEST, 'Falta el parámetro external_supply_id');
         }
 
         $externalSupply = ExternalSupply::with(['client', 'recipes.recipe', 'recipes.returns'])
@@ -151,10 +151,10 @@ class ReturnedGoodController extends Controller
                 $remaining = $line->remaining_qty;
 
                 if ($toReturn > $remaining) {
-                    $recipeName = optional($line->recipe)->recipe_name ?? 'Ricetta sconosciuta';
+                    $recipeName = optional($line->recipe)->recipe_name ?? 'Receta desconocida';
                     abort(
                         Response::HTTP_UNPROCESSABLE_ENTITY,
-                        "Non è possibile restituire più di {$remaining} unità per {$recipeName}"
+                        "No es posible devolver más de {$remaining} unidades para {$recipeName}"
                     );
                 }
 
@@ -179,7 +179,7 @@ class ReturnedGoodController extends Controller
 
         return redirect()
             ->route('returned-goods.index')
-            ->with('success', 'Reso registrato con successo!');
+            ->with('success', '¡Devolución registrada con éxito!');
     }
 
     public function edit(ReturnedGood $returnedGood)
@@ -245,7 +245,7 @@ class ReturnedGoodController extends Controller
 
         return redirect()
             ->route('returned-goods.index')
-            ->with('success', 'Resi aggiornati con successo!');
+            ->with('success', '¡Devoluciones actualizadas con éxito!');
     }
 
     public function destroy(ReturnedGood $returnedGood)
@@ -258,6 +258,6 @@ class ReturnedGoodController extends Controller
 
         return redirect()
             ->route('returned-goods.index')
-            ->with('success', 'Resi eliminati con successo!');
+            ->with('success', '¡Devoluciones eliminadas con éxito!');
     }
 }

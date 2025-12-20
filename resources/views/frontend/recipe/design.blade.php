@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Crea Ricetta')
+@section('title', 'Crear Receta')
 
 @php
     $sectionHeaderStyle = 'style="background-color: #041930; color: #e2ae76;"'; // not used anymore but kept if layout expects it
@@ -268,17 +268,17 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                 d="M277.509,234.492c-10.833-10.833-30.659-28.329-46.765-27.786C214.616,207.227,48.711,314.21,34.496,328.424c-14.223,14.223,18.794,66.572,50.651,98.429c31.855,31.855,84.205,64.874,98.429,50.651c14.215-14.215,121.194-180.123,121.717-196.251C305.836,265.147,288.341,245.322,277.509,234.492z" />
                         </svg>
                     </div>
-                    <h5 class="mb-0">Dettagli Ricetta</h5>
-                    <span class="badge badge-soft ms-3">Nuova</span>
+                    <h5 class="mb-0">Detalles de la Receta</h5>
+                    <span class="badge badge-soft ms-3">Nueva</span>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
 
                         <div class="col-md-4">
-                            <label for="recipeName" class="form-label">Nome</label>
+                            <label for="recipeName" class="form-label">Nombre</label>
                             <input type="text" id="recipeName" name="recipe_name"
                                 class="form-control @error('recipe_name') is-invalid @enderror"
-                                placeholder="Torta al cioccolato"
+                                placeholder="Tarta de chocolate"
                                 value="{{ old('recipe_name', $isEdit ? $recipe->recipe_name : '') }}">
                             @error('recipe_name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -286,10 +286,10 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                         </div>
 
                         <div class="col-md-4">
-                            <label for="recipeCategory" class="form-label">Categoria</label>
+                            <label for="recipeCategory" class="form-label">Categoría</label>
                             <select id="recipeCategory" name="recipe_category_id"
                                 class="form-select @error('recipe_category_id') is-invalid @enderror">
-                                <option value="">Scegli…</option>
+                                <option value="">Elige…</option>
                                 @foreach ($categories as $cat)
                                     <option value="{{ $cat->id }}"
                                         {{ old('recipe_category_id', $isEdit ? $recipe->recipe_category_id : '') == $cat->id ? 'selected' : '' }}>
@@ -303,10 +303,10 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                         </div>
 
                         <div class="col-md-4">
-                            <label for="recipeDept" class="form-label">Reparto</label>
+                            <label for="recipeDept" class="form-label">Departamento</label>
                             <select id="recipeDept" name="department_id"
                                 class="form-select @error('department_id') is-invalid @enderror">
-                                <option value="">Scegli…</option>
+                                <option value="">Elige…</option>
                                 @foreach ($departments as $dept)
                                     <option value="{{ $dept->id }}"
                                         {{ old('department_id', $isEdit ? $recipe->department_id : '') == $dept->id ? 'selected' : '' }}>
@@ -357,9 +357,9 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                 d="M4.917,507.087c-6.552-6.552-6.552-17.174,0-23.725L404.75,83.527c6.552-6.552,17.174-6.552,23.725,0c6.552,6.552,6.552,17.174,0,23.725L28.643,507.087C22.091,513.637,11.468,513.637,4.917,507.087z" />
                         </svg>
                     </div>
-                    <h5 class="mb-0">Ingredienti</h5>
+                    <h5 class="mb-0">Ingredientes</h5>
                     <button type="button" class="btn btn-outline-light ms-auto" data-bs-toggle="modal"
-                        data-bs-target="#addIngredientModal"><i class="bi bi-plus-lg"></i> Nuovo Ingrediente</button>
+                        data-bs-target="#addIngredientModal"><i class="bi bi-plus-lg"></i> Nuevo ingrediente</button>
                 </div>
 
                 <style>
@@ -374,10 +374,10 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                             <thead>
                                 <tr>
                                     <th>Ingrediente</th>
-                                    <th class="text-center">Qtà (g)</th>
-                                    <th class="text-center">Costo (€)</th>
-                                    <th class="text-center incidence-col">Incidenza (%)</th>
-                                    <th class="text-center">Azione</th>
+                                    <th class="text-center">Cantidad (g)</th>
+                                    <th class="text-center">Coste (€)</th>
+                                    <th class="text-center incidence-col">Incidencia (%)</th>
+                                    <th class="text-center">Acción</th>
                                 </tr>
                             </thead>
                             <tbody id="ingredientsTable">
@@ -389,7 +389,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                             <td>
                                                 <select name="ingredients[{{ $i }}][id]"
                                                     class="form-select ingredient-select @error('ingredients.' . $i . '.id') is-invalid @enderror">
-                                                    <option value="">Seleziona ingrediente…</option>
+                                                    <option value="">Selecciona ingrediente…</option>
                                                     @foreach ($ingredients as $ing)
                                                         <option value="{{ $ing->id }}"
                                                             data-price="{{ $ing->price_per_kg }}"
@@ -434,7 +434,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                             <td>
                                                 <select name="ingredients[{{ $i }}][id]"
                                                     class="form-select ingredient-select @error('ingredients.' . $i . '.id') is-invalid @enderror">
-                                                    <option value="">Seleziona ingrediente…</option>
+                                                    <option value="">Selecciona ingrediente…</option>
                                                     @foreach ($ingredients as $ing)
                                                         <option value="{{ $ing->id }}"
                                                             data-price="{{ $ing->price_per_kg }}"
@@ -478,7 +478,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                         <td>
                                             <select name="ingredients[0][id]"
                                                 class="form-select ingredient-select @error('ingredients.0.id') is-invalid @enderror">
-                                                <option value="">Seleziona ingrediente…</option>
+                                                <option value="">Selecciona ingrediente…</option>
                                                 @foreach ($ingredients as $ing)
                                                     <option value="{{ $ing->id }}"
                                                         data-price="{{ $ing->price_per_kg }}">
@@ -517,7 +517,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
 
                             <tfoot class="table-light">
                                 <tr>
-                                    <td class="fw-semibold">Peso Totale (g)</td>
+                                    <td class="fw-semibold">Peso total (g)</td>
                                     <td>
                                         <input type="number" id="totalWeightFooter" class="form-control text-center"
                                             readonly>
@@ -534,13 +534,13 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                     </td>
                                     <td class="text-center">
                                         <button id="addIngredientBtn" class="btn btn-outline-success btn-sm"
-                                            title="Aggiungi riga">
-                                            <i class="bi bi-plus"></i> Aggiungi
+                                            title="Añadir fila">
+                                            <i class="bi bi-plus"></i> Añadir
                                         </button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="fw-semibold">Peso dopo il calo (g)</td>
+                                    <td class="fw-semibold">Peso después de la merma (g)</td>
                                     <td>
                                         <input type="number" id="weightWithLoss" name="recipe_weight"
                                             class="form-control text-center @error('recipe_weight') is-invalid @enderror"
@@ -569,7 +569,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
 
                 <div class="card-header brand-header d-flex align-items-center">
                     <div class="header-icon"><i class="bi bi-clock-history" style="color:var(--accent)"></i></div>
-                    <h5 class="mb-0">Manodopera</h5>
+                    <h5 class="mb-0">Mano de obra</h5>
                 </div>
 
                 <div class="card-body">
@@ -577,13 +577,13 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                         <input class="form-check-input" type="radio" name="labor_cost_mode" id="costModeShop"
                             value="shop"
                             {{ old('labor_cost_mode', $isEdit ? $recipe->labor_cost_mode : 'shop') == 'shop' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="costModeShop">Usa costo interno (€/min)</label>
+                        <label class="form-check-label" for="costModeShop">Usar coste interno (€/min)</label>
                     </div>
                     <div class="form-check form-check-inline @error('labor_cost_mode') is-invalid @enderror">
                         <input class="form-check-input" type="radio" name="labor_cost_mode" id="costModeExternal"
                             value="external"
                             {{ old('labor_cost_mode', $isEdit ? $recipe->labor_cost_mode : 'shop') == 'external' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="costModeExternal">Usa costo esterno (€/min)</label>
+                        <label class="form-check-label" for="costModeExternal">Usar coste externo (€/min)</label>
                     </div>
                     @error('labor_cost_mode')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -591,7 +591,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
 
                     <div class="row g-3 mt-3">
                         <div class="col-md-3">
-                            <label for="laborTimeInput" class="form-label">Tempo lavoro (min)</label>
+                            <label for="laborTimeInput" class="form-label">Tiempo de trabajo (min)</label>
                             <input type="number" id="laborTimeInput" name="labor_time_input"
                                 class="form-control @error('labor_time_input') is-invalid @enderror" min="0"
                                 value="{{ old('labor_time_input', $isEdit ? $recipe->labour_time_min : 0) }}">
@@ -601,7 +601,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                         </div>
 
                         <div class="col-md-3">
-                            <label for="costPerMin" class="form-label">Costo al minuto (€)</label>
+                            <label for="costPerMin" class="form-label">Coste por minuto (€)</label>
                             <div class="input-group">
                                 <span class="input-group-text">€</span>
                                 <input type="text" id="costPerMin" class="form-control" readonly>
@@ -609,7 +609,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                         </div>
 
                         <div class="col-md-3">
-                            <label for="laborCost" class="form-label">Costo lavoro (€)</label>
+                            <label for="laborCost" class="form-label">Coste de mano de obra (€)</label>
                             <div class="input-group">
                                 <span class="input-group-text">€</span>
                                 <input type="text" id="laborCost" name="labor_cost"
@@ -623,7 +623,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
 
                         {{-- incidence stays hidden --}}
                         <div class="col-md-3" style="display:none">
-                            <label for="laborIncidence" class="form-label">Incidenza (%)</label>
+                            <label for="laborIncidence" class="form-label">Incidencia (%)</label>
                             <input type="text" id="laborIncidence" class="form-control text-center" readonly>
                         </div>
                     </div>
@@ -636,11 +636,11 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                     <div class="card shadow-sm h-100 reveal">
                         <div class="card-header brand-header d-flex align-items-center">
                             <div class="header-icon"><i class="bi bi-calculator" style="color:var(--accent)"></i></div>
-                            <h5 class="mb-0">Spesa Totale</h5>
+                            <h5 class="mb-0">Gasto total</h5>
                         </div>
                         <div class="card-body d-flex flex-column align-items-center">
                             <div class="input-group w-100 mb-3">
-                                <span class="input-group-text">Costo €/kg prima Imballaggio</span>
+                                <span class="input-group-text">Coste €/kg antes del embalaje</span>
                                 <span class="input-group-text">€</span>
                                 <input type="text" id="prodCostKg" name="production_cost_per_kg"
                                     class="form-control text-end @error('production_cost_per_kg') is-invalid @enderror"
@@ -652,7 +652,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                             </div>
 
                             <div class="input-group w-100 mb-3">
-                                <span class="input-group-text">Imballaggio</span>
+                                <span class="input-group-text">Embalaje</span>
                                 <span class="input-group-text">€</span>
                                 <input type="number" step="0.01" id="packingCost" name="packing_cost"
                                     class="form-control text-end @error('packing_cost') is-invalid @enderror"
@@ -663,7 +663,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                             </div>
 
                             <div class="input-group input-group-lg w-100 mb-2">
-                                <span class="input-group-text">Costo €/kg dopo Imballaggio</span>
+                                <span class="input-group-text">Coste €/kg después del embalaje</span>
                                 <span class="input-group-text">€</span>
                                 <input type="text" id="totalExpense" name="total_expense"
                                     class="form-control fw-bold text-center @error('total_expense') is-invalid @enderror"
@@ -674,7 +674,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                             </div>
 
                             <div class="w-100 text-center mt-1">
-                                <span class="fw-semibold">Margine Potenziale:</span>
+                                <span class="fw-semibold">Margen potencial:</span>
                                 <span id="potentialMargin" class="fw-bold ms-2">
                                     {{ old('potential_margin', $isEdit ? $recipe->potential_margin : '') }}
                                 </span>
@@ -691,7 +691,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                     <div class="card shadow-sm h-100 reveal">
                         <div class="card-header brand-header d-flex align-items-center">
                             <div class="header-icon"><i class="bi bi-shop" style="color:var(--accent)"></i></div>
-                            <h5 class="mb-0">Modalità di Vendita</h5>
+                            <h5 class="mb-0">Modalidad de venta</h5>
                         </div>
                         <div class="card-body">
                             <div class="mb-3 @error('sell_mode') is-invalid @enderror">
@@ -699,13 +699,13 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                     <input class="form-check-input" type="radio" name="sell_mode" id="modePiece"
                                         value="piece"
                                         {{ old('sell_mode', $isEdit ? $recipe->sell_mode : 'piece') == 'piece' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="modePiece">Vendita a Pezzo</label>
+                                    <label class="form-check-label" for="modePiece">Venta por pieza</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="sell_mode" id="modeKg"
                                         value="kg"
                                         {{ old('sell_mode', $isEdit ? $recipe->sell_mode : '') == 'kg' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="modeKg">Vendita al Kg</label>
+                                    <label class="form-check-label" for="modeKg">Venta por kg</label>
                                 </div>
                                 @error('sell_mode')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -714,7 +714,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
 
                             <div id="pieceInputs">
                                 <div class="mb-3">
-                                    <label for="totalPieces" class="form-label">pezzi/dose</label>
+                                    <label for="totalPieces" class="form-label">piezas/dosis</label>
                                     <input type="number" id="totalPieces" name="total_pieces"
                                         class="form-control @error('total_pieces') is-invalid @enderror"
                                         value="{{ old('total_pieces', $isEdit ? $recipe->total_pieces : '') }}">
@@ -723,12 +723,12 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="weightPerPiece" class="form-label">Peso per Pezzo (g)</label>
+                                    <label for="weightPerPiece" class="form-label">Peso por pieza (g)</label>
                                     <input type="text" id="weightPerPiece" class="form-control" readonly
                                         value="{{ old('weight_per_piece', $isEdit && $recipe->total_pieces > 0 ? number_format(1000 / $recipe->total_pieces, 2) : '') }}">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="pricePerPiece" class="form-label">Prezzo di Vendita per Pezzo (€)</label>
+                                    <label for="pricePerPiece" class="form-label">Precio de venta por pieza (€)</label>
                                     <div class="input-group">
                                         <span class="input-group-text">€</span>
                                         <input type="number" step="0.01" id="pricePerPiece"
@@ -744,7 +744,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
 
                             <div id="kgInputs" class="d-none">
                                 <div class="mb-3">
-                                    <label for="pricePerKg" class="form-label">Prezzo di Vendita per Kg (€)</label>
+                                    <label for="pricePerKg" class="form-label">Precio de venta por kg (€)</label>
                                     <div class="input-group">
                                         <span class="input-group-text">€</span>
                                         <input type="number" step="0.01" id="pricePerKg" name="selling_price_per_kg"
@@ -759,11 +759,11 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
 
                             <div class="row g-3 mb-3">
                                 <div class="col-md-4">
-                                    <label for="vatRate" class="form-label">Aliquota IVA</label>
+                                    <label for="vatRate" class="form-label">Tipo de IVA</label>
                                     @php $currentVat = old('vat_rate', $isEdit ? $recipe->vat_rate : 0); @endphp
                                     <select id="vatRate" name="vat_rate"
                                         class="form-select @error('vat_rate') is-invalid @enderror">
-                                        <option value="0" @selected($currentVat == 0)>Esente IVA</option>
+                                        <option value="0" @selected($currentVat == 0)>Exento de IVA</option>
                                         <option value="4" @selected($currentVat == 4)>4%</option>
                                         <option value="10" @selected($currentVat == 10)>10%</option>
                                         <option value="22" @selected($currentVat == 22)>22%</option>
@@ -784,7 +784,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                 <div class="card mb-4 shadow-sm reveal">
                     <div class="card-header brand-header d-flex align-items-center">
                         <div class="header-icon"><i class="bi bi-plus-circle" style="color:var(--accent)"></i></div>
-                        <h5 class="mb-0">Aggiunte</h5>
+                        <h5 class="mb-0">Añadidos</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-check">
@@ -792,16 +792,16 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                 type="checkbox" id="addAsIngredient" name="add_as_ingredient" value="1"
                                 {{ old('add_as_ingredient', 0) ? 'checked' : '' }}>
                             <label class="form-check-label fw-semibold" for="addAsIngredient">
-                                Aggiungi questa ricetta come <em>ingrediente</em>
+                                Añadir esta receta como <em>ingrediente</em>
                             </label>
                             @error('add_as_ingredient')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                             <p class="small text-muted mb-0">
-                                Se selezionato, il nome della ricetta verrà salvato nella tabella degli ingredienti
-                                con un costo €/kg pari al "Costo €/kg prima Imballaggio".
+                                Si está seleccionado, el nombre de la receta se guardará en la tabla de ingredientes
+                                con un coste €/kg igual al «Coste €/kg antes del embalaje».
                             </p>
-                            <p class="small text-info mb-0">Nota: gli ingredienti verranno aggiunti come costo al kg</p>
+                            <p class="small text-info mb-0">Nota: los ingredientes se añadirán como coste por kg.</p>
                         </div>
                     </div>
                 </div>
@@ -811,66 +811,66 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
             <div class="submit-bar">
                 <div class="submit_bar_inner">
                     <button type="submit" class="btn btn-lg btn-accent">
-                        <i class="bi bi-save2 me-2"></i> {{ $isEdit ? 'Aggiorna Ricetta' : 'Salva Ricetta' }}
+                        <i class="bi bi-save2 me-2"></i> {{ $isEdit ? 'Actualizar receta' : 'Guardar receta' }}
                     </button>
                 </div>
             </div>
 
         </form>
 
-        <section class="mini-banner reveal" aria-label="Tutorials e risorse">
+        <section class="mini-banner reveal" aria-label="Tutoriales y recursos">
             <!-- animated gradient ring & soft sparkles are handled in CSS -->
             <div class="mini-banner-head d-flex align-items-center mb-2">
-                <span class="banner-kicker">Nuovo</span>
-                <h6 class="banner-title ms-2">Consigli rapidi &amp; Tutorial</h6>
+                <span class="banner-kicker">Nuevo</span>
+                <h6 class="banner-title ms-2">Consejos rápidos y tutoriales</h6>
                 <a href="#" class="ms-auto banner-cta">
-                    Vedi tutti <i class="bi bi-arrow-right-short"></i>
+                    Ver todos <i class="bi bi-arrow-right-short"></i>
                 </a>
             </div>
 
             <!-- Scroll arrows -->
-            <button class="scroll-arrow left" type="button" aria-label="Scorri a sinistra">
+            <button class="scroll-arrow left" type="button" aria-label="Desplazar a la izquierda">
                 <i class="bi bi-chevron-left"></i>
             </button>
-            <button class="scroll-arrow right" type="button" aria-label="Scorri a destra">
+            <button class="scroll-arrow right" type="button" aria-label="Desplazar a la derecha">
                 <i class="bi bi-chevron-right"></i>
             </button>
 
             <div class="scroller" tabindex="0">
                 <a href="#" class="chip chip--cta">
                     <span class="icon-badge"><i class="bi bi-play-circle"></i></span>
-                    Video: ricetta perfetta
+                    Vídeo: receta perfecta
                     <span class="shine"></span>
                 </a>
 
                 <a href="#" class="chip">
                     <span class="icon-badge"><i class="bi bi-currency-euro"></i></span>
-                    Costi al kg (guida)
+                    Costes por kg (guía)
                     <span class="shine"></span>
                 </a>
 
                 <a href="#" class="chip">
                     <span class="icon-badge"><i class="bi bi-bag-check"></i></span>
-                    Prezzi di vendita: best practice
+                    Precios de venta: buenas prácticas
                     <span class="shine"></span>
                 </a>
 
                 <a href="#" class="chip chip--hot">
                     <span class="icon-badge"><i class="bi bi-graph-up-arrow"></i></span>
-                    Margini &amp; IVA spiegati
+                    Márgenes e IVA explicados
                     <span class="ping"></span>
                     <span class="shine"></span>
                 </a>
 
                 <a href="#" class="chip">
                     <span class="icon-badge"><i class="bi bi-speedometer2"></i></span>
-                    Ottimizza manodopera
+                    Optimiza mano de obra
                     <span class="shine"></span>
                 </a>
 
                 <a href="#" class="chip">
                     <span class="icon-badge"><i class="bi bi-journal-text"></i></span>
-                    Template ingredienti
+                    MODELO de ingredientes
                     <span class="shine"></span>
                 </a>
             </div>
@@ -885,14 +885,14 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addIngredientModalLabel">Aggiungi Nuovo Ingrediente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                    <h5 class="modal-title" id="addIngredientModalLabel">Añadir nuevo ingrediente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addIngredientForm" action="{{ route('ingredients.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="ingredientNameModal" class="form-label">Nome Ingrediente</label>
+                            <label for="ingredientNameModal" class="form-label">Nombre del ingrediente</label>
                             <input type="text" id="ingredientNameModal" name="ingredient_name"
                                 class="form-control @error('ingredient_name') is-invalid @enderror"
                                 value="{{ old('ingredient_name') }}">
@@ -901,7 +901,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="pricePerKgModal" class="form-label">Prezzo per kg (€)</label>
+                            <label for="pricePerKgModal" class="form-label">Precio por kg (€)</label>
                             <input type="number" id="pricePerKgModal" name="price_per_kg"
                                 class="form-control @error('price_per_kg') is-invalid @enderror" step="0.01"
                                 value="{{ old('price_per_kg') }}">
@@ -909,7 +909,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-accent">Salva Ingrediente</button>
+                        <button type="submit" class="btn btn-accent">Guardar ingrediente</button>
                     </form>
                 </div>
             </div>
@@ -999,7 +999,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                     const json = await res.json();
                     if (!res.ok) {
                         alert(json.errors ? Object.values(json.errors).flat().join('\n') :
-                            'Impossibile salvare l\'ingrediente.');
+                            'No se ha podido guardar el ingrediente.');
                         return;
                     }
                     const opt = document.createElement('option');
@@ -1037,7 +1037,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                     weightEdited = false;
                 } catch (err) {
                     console.error(err);
-                    alert('Errore imprevisto durante il salvataggio dell\'ingrediente.');
+                    alert('Error inesperado durante el guardado del ingrediente.');
                 }
             });
 
@@ -1159,7 +1159,7 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                     const m = netSP - costU;
                     const pct = netSP > 0 ? (m * 100 / netSP) : 0;
                     if (potentialMargin) potentialMargin.innerText =
-                        `€${m.toFixed(2)} (${pct.toFixed(2)}%) / piece`;
+                        `€${m.toFixed(2)} (${pct.toFixed(2)}%) / pieza`;
                     if (potentialInput) potentialInput.value = m.toFixed(2);
                     if (potentialPctInput) potentialPctInput.value = pct.toFixed(2);
                 } else {
@@ -1175,10 +1175,10 @@ body{background:linear-gradient(180deg,#f6f7fb 0%, #ffffff 100%)}
                 const beforeLabel = prodCostKgIn.closest('.input-group').querySelector('.input-group-text');
                 const afterLabel = totalExpenseIn.closest('.input-group').querySelector('.input-group-text');
                 if (modePiece?.checked) {
-                    beforeLabel.textContent = 'Costo per pz prima dell’imballaggio';
+                    beforeLabel.textContent = 'Coste por pieza antes del embalaje';
                     afterLabel.textContent = '€';
                 } else {
-                    beforeLabel.textContent = 'Costo €/kg prima dell’imballaggio';
+                    beforeLabel.textContent = 'Coste €/kg antes del embalaje';
                     afterLabel.textContent = '€';
                 }
                 document.getElementById('pieceInputs')?.classList.toggle('d-none', !modePiece?.checked);

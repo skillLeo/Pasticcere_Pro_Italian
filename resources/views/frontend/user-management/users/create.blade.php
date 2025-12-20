@@ -1,10 +1,10 @@
 @extends('frontend.layouts.app')
 
-@section('title', $isEdit ? 'Modifica Utente' : 'Aggiungi Utente')
+@section('title', $isEdit ? 'Modificar usuario' : 'Añadir usuario')
 
 @section('content')
     @php
-        // For expiry‐date toggle & value
+        // Para el interruptor y valor de fecha de vencimiento
         $expiryEnabled = old('expiry_enabled', $user->expiry_date ? 'on' : '');
         $expiryValue = old(
             'expiry_date',
@@ -19,7 +19,7 @@
             style="background-color: #041930; border-radius: .75rem; padding: 1rem 2rem;">
             <i class="bi bi-person-fill-gear me-2 fs-3" style="color: #e2ae76;"></i>
             <h4 class="mb-0 fw-bold" style="color: #e2ae76;">
-                {{ $isEdit ? 'Modifica Utente' : 'Aggiungi Utente' }}
+                {{ $isEdit ? 'Modificar usuario' : 'Añadir usuario' }}
             </h4>
         </div>
 
@@ -32,26 +32,26 @@
                         @method('PUT')
                     @endif
 
-                    {{-- Nome --}}
+                    {{-- Nombre --}}
                     <div class="mb-3">
-                        <label class="form-label">Nome</label>
+                        <label class="form-label">Nombre</label>
                         <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}"
                             required>
                     </div>
 
-                    {{-- Email --}}
+                    {{-- Correo electrónico --}}
                     <div class="mb-3">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">Correo electrónico</label>
                         <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}"
                             required>
                     </div>
 
-                    {{-- Password --}}
+                    {{-- Contraseña --}}
                     <div class="mb-3">
                         <label class="form-label">
-                            Password
+                            Contraseña
                             @if ($isEdit)
-                                <small class="text-muted">(lascia vuoto per mantenere quella attuale)</small>
+                                <small class="text-muted">(déjalo vacío para mantener la actual)</small>
                             @endif
                         </label>
                         <div class="input-group">
@@ -63,9 +63,9 @@
                         </div>
                     </div>
 
-                    {{-- Ruolo --}}
+                    {{-- Rol --}}
                     <div class="mb-4">
-                        <label for="role" class="form-label">Ruolo</label>
+                        <label for="role" class="form-label">Rol</label>
                         @if ($isEdit && auth()->id() === $user->id)
                             <div>
                                 <span class="badge bg-primary">{{ ucfirst($currentRole) }}</span>
@@ -86,61 +86,61 @@
                         @endif
                     </div>
 
-                    {{-- VAT --}}
-                    {{-- Partita IVA (was VAT) --}}
+                    {{-- NIF / IVA --}}
+                    {{-- Partita IVA (era VAT) --}}
                     <div class="mb-3">
-                        <label for="vat" class="form-label">Partita IVA</label>
+                        <label for="vat" class="form-label">Número de IVA</label>
                         <input type="text" id="vat" name="vat" class="form-control"
                             value="{{ old('vat', $user->vat) }}">
                     </div>
 
-                    {{-- Indirizzo (was Address) --}}
+                    {{-- Dirección (era Address) --}}
                     <div class="mb-3">
-                        <label for="address" class="form-label">Indirizzo</label>
+                        <label for="address" class="form-label">Dirección</label>
                         <textarea id="address" name="address" class="form-control">{{ old('address', $user->address) }}</textarea>
                     </div>
 
-                    {{-- Profile Photo --}}
-{{-- Foto profilo --}}
-<div class="mb-3">
-  <label for="photo" class="form-label">Foto profilo</label>
-  <input type="file" name="photo" id="photo" class="form-control" accept="image/*">
+                    {{-- Foto de perfil --}}
+                    {{-- Foto de perfil --}}
+                    <div class="mb-3">
+                      <label for="photo" class="form-label">Foto de perfil</label>
+                      <input type="file" name="photo" id="photo" class="form-control" accept="image/*">
 
-  <div class="mt-2">
-    <small class="text-muted d-block mb-1">Foto attuale:</small>
-    
-    @if ($user->photo && Storage::disk('public')->exists('photos/'.$user->photo))
-      {{-- User photo --}}
-      <img src="{{ asset('storage/photos/'.$user->photo) }}" 
-           alt="Profile Photo" 
-           width="110" 
-           height="110" 
-           style="object-fit:cover;border-radius:8px;">
-    @else
-      {{-- Default placeholder --}}
-      <img src="{{ asset('assets/images/asset/user-placeholder.jpg') }}" 
-           alt="No Photo" 
-           width="110" 
-           height="110" 
-           style="object-fit:cover;border-radius:8px;">
-    @endif
-  </div>
-</div>
+                      <div class="mt-2">
+                        <small class="text-muted d-block mb-1">Foto actual:</small>
+                        
+                        @if ($user->photo && Storage::disk('public')->exists('photos/'.$user->photo))
+                          {{-- Foto del usuario --}}
+                          <img src="{{ asset('storage/photos/'.$user->photo) }}" 
+                               alt="Foto de perfil" 
+                               width="110" 
+                               height="110" 
+                               style="object-fit:cover;border-radius:8px;">
+                        @else
+                          {{-- Marcador de posición por defecto --}}
+                          <img src="{{ asset('assets/images/asset/user-placeholder.jpg') }}" 
+                               alt="Sin foto" 
+                               width="110" 
+                               height="110" 
+                               style="object-fit:cover;border-radius:8px;">
+                        @endif
+                      </div>
+                    </div>
 
 
-                    {{-- Expiry date toggle & picker only for super --}}
+                    {{-- Interruptor de fecha de vencimiento y selector solo para super --}}
                     @role('super')
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="expiryToggle" name="expiry_enabled"
                                 {{ $expiryEnabled === 'on' ? 'checked' : '' }}>
                             <label class="form-check-label" for="expiryToggle">
-                                Aggiungi data di scadenza / Next renew
+                                Añadir fecha de vencimiento / Próxima renovación
                             </label>
                         </div>
 
                         <div class="mb-3" id="expiryDateWrapper"
                             style="{{ $expiryEnabled === 'on' ? '' : 'display:none' }};">
-                            <label class="form-label">Data di scadenza</label>
+                            <label class="form-label">Fecha de vencimiento</label>
                             <input type="date" name="expiry_date" id="expiryDate" class="form-control"
                                 min="{{ $minDate }}" value="{{ $expiryValue }}">
                         </div>
@@ -148,7 +148,7 @@
 
                     <button type="submit" class="btn btn-gold-blue px-4 py-2 fw-semibold">
                         <i class="bi bi-check-circle me-1"></i>
-                        {{ $isEdit ? 'Aggiorna Utente' : 'Aggiungi Utente' }}
+                        {{ $isEdit ? 'Actualizar usuario' : 'Añadir usuario' }}
                     </button>
                 </form>
 
@@ -166,7 +166,7 @@
                         });
 
                         @role('super')
-                            // expiry date show/hide
+                            // mostrar/ocultar fecha de vencimiento
                             const expiryToggle = document.getElementById('expiryToggle');
                             const expiryWrapper = document.getElementById('expiryDateWrapper');
                             expiryToggle.addEventListener('change', function() {

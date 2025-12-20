@@ -13,14 +13,14 @@ use Illuminate\Http\Request;
 use App\Models\RecipeCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Services\LaborCostCalculator; // (left for other places still using it)
+use App\Services\LaborCostCalculator; // (se deja para otros lugares que todavía lo usan)
 use Illuminate\Http\RedirectResponse;
 
 class RecipeController extends Controller
 {
     /**
-     * Return latest global and per-department rates for a department (AJAX).
-     * Uses ONLY saved overrides; if none, falls back to global user rate.
+     * Devuelve las últimas tarifas globales y por departamento para un departamento (AJAX).
+     * Usa SOLO los overrides guardados; si no hay, vuelve a la tarifa global del usuario.
      */
     public function departmentRates(Department $department)
     {
@@ -33,7 +33,7 @@ class RecipeController extends Controller
 
         $override = $this->latestDeptOverride($rootId, $department->id);
 
-        // use override only if at least one rate is > 0
+        // usar override solo si al menos una tarifa es > 0
         $shop = $override && ((float)$override->shop_cost_per_min > 0 || (float)$override->external_cost_per_min > 0)
             ? (float)$override->shop_cost_per_min
             : $baseShop;
@@ -50,51 +50,51 @@ class RecipeController extends Controller
     }
 
     /**
-     * List recipes.
+     * Listar recetas.
      */
     public function index()
     {
         $user = Auth::user();
 
-        // Group visibility: owner + all users created by owner (or user + owner if member)
+        // Visibilidad de grupo: propietario + todos los usuarios creados por el propietario (o usuario + propietario si es miembro)
         $visibleUserIds = is_null($user->created_by)
             ? User::where('created_by', $user->id)->pluck('id')->push($user->id)->unique()
             : collect([$user->id, $user->created_by])->unique();
 
-        // eager load everything we need to avoid N+1
+        // cargar con eager load todo lo necesario para evitar N+1
         $recipes = Recipe::with([
             'category:id,name',
             'department:id,name,share_percent',
-            'ingredients.ingredient',   // => ingredient price_per_kg is used for live calc
+            'ingredients.ingredient',   // => ingredient price_per_kg se usa para el cálculo en vivo
             'user'
         ])
             ->whereIn('user_id', $visibleUserIds)
             ->get();
 
-        // 🔄 Recompute live costs so the list reflects the latest prices/rates
+        // 🔄 Recalcular los costes en vivo para que el listado refleje los últimos precios/tarifas
         $recipes->each(function ($r) use ($user) {
-            // --- batch ingredient cost from current prices
+            // --- coste de ingredientes del lote según precios actuales
             $batchIngCost = $r->ingredients->sum(function ($ri) {
                 $priceKg = (float) (optional($ri->ingredient)->price_per_kg ?? 0);
                 return ($ri->quantity_g / 1000.0) * $priceKg;
             });
             $batchIngCost = round($batchIngCost, 2);
 
-            // pieces / kg helpers
+            // ayudantes piezas / kg
             $pcs = max(1, (int) ($r->total_pieces ?? 0));
             $weightG = (float) ($r->recipe_weight ?? 0);
             if ($weightG <= 0) {
-                // fallback: sum of line quantities if recipe_weight not set
+                // fallback: suma de cantidades de las líneas si recipe_weight no está establecido
                 $weightG = (float) $r->ingredients->sum('quantity_g');
             }
-            $kg = max(0.001, $weightG / 1000.0); // guard divide-by-zero
+            $kg = max(0.001, $weightG / 1000.0); // proteger contra división entre cero
 
-            // --- unit ingredient cost
+            // --- coste unitario de ingredientes
             $unitIngCost = $r->sell_mode === 'piece'
                 ? round($batchIngCost / $pcs, 2)
                 : round($batchIngCost / $kg, 2);
 
-            // --- labor: department-aware effective rate (override only if actually saved)
+            // --- mano de obra: tarifa efectiva dependiente del departamento (override solo si está guardado)
             $owner = $r->user ?: $user;
             $rates = $this->effectiveRatesFor($owner, $r->department); // ['shop'=>x,'external'=>y]
             $rate  = $r->labor_cost_mode === 'external' ? ($rates['external'] ?? 0) : ($rates['shop'] ?? 0);
@@ -104,16 +104,16 @@ class RecipeController extends Controller
                 ? round($batchLaborCost / $pcs, 2)
                 : round($batchLaborCost / $kg, 2);
 
-            // --- packing: per piece or per kg (same logic as your form JS)
+            // --- empaquetado: por pieza o por kg (misma lógica que en tu JS del formulario)
             $pack = (float) ($r->packing_cost ?? 0);
             $unitPack = $r->sell_mode === 'piece'
                 ? round($pack / $pcs, 2)
                 : round($pack, 2);
 
-            // --- final unit total AFTER packaging
+            // --- coste unitario final DESPUÉS del empaquetado
             $unitTotal = round($unitIngCost + $unitLaborCost + $unitPack, 2);
 
-            // expose to the view
+            // exponer a la vista
             $r->setAttribute('unit_ing_cost', $unitIngCost);
             $r->setAttribute('batch_labor_cost', $batchLaborCost);
             $r->setAttribute('unit_labor_cost', $unitLaborCost);
@@ -130,7 +130,7 @@ class RecipeController extends Controller
     }
 
     /**
-     * Show one recipe.
+     * Mostrar una receta.
      */
     public function show(Recipe $recipe)
     {
@@ -145,30 +145,30 @@ class RecipeController extends Controller
     }
 
     /**
-     * Create form.
+     * Formulario de creación.
      */
     public function create()
     {
         $user = Auth::user();
 
-        // Determine group root admin
+        // Determinar el administrador raíz del grupo
         $groupRootId = $this->groupRootId($user);
 
-        // Ingredient visibility = root + children
+        // Visibilidad de ingredientes = root + hijos
         $groupUserIds = User::where('created_by', $groupRootId)
             ->pluck('id')
             ->push($groupRootId)
             ->unique();
 
-        // Latest global labor cost for this group (no department)
+        // Último coste de mano de obra global para este grupo (sin departamento)
         $laborCost = $this->latestGlobalLaborCost($groupRootId);
 
-        // Ingredients for the group
+        // Ingredientes para el grupo
         $ingredients = Ingredient::whereIn('user_id', $groupUserIds)
             ->orderBy('ingredient_name')
             ->get();
 
-        // Categories visible to user
+        // Categorías visibles para el usuario
         $visibleUserIds = is_null($user->created_by)
             ? User::where('created_by', $user->id)->pluck('id')->push($user->id)->unique()
             : collect([$user->id, $user->created_by])->unique();
@@ -181,7 +181,7 @@ class RecipeController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Departments visible to user (use full list for selects)
+        // Departamentos visibles para el usuario (lista completa para selects)
         $departments = Department::with('user')
             ->where(function ($q) use ($visibleUserIds) {
                 $q->whereIn('user_id', $visibleUserIds)
@@ -190,10 +190,10 @@ class RecipeController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Build dept-aware rates map using ONLY saved overrides, else global
+        // Mapa de tarifas por departamento usando SOLO overrides guardados, si no, global
         $ratesByDept = $this->buildDeptRatesMap($groupRootId, $departments, $laborCost);
 
-        // Checkbox hide state (if recipe name already exists as ingredient for this user)
+        // Estado de ocultar checkbox (si el nombre de la receta ya existe como ingrediente para este usuario)
         $alreadyAsIngredient = old('recipe_name')
             ? Ingredient::where('ingredient_name', old('recipe_name'))
             ->where('user_id', $user->id)
@@ -211,7 +211,7 @@ class RecipeController extends Controller
     }
 
     /**
-     * Edit form.
+     * Formulario de edición.
      */
     public function edit(Recipe $recipe)
     {
@@ -251,7 +251,7 @@ class RecipeController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Dept-aware rates for the form (override only if actually saved)
+        // Tarifas por departamento para el formulario (override solo si está guardado)
         $ratesByDept = $this->buildDeptRatesMap($groupRootId, $departments, $laborCost);
 
         $alreadyAsIngredient = Ingredient::where('ingredient_name', $recipe->recipe_name)
@@ -270,7 +270,7 @@ class RecipeController extends Controller
     }
 
     /**
-     * AJAX: compute ingredient line cost for quantity.
+     * AJAX: calcular el coste de línea de ingrediente para una cantidad.
      */
     public function calculateCost(Request $request)
     {
@@ -286,10 +286,33 @@ class RecipeController extends Controller
     }
 
     /**
-     * Store a new recipe.
+     * Guardar una receta nueva.
      */
     public function store(Request $request)
     {
+        $user   = Auth::user();
+$rootId = $this->groupRootId($user);
+
+// 1) Always have a global/base labor cost row
+$base = LaborCost::firstOrCreate(
+    ['user_id' => $rootId, 'department_id' => null],
+    ['shop_cost_per_min' => 0, 'external_cost_per_min' => 0]
+);
+
+// 2) If a department override exists, use it; else use global
+$deptId = $request->input('department_id');
+$effective = $deptId
+    ? LaborCost::where('user_id', $rootId)->where('department_id', $deptId)->latest('id')->first()
+    : null;
+
+$effective = $effective ?: $base;
+
+// 3) Force labor_cost_id if missing/empty
+if (!$request->filled('labor_cost_id')) {
+    $request->merge(['labor_cost_id' => $effective->id]);
+}
+
+
         $data = $request->validate([
             'recipe_name'             => 'required|string|max:255',
             'recipe_category_id'      => 'required|exists:recipe_categories,id',
@@ -376,22 +399,44 @@ class RecipeController extends Controller
             if ($request->boolean('add_as_ingredient')) {
                 Ingredient::create([
                     'ingredient_name' => $recipe->recipe_name,
-                    'price_per_kg'    => $recipe->production_cost_per_kg, // €/kg (before packaging)
+                    'price_per_kg'    => $recipe->production_cost_per_kg, // €/kg (antes del empaquetado)
                     'user_id'         => Auth::id(),
                     'recipe_id'       => $recipe->id,
                 ]);
             }
         });
 
-        return redirect()->route('recipes.index')
-            ->with('success', 'Ricetta salvata con successo!');
+        return redirect()->route('recipes.create')
+            ->with('success', 'Receta guardada con éxito.');
     }
 
     /**
-     * Update a recipe.
+     * Actualizar una receta.
      */
     public function update(Request $request, Recipe $recipe)
     {
+        $user   = Auth::user();
+$rootId = $this->groupRootId($user);
+
+// 1) Always have a global/base labor cost row
+$base = LaborCost::firstOrCreate(
+    ['user_id' => $rootId, 'department_id' => null],
+    ['shop_cost_per_min' => 0, 'external_cost_per_min' => 0]
+);
+
+// 2) If a department override exists, use it; else use global
+$deptId = $request->input('department_id');
+$effective = $deptId
+    ? LaborCost::where('user_id', $rootId)->where('department_id', $deptId)->latest('id')->first()
+    : null;
+
+$effective = $effective ?: $base;
+
+// 3) Force labor_cost_id if missing/empty
+if (!$request->filled('labor_cost_id')) {
+    $request->merge(['labor_cost_id' => $effective->id]);
+}
+
         $data = $request->validate([
             'recipe_name'             => 'required|string|max:255',
             'recipe_category_id'      => 'required|exists:recipe_categories,id',
@@ -468,7 +513,7 @@ class RecipeController extends Controller
                 'unit_ing_cost'           => $unitIngCost,
             ]);
 
-            // Replace all pivot ingredients
+            // Reemplazar todos los ingredientes en la tabla pivot
             $recipe->ingredients()->delete();
             foreach ($data['ingredients'] as $line) {
                 $recipe->ingredients()->create([
@@ -477,7 +522,7 @@ class RecipeController extends Controller
                 ]);
             }
 
-            // Sync/remove “recipe as ingredient”
+            // Sincronizar/eliminar “receta como ingrediente”
             if ($request->boolean('add_as_ingredient')) {
                 Ingredient::updateOrCreate(
                     ['recipe_id' => $recipe->id, 'user_id' => Auth::id()],
@@ -494,29 +539,29 @@ class RecipeController extends Controller
         });
 
         return redirect()->route('recipes.index')
-            ->with('success', 'Ricetta aggiornata con successo!');
+            ->with('success', 'Receta actualizada con éxito.');
     }
 
     /**
-     * Delete a recipe (and its lines if cascade missing).
+     * Eliminar una receta (y sus líneas si falta el cascade).
      */
     public function destroy($id)
     {
         $recipe = Recipe::findOrFail($id);
-        $recipe->ingredients()->delete(); // if cascade not set
+        $recipe->ingredients()->delete(); // si el cascade no está configurado
         $recipe->delete();
 
         return redirect()->route('recipes.index')
-            ->with('success', 'Ricetta eliminata con successo.');
+            ->with('success', 'Receta eliminada con éxito.');
     }
 
     /**
-     * Duplicate a recipe (and its ingredient lines).
+     * Duplicar una receta (y sus líneas de ingredientes).
      */
     public function duplicate(Recipe $recipe)
     {
         $copy = $recipe->replicate();
-        $copy->recipe_name = 'Copia di ' . $recipe->recipe_name;
+        $copy->recipe_name = 'Copia de ' . $recipe->recipe_name;
         $copy->save();
 
         foreach ($recipe->ingredients as $line) {
@@ -528,11 +573,11 @@ class RecipeController extends Controller
 
         return redirect()
             ->route('recipes.edit', $copy->id)
-            ->with('success', 'Ricetta duplicata. Modificala e salva.');
+            ->with('success', 'Receta duplicada. Modifícala y guárdala.');
     }
 
     // ------------------------------------------------------------------
-    // Helpers (bugfix logic - use only saved overrides)
+    // Helpers (lógica de corrección de errores - usar solo overrides guardados)
     // ------------------------------------------------------------------
 
     private function groupRootId(User $user): int
@@ -561,7 +606,7 @@ class RecipeController extends Controller
         $baseShop = (float) ($base->shop_cost_per_min ?? 0);
         $baseExt  = (float) ($base->external_cost_per_min ?? 0);
 
-        // prefetch latest overrides keyed by department_id
+        // pre-cargar los últimos overrides indexados por department_id
         $overrides = LaborCost::where('user_id', $rootId)
             ->whereNotNull('department_id')
             ->orderByDesc('id')
@@ -585,7 +630,7 @@ class RecipeController extends Controller
             }
         }
 
-        // fallback/default (no department chosen): global base only
+        // fallback/por defecto (sin departamento elegido): solo tarifa global
         $ratesByDept['default'] = [
             'shop'     => $baseShop,
             'external' => $baseExt,

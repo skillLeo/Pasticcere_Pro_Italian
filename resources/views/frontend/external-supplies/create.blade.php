@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', isset($externalSupply) ? 'Modifica Fornitura Esterna' : 'Crea Fornitura Esterna')
+@section('title', isset($externalSupply) ? 'Modificar suministro externo' : 'Crear suministro externo')
 
 @section('content')
 <div class="container py-5">
@@ -9,7 +9,7 @@
          style="background-color:#041930;color:#e2ae76;padding:.5rem;border-top-left-radius:.5rem;border-top-right-radius:.5rem;">
       <iconify-icon icon="mdi:warehouse" class="me-2" style="font-size:35px;color:#e2ae76;"></iconify-icon>
       <h5 class="mb-0" style="color:#e2ae76;font-size:1.6vw;">
-        {{ isset($externalSupply) ? 'Modifica Fornitura Esterna' : 'Crea Fornitura Esterna' }}
+        {{ isset($externalSupply) ? 'Modificar suministro externo' : 'Crear suministro externo' }}
       </h5>
     </div>
 
@@ -25,17 +25,17 @@
 
         <!-- Supply Name -->
         <div class="col-md-6">
-          <label id="supplyNameLabel" for="supply_name" class="form-label fw-semibold">Nome Fornitura</label>
+          <label id="supplyNameLabel" for="supply_name" class="form-label fw-semibold">Nombre del suministro</label>
           <input type="text" id="supply_name" name="supply_name" class="form-control form-control-lg"
                  value="{{ old('supply_name', $externalSupply->supply_name ?? '') }}">
-          <div class="invalid-feedback">Inserisci un nome per la fornitura.</div>
+          <div class="invalid-feedback">Introduce un nombre para el suministro.</div>
         </div>
 
         <!-- Client -->
         <div class="col-md-6">
           <label for="client_id" class="form-label fw-semibold">Cliente</label>
           <select id="client_id" name="client_id" class="form-select form-control-lg" required>
-            <option value="">Seleziona Cliente</option>
+            <option value="">Selecciona cliente</option>
             @foreach($clients as $client)
               <option value="{{ $client->id }}"
                 {{ old('client_id', $externalSupply->client_id ?? '') == $client->id ? 'selected' : '' }}>
@@ -47,7 +47,7 @@
 
         <!-- Supply Date -->
         <div class="col-md-6">
-          <label for="supply_date" class="form-label fw-semibold">Data Fornitura</label>
+          <label for="supply_date" class="form-label fw-semibold">Fecha de suministro</label>
           <input type="date" id="supply_date" name="supply_date" class="form-control form-control-lg" required
                  value="{{ old('supply_date', isset($externalSupply) ? $externalSupply->supply_date->format('Y-m-d') : '') }}">
         </div>
@@ -55,9 +55,9 @@
         <!-- Template Selection (only on create) -->
         @if(!isset($externalSupply))
         <div class="col-md-6">
-          <label for="template_select" class="form-label fw-semibold">Scegli Modello</label>
+          <label for="template_select" class="form-label fw-semibold">Elegir MODELO</label>
           <select id="template_select" name="template_id" class="form-select form-control-lg">
-            <option value="">-- Seleziona Modello --</option>
+            <option value="">-- Selecciona MODELO --</option>
             @foreach($templates as $id => $name)
               <option value="{{ $id }}">{{ $name }}</option>
             @endforeach
@@ -67,15 +67,15 @@
 
         <!-- Save As -->
         <div class="col-md-6">
-          <label for="template_action" class="form-label fw-semibold">Salva come</label>
+          <label for="template_action" class="form-label fw-semibold">Guardar como</label>
           @php
             $default = old('template_action',
               isset($externalSupply) && $externalSupply->save_template ? 'template' : 'none'
             );
           @endphp
           <select id="template_action" name="template_action" class="form-select form-control-lg">
-            <option value="none"     {{ $default=='none' ? 'selected' : '' }}>Solo Salva</option>
-            <option value="template" {{ $default=='template' ? 'selected' : '' }}>Salva come Modello</option>
+            <option value="none"     {{ $default=='none' ? 'selected' : '' }}>Solo guardar</option>
+            <option value="template" {{ $default=='template' ? 'selected' : '' }}>Guardar como MODELO</option>
           </select>
         </div>
 
@@ -83,18 +83,18 @@
         <div class="col-12">
           <div class="card border-primary shadow-sm">
             <div class="card-header d-flex align-items-center" style="background-color:#041930;">
-              <strong style="color:#e2ae76;font-size:1.1rem;">Prodotti Forniti</strong>
+              <strong style="color:#e2ae76;font-size:1.1rem;">Productos suministrados</strong>
             </div>
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table  data-page-length="25"class="table table-hover align-middle mb-0" id="supplyTable">
+                <table class="table table-hover align-middle mb-0" id="supplyTable" data-page-length="25">
                   <thead class="table-light">
                     <tr>
-                      <th style="width:40%;">Ricetta</th>
-                      <th style="width:150px;">Prezzo (€)</th>
-                      <th style="width:80px;">Qtà</th>
-                      <th style="width:120px;">Totale (€)</th>
-                      <th style="width:60px;">Azione</th>
+                      <th style="width:40%;">Receta</th>
+                      <th style="width:150px;">Precio (€)</th>
+                      <th style="width:80px;">Cant.</th>
+                      <th style="width:120px;">Total (€)</th>
+                      <th style="width:60px;">Acción</th>
                     </tr>
                   </thead>
                   <tbody id="supplyTableBody">
@@ -102,7 +102,7 @@
                       <tr class="supply-row">
                         <td>
                           <select name="recipes[{{ $index }}][id]" class="form-select recipe-select" required>
-                            <option value="">Seleziona Ricetta</option>
+                            <option value="">Selecciona receta</option>
                             @foreach($recipes as $rec)
                               <option value="{{ $rec->id }}"
                                       data-price="{{ $rec->sell_mode==='kg' ? $rec->selling_price_per_kg : $rec->selling_price_per_piece }}"
@@ -121,7 +121,7 @@
                                    class="form-control text-end price-field"
                                    readonly
                                    value="{{ old("recipes.$index.price", $item->price ?? '') }}">
-                            <span class="input-group-text unit-field">/pz</span>
+                            <span class="input-group-text unit-field">/ud</span>
                           </div>
                         </td>
                         <td>
@@ -154,7 +154,7 @@
                         onmouseover="this.style.backgroundColor='#e2ae76';this.style.color='white';this.querySelector('i').style.color='white';"
                         onmouseout="this.style.backgroundColor='transparent';this.style.color='#041930';this.querySelector('i').style.color='#041930';">
                   <i class="bi bi-plus-circle me-1" style="color:#041930;"></i>
-                  Aggiungi Ricetta
+                  Añadir receta
                 </button>
               </div>
             </div>
@@ -163,7 +163,7 @@
 
         <!-- Total Amount -->
         <div class="col-md-6">
-          <label class="form-label fw-semibold">Incasso Totale (€)</label>
+          <label class="form-label fw-semibold">Ingreso total (€)</label>
           <input type="text" id="totalAmount" name="total_amount" class="form-control" readonly
                  value="{{ old('total_amount', $externalSupply->total_amount ?? '') }}">
         </div>
@@ -172,7 +172,7 @@
         <div class="col-12 text-end mt-4">
           <button type="submit" class="btn btn-lg" style="background-color:#e2ae76;color:#041930;">
             <i class="bi bi-save2 me-2" style="color:#041930;"></i>
-            {{ isset($externalSupply) ? 'Aggiorna Fornitura Esterna' : 'Salva Fornitura Esterna' }}
+            {{ isset($externalSupply) ? 'Actualizar suministro externo' : 'Guardar suministro externo' }}
           </button>
         </div>
 
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function toggleNameRequirement() {
     const isTemplate = ['template','both'].includes(actionSelect?.value || 'none');
-    nameLabel.textContent = isTemplate ? 'Nome Modello' : 'Nome Fornitura';
+    nameLabel.textContent = isTemplate ? 'Nombre de la MODELO' : 'Nombre del suministro';
     if (nameInput) nameInput.required = isTemplate;
   }
   toggleNameRequirement();
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const priceNum = parseFloat(opt?.dataset.price || 0);
     priceIn.value  = priceNum.toFixed(2);
-    unitSpan.textContent = (opt?.dataset.sellMode || 'piece') === 'kg' ? '/kg' : '/pz';
+    unitSpan.textContent = (opt?.dataset.sellMode || 'piece') === 'kg' ? '/kg' : '/ud';
 
     const qty = parseFloat(qtyIn.value || 0);
     totIn.value = (priceNum * qty).toFixed(2);

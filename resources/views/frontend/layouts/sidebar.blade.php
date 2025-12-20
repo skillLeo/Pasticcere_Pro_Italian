@@ -35,7 +35,7 @@
                         <iconify-icon icon="mdi:view-dashboard-outline" class="menu-icon"
                             style="color: #e2ae76;"></iconify-icon>
                         <!-- Text with color change -->
-                        <span style="color: #e2ae76;">Cruscotto</span>
+                        <span style="color: #e2ae76;">Panel de control</span>
                     </a>
                 </li>
 
@@ -45,7 +45,7 @@
                     <li>
                         <a href="{{ route('labor-cost.index') }}">
                             <iconify-icon icon="mdi:clock-outline" class="menu-icon" style="color: #e2ae76;"></iconify-icon>
-                            <span style="color: #e2ae76;">Pareggio e manodopera
+                            <span style="color: #e2ae76;">Punto de equilibrio y mano de obra
                             </span>
                         </a>
                     </li>
@@ -82,7 +82,7 @@
                           c-1.987,11.118-4.751,19.626-8.47,26.042c-6.72,11.84-16.295,17.596-29.27,17.596c-14.231,0-24.569-5.483-31.631-16.813
                           c-3.643-5.669-6.433-12.354-8.326-19.928h55.85c1.869,0,3.521-1.225,4.06-3.017l5.023-16.658c0.387-1.284,0.143-2.675-0.656-3.752
                           c-0.799-1.077-2.062-1.712-3.404-1.712h-63.723c-0.001-0.534-0.001-1.069-0.001-1.6c0-3.101,0.058-5.864,0.173-8.351h58.636
-                          c1.88,0,3.534-1.238,4.066-3.039l4.915-16.658c0.379,1.284,0.13,2.668,0.67,3.74c0.799,1.07,2.058,1.701,3.396,1.701h-59.829
+                          c1.88,0,3.534-1.238,4.066-3.039l4.915-16.658c0.379-1.284,0.13-2.668,0.67-3.74c0.799-1.07,2.058-1.701,3.396-1.701h-59.829
                           c1.998-7.478,4.771-13.605,8.408-18.61c7.994-10.839,18.152-16.108,31.051-16.108c10.599,0,18.471,2.766,24.115,8.505
                           c5.777,5.681,9.712,13.764,11.697,24.023c0.387,1.994,2.133,3.434,4.164,3.434h19.115c0.017,0,0.033,0,0.042,0
                           c2.344,0,4.241-1.898,4.241-4.241c0-0.329-0.037-0.651-0.108-0.956c-1.359-15.216-7.356-28.97-17.84-40.895
@@ -94,7 +94,7 @@
                           c10.047-12.88,16.047-28.911,17.836-47.644C338.104,278.11,337.71,276.927,336.905,276.043z" />
                                 </g>
                             </svg>
-                            <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">Costi e Ricavi
+                            <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">Costes e ingresos
                             </span>
                             <iconify-icon icon="" class="menu-icon ms-auto" style="color: #e2ae76;"></iconify-icon>
                         </a>
@@ -105,7 +105,7 @@
                                     <a href="{{ route('costs.index') }}" class="d-flex align-items-center">
                                         <iconify-icon icon="mdi:format-list-bulleted" class="menu-icon"
                                             style="color: #e2ae76;"></iconify-icon>
-                                        <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">Costi</span>
+                                        <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">Costes</span>
                                     </a>
                                 </li>
                             @endcan
@@ -115,7 +115,7 @@
                                     <a href="{{ route('incomes.index') }}" class="d-flex align-items-center">
                                         <iconify-icon icon="mdi:currency-usd" class="menu-icon"
                                             style="color: #e2ae76;"></iconify-icon>
-                                        <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">Ricavi</span>
+                                        <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">Ingresos</span>
                                     </a>
                                 </li>
                             @endcan
@@ -125,8 +125,8 @@
                                     <a href="{{ route('costs.dashboard') }}" class="d-flex align-items-center">
                                         <iconify-icon icon="mdi:currency-usd-circle" class="menu-icon"
                                             style="color: #e2ae76;"></iconify-icon>
-                                        <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">Cruscotto di
-                                            Controllo
+                                        <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">Panel de
+                                            control
                                         </span>
                                     </a>
                                 </li>
@@ -142,7 +142,7 @@
                     <li>
                         <a href="{{ route('comparison.index') }}">
                             <iconify-icon icon="mdi:chart-line" class="menu-icon" style="color: #e2ae76;"></iconify-icon>
-                            <span style="color: #e2ae76;">Vendite</span>
+                            <span style="color: #e2ae76;">Ventas</span>
                         </a>
                     </li>
                 @endcan
@@ -190,7 +190,7 @@
                             </svg>
 
                             <span class="ms-2" style="color: #e2ae76; font-size:16px; line-height:1;">
-                                Ingredienti
+                                Ingredientes
                             </span>
                         </a>
                     </li>
@@ -219,7 +219,7 @@
                                     d="M277.509,234.492c-10.833-10.833-30.659-28.329-46.765-27.786C214.616,207.227,48.711,314.21,34.496,328.424c-14.223,14.223,18.794,66.572,50.651,98.429c31.855,31.855,84.205,64.874,98.429,50.651c14.215-14.215,121.194-180.123,121.717-196.251C305.836,265.147,288.341,245.322,277.509,234.492z" />
                             </svg>
                             <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">
-                                Ricette
+                                Recetas
                             </span>
                             <iconify-icon icon="" class="menu-icon ms-auto"
                                 style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
@@ -231,7 +231,7 @@
                                     <!-- New Creare icon -->
                                     <iconify-icon icon="mdi:plus-circle-outline" class="menu-icon"
                                         style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
-                                    <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Creare</span>
+                                    <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Crear</span>
                                 </a>
                             </li>
                             <li>
@@ -277,7 +277,7 @@
                             </svg>
 
                             <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">
-                                Vetrina
+                                Vitrina
                             </span>
 
                             <iconify-icon icon="" class="menu-icon ms-auto" style="color:#e2ae76;"></iconify-icon>
@@ -288,7 +288,7 @@
                                 <a href="{{ route('showcase.create') }}" class="d-flex align-items-center">
                                     <iconify-icon icon="mdi:plus-circle-outline" class="menu-icon"
                                         style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
-                                    <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Creare</span>
+                                    <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Crear</span>
                                 </a>
                             </li>
                             <li>
@@ -314,7 +314,7 @@
                             <iconify-icon icon="mdi:warehouse" class="menu-icon"
                                 style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
                             <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">
-                                Forniture esterne
+                                Suministros externos
 
                             </span>
                             <iconify-icon icon="" class="menu-icon ms-auto" style="color:#e2ae76;"></iconify-icon>
@@ -325,7 +325,7 @@
                                     <!-- Creare icon like Showcase -->
                                     <iconify-icon icon="mdi:plus-circle-outline" class="menu-icon"
                                         style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
-                                    <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Creare</span>
+                                    <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Crear</span>
                                 </a>
                             </li>
                             <li>
@@ -349,7 +349,7 @@
                             <iconify-icon icon="mdi:truck-delivery" class="menu-icon"
                                 style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
                             <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">
-                                Forniture e Resi
+                                Suministros y devoluciones
                             </span>
                             <iconify-icon icon="" class="menu-icon ms-auto"
                                 style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
@@ -361,7 +361,7 @@
                                     <iconify-icon icon="mdi:swap-horizontal-bold" class="menu-icon"
                                         style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
                                     <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">
-                                        Lista Forniture e resi
+                                        Lista de suministros y devoluciones
 
                                     </span>
                                 </a>
@@ -378,7 +378,7 @@
                     <li class="dropdown">
                         <a href="javascript:void(0)">
                             <iconify-icon icon="mdi:factory" class="menu-icon" style="color: #e2ae76;"></iconify-icon>
-                            <span style="color: #e2ae76;">Produzione</span>
+                            <span style="color: #e2ae76;">Producción</span>
                         </a>
                         <ul class="sidebar-submenu">
                             <li>
@@ -387,7 +387,7 @@
                                         style="width:1.5em; height:1.5em; color:#e2ae76;">
                                     </iconify-icon>
                                     <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">
-                                        Creare
+                                        Crear
                                     </span>
                                 </a>
                             </li>
@@ -412,13 +412,13 @@
                 {{-- Management --}}
               @php
   $menuItems = [
-    ['perm'=>'equipment',       'route'=>'equipment.index',       'icon'=>'mdi:tools',                 'label'=>'Attrezzature'],
-    ['perm'=>'income categories','route'=>'income-categories.index','icon'=>'mdi:cash-multiple',          'label'=>'Categorie Entrate'],
-    ['perm'=>'cost categories',  'route'=>'cost_categories.index', 'icon'=>'mdi:tag-multiple',           'label'=>'Categorie di Costo'],
-    ['perm'=>'recipe categories','route'=>'recipe-categories.index','icon'=>'mdi:category-outline',      'label'=>'Categorie Ricette'],
-    ['perm'=>'clients',          'route'=>'clients.index',         'icon'=>'mdi:account-multiple-outline','label'=>'Clienti'],
-    ['perm'=>'pastry chefs',     'route'=>'pastry-chefs.index',    'icon'=>'mdi:chef-hat',               'label'=>'Pasticceri'],
-    ['perm'=>'departments',      'route'=>'departments.index',     'icon'=>'mdi:office-building-marker-outline','label'=>'Reparti'],
+    ['perm'=>'equipment',       'route'=>'equipment.index',       'icon'=>'mdi:tools',                 'label'=>'Equipos'],
+    ['perm'=>'income categories','route'=>'income-categories.index','icon'=>'mdi:cash-multiple',          'label'=>'Categorías de ingresos'],
+    ['perm'=>'cost categories',  'route'=>'cost_categories.index', 'icon'=>'mdi:tag-multiple',           'label'=>'Categorías de costes'],
+    ['perm'=>'recipe categories','route'=>'recipe-categories.index','icon'=>'mdi:category-outline',      'label'=>'Categorías de recetas'],
+    ['perm'=>'clients',          'route'=>'clients.index',         'icon'=>'mdi:account-multiple-outline','label'=>'Clientes'],
+    ['perm'=>'pastry chefs',     'route'=>'pastry-chefs.index',    'icon'=>'mdi:chef-hat',               'label'=>'Pasteleros'],
+    ['perm'=>'departments',      'route'=>'departments.index',     'icon'=>'mdi:office-building-marker-outline','label'=>'Departamentos'],
   ];
 
   usort($menuItems, function($a,$b){
@@ -430,7 +430,7 @@
 <li class="dropdown">
   <a href="javascript:void(0)" class="d-flex align-items-center">
     <iconify-icon icon="mdi:account-cog-outline" class="menu-icon" style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
-    <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Gestione Categorie</span>
+    <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Gestión de categorías</span>
     <iconify-icon icon="" class="menu-icon ms-auto" style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
   </a>
 
@@ -454,8 +454,6 @@
 
 
 
-
-
                 {{-- User Management --}}
                 @can('manage-users')
                     <li class="dropdown">
@@ -463,7 +461,7 @@
                             <!-- Main icon (unchanged) -->
                             <iconify-icon icon="mdi:account-cog-outline" class="menu-icon"
                                 style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
-                            <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;"> Gestione Utenti
+                            <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;"> Gestión de usuarios
                             </span>
                             <iconify-icon icon="" class="menu-icon ms-auto"
                                 style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
@@ -474,7 +472,7 @@
                                     <a href="{{ route('users.index') }}" class="d-flex align-items-center">
                                         <iconify-icon icon="mdi:account-multiple-outline" class="menu-icon"
                                             style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
-                                        <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Utenti</span>
+                                        <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Usuarios</span>
                                     </a>
                                 </li>
                             @endcan
@@ -484,8 +482,8 @@
                                     <a href="{{ route('roles.index') }}" class="d-flex align-items-center">
                                         <iconify-icon icon="mdi:shield-account-outline" class="menu-icon"
                                             style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
-                                        <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Roles &
-                                            Permissions</span>
+                                        <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">Roles y
+                                            permisos</span>
                                     </a>
                                 </li>
                             @endcanany
@@ -496,7 +494,7 @@
                                         <iconify-icon icon="mdi:key-outline" class="menu-icon"
                                             style="width:1.5em; height:1.5em; color:#e2ae76;"></iconify-icon>
                                         <span class="ms-2"
-                                            style="color:#e2ae76; font-size:16px; line-height:1;">Permissions</span>
+                                            style="color:#e2ae76; font-size:16px; line-height:1;">Permisos</span>
                                     </a>
                                 </li>
                             @endcan
@@ -511,7 +509,7 @@
                         <a href="javascript:void(0)">
                             <iconify-icon icon="mdi:newspaper-variant-outline" class="menu-icon"
                                 style="color: #e2ae76;"></iconify-icon>
-                            <span style="color: #e2ae76;">Notizia</span>
+                            <span style="color: #e2ae76;">Noticias</span>
                         </a>
                         <ul class="sidebar-submenu">
                             <li>
@@ -520,7 +518,7 @@
                                         style="width:1.5em; height:1.5em; color:#e2ae76;">
                                     </iconify-icon>
                                     <span class="ms-2" style="color:#e2ae76; font-size:16px; line-height:1;">
-                                        Creare
+                                        Crear
                                     </span>
                                 </a>
                             </li>
@@ -547,7 +545,7 @@
                         <a href="{{ route('blogs') }}">
                             <iconify-icon icon="mdi:silverware-fork-knife" class="menu-icon"
                                 style="color: #e2ae76;"></iconify-icon>
-                            <span style="color: #e2ae76;">Novità</span>
+                            <span style="color: #e2ae76;">Novedades</span>
                         </a>
                     </li>
                 @endcan
@@ -562,7 +560,7 @@
                                 d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.33 0-10 1.667-10 5v3h20v-3c0-3.333-6.67-5-10-5z" />
                         </svg>
                         <span class="ms-2" style="color: #e2ae76; font-size: 1rem; line-height: 1;">
-                            Profilo
+                            Perfil
                         </span>
                     </a>
                 </li>
@@ -573,7 +571,7 @@
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                         class="logout-btn">
                         <iconify-icon icon="mdi:exit-to-app" class="logout-icon"></iconify-icon>
-                        <span>Disconnetti</span>
+                        <span>Cerrar sesión</span>
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
@@ -598,7 +596,7 @@
              ">
                         <iconify-icon icon="mdi:school" style="width: 2em; height: 2em; color: #041930;">
                         </iconify-icon>
-                        <span>Accedi all’Accademia</span>
+                        <span>Accede a la Academia</span>
                     </a>
                 </li>
 
