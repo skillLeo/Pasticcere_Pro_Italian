@@ -212,3 +212,31 @@
      Route::get('profile', [UserController::class, 'profile'])->name('profile');
      Route::put('profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
           
+
+
+
+     Route::middleware('auth')->group(function() {
+          Route::post('invoices/upload', [App\Http\Controllers\InvoiceController::class, 'upload'])
+              ->name('invoices.upload');
+      
+          Route::get('invoices/{id}/preview', [App\Http\Controllers\InvoiceController::class, 'preview'])
+              ->name('invoices.preview');
+      
+          Route::get('invoices/batch/{batch}/preview', [App\Http\Controllers\InvoiceController::class, 'batchPreview'])
+              ->name('invoices.batch.preview');
+      
+          Route::put('invoices/items/{itemId}', [App\Http\Controllers\InvoiceController::class, 'updateItem'])
+              ->name('invoices.items.update');
+      
+          Route::post('invoices/{id}/save', [App\Http\Controllers\InvoiceController::class, 'saveToDatabase'])
+              ->name('invoices.save');
+      
+          Route::post('invoices/batch/{batch}/save', [App\Http\Controllers\InvoiceController::class, 'saveBatchToDatabase'])
+              ->name('invoices.batch.save');
+      });
+      
+
+
+
+
+

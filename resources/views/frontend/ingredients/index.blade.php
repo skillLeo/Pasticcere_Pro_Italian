@@ -2,8 +2,105 @@
 
 @section('title', 'Escaparate de Ingredientes')
 
-@section('content')
+@section('content') 
 <div class="container py-5 px-md-5">
+<!-- Invoice Upload Section -->
+<div class="card border-success shadow-sm mb-5">
+    <div class="card-header d-flex align-items-center" style="background-color: #041930;">
+        <iconify-icon icon="mdi:file-upload" class="me-2" 
+                      style="width: 1.6vw; height: 1.6vw; color: #e2ae76;"></iconify-icon>
+        <h5 class="mb-0 fw-bold" style="color: #e2ae76; font-size: 1.6vw;">
+            Upload Invoice (Auto-Update Ingredients)
+        </h5>
+    </div>
+
+    <div class="card-body">
+        <form id="invoiceUploadForm" enctype="multipart/form-data">
+            @csrf
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label for="invoice_file" class="form-label fw-semibold">
+                        Select Invoice (PDF or Image)
+                    </label>
+<input type="file"
+       id="invoice_files"
+       name="invoice_files[]"
+       class="form-control form-control-lg"
+       accept=".jpg,.jpeg,.png,.pdf"
+       multiple
+       required>
+
+<small class="text-muted">Supported formats: JPG, PNG, PDF (Max: 10MB each)</small>
+
+
+         </div>
+
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" 
+                            class="btn btn-lg w-100" 
+                            style="background-color: #e2ae76; color: #041930;">
+                        <i class="bi bi-cloud-upload me-2"></i>
+                        Upload & Process
+                    </button>
+                </div>
+            </div>
+
+            <input type="hidden" name="invoice_type" value="ingredient">
+
+            <!-- Progress Indicator -->
+            <div id="uploadProgress" class="mt-3" style="display: none;">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" 
+                         style="width: 100%; background-color: #e2ae76;"></div>
+                </div>
+                <p class="text-center mt-2" style="color: #041930;">
+                    Processing invoice with AI... Please wait
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+// Invoice Upload Handler
+document.getElementById('invoiceUploadForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const uploadProgress = document.getElementById('uploadProgress');
+    const submitBtn = this.querySelector('button[type="submit"]');
+
+    // Show progress
+    uploadProgress.style.display = 'block';
+    submitBtn.disabled = true;
+
+    fetch('{{ route("invoices.upload") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirect to preview page
+            window.location.href = data.redirect_url;
+        } else {
+            alert('Error: ' + data.message);
+            uploadProgress.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to upload invoice. Please try again.');
+        uploadProgress.style.display = 'none';
+        submitBtn.disabled = false;
+    });
+});</script>
 
   <!-- Formulario Añadir / Editar Ingrediente -->
   <div class="card border-primary shadow-sm mb-5">

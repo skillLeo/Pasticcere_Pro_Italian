@@ -637,15 +637,15 @@
                 {{-- ===== INICIO FORMULARIO ===== --}}
                 <form method="POST" action="{{ $formAction }}" class="reveal" id="recipeForm">
                     @csrf
-                    
-                    
-                    
-                    
-                    @if($isEdit && $alreadyAsIngredient)
-    <input type="hidden" name="add_as_ingredient" value="1">
-@else
-    <input type="hidden" name="add_as_ingredient" value="0">
-@endif
+
+
+
+
+                    @if ($isEdit && $alreadyAsIngredient)
+                        <input type="hidden" name="add_as_ingredient" value="1">
+                    @else
+                        <input type="hidden" name="add_as_ingredient" value="0">
+                    @endif
                     @if ($isEdit)
                         @method('PUT')
                     @endif
@@ -1071,7 +1071,7 @@
                                     </div>
 
                                     <div class="input-group input-group-lg w-100 mb-2">
-                                        <span class="input-group-text">Coste €/kg después del  Envase</span>
+                                        <span class="input-group-text">Coste €/kg después del Envase</span>
                                         <input type="text" id="totalExpense" name="total_expense"
                                             class="form-control fw-bold text-center @error('total_expense') is-invalid @enderror"
                                             readonly
@@ -1214,9 +1214,10 @@
                                     @enderror
                                     <p class="small text-muted mb-0">
                                         Si está marcado, el nombre de la receta se guardará en la tabla de ingredientes
-                                        con un coste €/kg igual al "Coste €/kg antes del  Envase".
+                                        con un coste €/kg igual al "Coste €/kg antes del Envase".
                                     </p>
-                                    <p class="small text-info mb-0">Nota: los ingredientes se añadirán como coste por kg</p>
+                                    <p class="small text-info mb-0">Nota: los ingredientes se añadirán como coste por kg
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -1234,7 +1235,7 @@
                 </form>
                 {{-- ===== FIN FORMULARIO ===== --}}
 
-            @include('frontend.recipe.quick-actions')
+                @include('frontend.recipe.quick-actions')
 
             </div>
 
@@ -1255,7 +1256,7 @@
                             <li><a href="#sec-labor" class="js-scrollto"><i class="bi bi-3-circle"></i> Mano de obra</a>
                             </li>
                             <li><a href="#sec-expense" class="js-scrollto"><i class="bi bi-4-circle"></i> Costes e
-                                     Envase</a></li>
+                                    Envase</a></li>
                             <li><a href="#sec-sell" class="js-scrollto"><i class="bi bi-5-circle"></i> Venta y
                                     márgenes</a></li>
                         </ol>
@@ -1281,35 +1282,38 @@
                                 <i class="bi bi-graph-up"></i> Sugerir precio (x2.2)
                             </button>
                         </div>
-                        <p class="rail-note">Sugerencias basadas en los campos actuales — modificables en cualquier momento.</p>
+                        <p class="rail-note">Sugerencias basadas en los campos actuales — modificables en cualquier
+                            momento.</p>
                     </div>
 
-{{-- Sección de vídeo guía - ACTUALIZADO con nuevo enlace de YouTube --}}
-<div class="rail-card">
-    <div class="rail-heading">
-        <i class="bi bi-play-circle header-dot"></i>
-        <span>Video guía</span>
-    </div>
+                    {{-- Sección de vídeo guía - ACTUALIZADO con nuevo enlace de YouTube --}}
+                    <div class="rail-card">
+                        <div class="rail-heading">
+                            <i class="bi bi-play-circle header-dot"></i>
+                            <span>Video guía</span>
+                        </div>
 
-    {{-- ✅ ACTUALIZADO: ID de YouTube B96gkcswFK4 --}}
-    <div class="video-frame" data-youtube-id="B96gkcswFK4"
-        aria-label="Video guía cálculo de costes y márgenes">
-        <img class="video-poster" src="https://i.ytimg.com/vi/B96gkcswFK4/hqdefault.jpg"
-            alt="Miniatura del vídeo">
-        <button class="play-btn" type="button" aria-label="Reproducir vídeo">
-            <i class="bi bi-play-fill"></i>
-        </button>
-    </div>
+                        {{-- ✅ ACTUALIZADO: ID de YouTube B96gkcswFK4 --}}
+                        <div class="video-frame" data-youtube-id="B96gkcswFK4"
+                            aria-label="Video guía cálculo de costes y márgenes">
+                            <img class="video-poster" src="https://i.ytimg.com/vi/B96gkcswFK4/hqdefault.jpg"
+                                alt="Miniatura del vídeo">
+                            <button class="play-btn" type="button" aria-label="Reproducir vídeo">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                        </div>
 
-    <ul class="video-tips">
-        <li><i class="bi bi-check2"></i> Introduce ingredientes &rarr; revisa
-            <strong>coste/kg</strong></li>
-        <li><i class="bi bi-check2"></i> Añade <strong>mano de obra</strong> con tarifa por departamento</li>
-        <li><i class="bi bi-check2"></i> Define <strong> Envase</strong> por pz/kg</li>
-        <li><i class="bi bi-check2"></i> Elige modo de venta y verifica el <strong>margen</strong>
-        </li>
-    </ul>
-</div>
+                        <ul class="video-tips">
+                            <li><i class="bi bi-check2"></i> Introduce ingredientes &rarr; revisa
+                                <strong>coste/kg</strong>
+                            </li>
+                            <li><i class="bi bi-check2"></i> Añade <strong>mano de obra</strong> con tarifa por
+                                departamento</li>
+                            <li><i class="bi bi-check2"></i> Define <strong> Envase</strong> por pz/kg</li>
+                            <li><i class="bi bi-check2"></i> Elige modo de venta y verifica el <strong>margen</strong>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </aside>
         </div>
@@ -1354,405 +1358,573 @@
 @endsection
 
 @section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-/* =======================
-* A) REVELAR AL HACER SCROLL
-* ======================= */
-const revealEls = document.querySelectorAll('.reveal');
-const revealIO = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('visible'); revealIO.unobserve(e.target); }});
-}, { threshold: .12 });
-revealEls.forEach(el => revealIO.observe(el));
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /* =======================
+             * A) REVELAR AL HACER SCROLL
+             * ======================= */
+            const revealEls = document.querySelectorAll('.reveal');
+            const revealIO = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        revealIO.unobserve(e.target);
+                    }
+                });
+            }, {
+                threshold: .12
+            });
+            revealEls.forEach(el => revealIO.observe(el));
 
-/* =======================
-* B) LÓGICA DEL FORMULARIO
-* ======================= */
-const addForm = document.getElementById('addIngredientForm');
-const modalEl = document.getElementById('addIngredientModal');
-const vatRateEl = document.getElementById('vatRate');
-const shopRateEl = document.getElementById('shopRate');
-const externalRateEl = document.getElementById('externalRate');
-const costModeShop = document.getElementById('costModeShop');
-const costModeExternal = document.getElementById('costModeExternal');
-const laborTimeInput = document.getElementById('laborTimeInput');
-const costPerMinIn = document.getElementById('costPerMin');
-const laborCostIn = document.getElementById('laborCost');
-const laborIncidenceIn = document.getElementById('laborIncidence');
-const pricePerPiece = document.getElementById('pricePerPiece');
-const pricePerKg = document.getElementById('pricePerKg');
-const modePiece = document.getElementById('modePiece');
-const modeKg = document.getElementById('modeKg');
-const totalPiecesIn = document.getElementById('totalPieces');
-const weightPerPieceIn = document.getElementById('weightPerPiece');
-const weightWithLossIn = document.getElementById('weightWithLoss');
-const tableBody = document.getElementById('ingredientsTable');
-const totalWeightFt = document.getElementById('totalWeightFooter');
-const hiddenTotalWt = document.getElementById('ingredientsTotalWeightHidden');
-const totalCostIn = document.getElementById('totalCostFooter');
-const totalIncidenceIn = document.getElementById('totalIncidenceFooter');
-const packingCostIn = document.getElementById('packingCost');
-const prodCostKgIn = document.getElementById('prodCostKg');
-const totalExpenseIn = document.getElementById('totalExpense');
-const potentialMargin = document.getElementById('potentialMargin');
-const potentialInput = document.getElementById('potentialMarginInput');
-const potentialPctInput = document.getElementById('potentialMarginPctInput');
-const deptSelect = document.getElementById('recipeDept');
+            /* =======================
+             * B) LÓGICA DEL FORMULARIO
+             * ======================= */
+            const addForm = document.getElementById('addIngredientForm');
+            const modalEl = document.getElementById('addIngredientModal');
+            const vatRateEl = document.getElementById('vatRate');
+            const shopRateEl = document.getElementById('shopRate');
+            const externalRateEl = document.getElementById('externalRate');
+            const costModeShop = document.getElementById('costModeShop');
+            const costModeExternal = document.getElementById('costModeExternal');
+            const laborTimeInput = document.getElementById('laborTimeInput');
+            const costPerMinIn = document.getElementById('costPerMin');
+            const laborCostIn = document.getElementById('laborCost');
+            const laborIncidenceIn = document.getElementById('laborIncidence');
+            const pricePerPiece = document.getElementById('pricePerPiece');
+            const pricePerKg = document.getElementById('pricePerKg');
+            const modePiece = document.getElementById('modePiece');
+            const modeKg = document.getElementById('modeKg');
+            const totalPiecesIn = document.getElementById('totalPieces');
+            const weightPerPieceIn = document.getElementById('weightPerPiece');
+            const weightWithLossIn = document.getElementById('weightWithLoss');
+            const tableBody = document.getElementById('ingredientsTable');
+            const totalWeightFt = document.getElementById('totalWeightFooter');
+            const hiddenTotalWt = document.getElementById('ingredientsTotalWeightHidden');
+            const totalCostIn = document.getElementById('totalCostFooter');
+            const totalIncidenceIn = document.getElementById('totalIncidenceFooter');
+            const packingCostIn = document.getElementById('packingCost');
+            const prodCostKgIn = document.getElementById('prodCostKg');
+            const totalExpenseIn = document.getElementById('totalExpense');
+            const potentialMargin = document.getElementById('potentialMargin');
+            const potentialInput = document.getElementById('potentialMarginInput');
+            const potentialPctInput = document.getElementById('potentialMarginPctInput');
+            const deptSelect = document.getElementById('recipeDept');
 
-let ratesByDept = {};
-try { ratesByDept = JSON.parse(document.getElementById('deptRatesJson')?.value || '{}') } catch(e){ ratesByDept = {} }
-
-const isEdit = {{ $isEdit ? 'true' : 'false' }};
-const addAsIngredient = document.getElementById('addAsIngredient');
-const pieceWrap = document.getElementById('pieceInputs');
-const kgWrap = document.getElementById('kgInputs');
-const pieceFields = pieceWrap ? pieceWrap.querySelectorAll('input,select,textarea,button') : [];
-let weightEdited = {{ $isEdit ? 'true' : 'false' }};
-let idx = {{ count(old('ingredients', [])) > 0 ? count(old('ingredients')) : (isset($recipe) ? $recipe->ingredients->count() : 1) }};
-
-// Ajax añadir ingrediente
-addForm?.addEventListener('submit', async e => {
-    e.preventDefault();
-    const fd = new FormData(addForm);
-    try {
-    const res = await fetch(addForm.action, {
-        method:'POST', headers:{ 'X-Requested-With':'XMLHttpRequest', 'Accept':'application/json' }, body:fd
-    });
-    const json = await res.json();
-    if (!res.ok) {
-        alert(json.errors ? Object.values(json.errors).flat().join('\n') : 'No se pudo guardar el ingrediente.');
-        return;
-    }
-    const opt = document.createElement('option');
-    opt.value = json.id; opt.textContent = `${json.ingredient_name} (€${json.price_per_kg}/kg)`; opt.dataset.price = json.price_per_kg;
-    document.querySelectorAll('.ingredient-select').forEach(sel => {
-        const prev = sel.value, clone = opt.cloneNode(true);
-        let inserted = false, newName = json.ingredient_name.toLowerCase().trim();
-        for (let i=1; i<sel.options.length; i++){
-        const existingName = sel.options[i].textContent.split('(')[0].toLowerCase().trim();
-        if (newName.localeCompare(existingName) < 0){ sel.insertBefore(clone, sel.options[i]); inserted = true; break; }
-        }
-        if (!inserted) sel.appendChild(clone);
-        const placeholder = sel.querySelector('option[value=""]');
-        if (placeholder){ sel.removeChild(placeholder); sel.insertBefore(placeholder, sel.firstChild); }
-        sel.value = prev || ''; if (prev && sel.value !== prev) sel.selectedIndex = 0;
-    });
-    const bsModal = bootstrap.Modal.getInstance(modalEl); bsModal && bsModal.hide();
-    addForm.reset(); weightEdited = false;
-    } catch(err){ console.error(err); alert('Error inesperado al guardar el ingrediente.'); }
-});
-
-// === helpers
-const netPrice = (gross) => { const vat = parseFloat(vatRateEl?.value)||0; return gross/(1+vat/100) };
-const grossFromNet = (net) => { const vat = parseFloat(vatRateEl?.value)||0; return net*(1+vat/100) };
-
-const calcWeightPerPiece = () => {
-    const pcs = parseFloat(totalPiecesIn?.value)||0; const totalG = parseFloat(weightWithLossIn?.value)||0;
-    if (weightPerPieceIn) weightPerPieceIn.value = pcs>0 ? (totalG/pcs).toFixed(2) : '';
-};
-const currentDeptRates = () => {
-    const id = deptSelect?.value || 'default';
-    if (ratesByDept?.[id]) return ratesByDept[id];
-    if (ratesByDept?.default) return ratesByDept.default;
-    return { shop: parseFloat(shopRateEl?.value)||0, external: parseFloat(externalRateEl?.value)||0 };
-};
-
-// util → recalcular todas las filas
-function recalcAllRows(){
-    document.querySelectorAll('.ingredient-row').forEach(r => recalcRow(r));
-}
-
-const ratesUrlTpl = deptSelect?.dataset.ratesUrl || '';
-async function fetchDeptRatesAndUpdate(){
-    const id = deptSelect?.value;
-    if (!id){
-        updateCostPerMin();
-        recalcAllRows();
-        recalcTotals();
-        return;
-    }
-    try{
-        const url = ratesUrlTpl.replace('__ID__', id);
-        const res = await fetch(url, { headers: { 'X-Requested-With':'XMLHttpRequest', 'Accept':'application/json' }});
-        if (res.ok){
-            const data = await res.json();
-            if (typeof data?.shop !== 'undefined' && typeof data?.external !== 'undefined'){
-                ratesByDept[id] = { shop: parseFloat(data.shop)||0, external: parseFloat(data.external)||0 };
+            let ratesByDept = {};
+            try {
+                ratesByDept = JSON.parse(document.getElementById('deptRatesJson')?.value || '{}')
+            } catch (e) {
+                ratesByDept = {}
             }
-        }
-    }catch(err){ console.warn('No se pudieron obtener las tarifas del departamento, se usan las globales.', err); }
-    updateCostPerMin();
-    recalcAllRows();
-    recalcTotals();
-}
 
-function updateCostPerMin(){
-    const r = currentDeptRates();
-    const rate = costModeShop?.checked ? (+r.shop||0) : (+r.external||0);
-    if (costPerMinIn) costPerMinIn.value = (rate||0).toFixed(4);
-    updateLaborCost();
-}
-function updateLaborCost(){
-    const mins = parseFloat(laborTimeInput?.value)||0; const rate = parseFloat(costPerMinIn?.value)||0;
-    if (laborCostIn) laborCostIn.value = (mins*rate).toFixed(2);
-    calculateLaborIncidence(); recalcTotals();
-}
-function calculateLaborIncidence(){
-    const lc = parseFloat(laborCostIn?.value)||0; const g = parseFloat(weightWithLossIn?.value)||0;
-    const kg = g/1000; const sell = modePiece?.checked ? ((+totalPiecesIn?.value||0) * (+pricePerPiece?.value||0)) : (+pricePerKg?.value||0);
-    if (laborIncidenceIn) laborIncidenceIn.value = (kg>0 && sell>0 ? ((lc/kg)/netPrice(sell))*100 : 0).toFixed(2);
-}
-function recalcRow(row){
-    const sel = row.querySelector('.ingredient-select');
-    const selected = sel && sel.selectedOptions ? sel.selectedOptions[0] : null;
-    const price = parseFloat(selected ? selected.dataset.price : 0) || 0;
-    const qty = parseFloat(row.querySelector('.ingredient-quantity')?.value)||0;
-    const costEl = row.querySelector('.ingredient-cost');
-    const cost = price/1000*qty;
-    if (costEl) costEl.value = isFinite(cost) ? cost.toFixed(2) : (costEl.value || '0.00');
-    const g = parseFloat(weightWithLossIn?.value)||0, kg = g/1000;
-    const sell = modePiece?.checked ? ((+totalPiecesIn?.value||0) * (+pricePerPiece?.value||0)) : (+pricePerKg?.value||0);
-    const inc = (kg>0 && sell>0 ? (((isFinite(cost)?cost:0)/kg)/netPrice(sell))*100 : 0).toFixed(2);
-    const incEl = row.querySelector('.ingredient-incidence'); if (incEl) incEl.value = inc;
-}
-function recalcTotals(){
-    calculateLaborIncidence();
-    let sW=0, sC=0, sI=0;
-    document.querySelectorAll('.ingredient-row').forEach(r=>{
-    sW += +r.querySelector('.ingredient-quantity')?.value || 0;
-    sC += +r.querySelector('.ingredient-cost')?.value || 0;
-    sI += +r.querySelector('.ingredient-incidence')?.value || 0;
-    });
-    if (totalWeightFt) totalWeightFt.value = sW;
-    if (totalCostIn) totalCostIn.value = sC.toFixed(2);
-    if (totalIncidenceIn) totalIncidenceIn.value = sI.toFixed(2);
-    if (hiddenTotalWt) hiddenTotalWt.value = sW;
-    if (!weightEdited && weightWithLossIn) weightWithLossIn.value = sW;
-    recalcExpense(); recalcMargin();
-}
-function recalcExpense(){
-    const ing = +totalCostIn?.value || 0; const lab = +laborCostIn?.value || 0; const raw = ing + lab;
-    const pack = +packingCostIn?.value || 0;
-    if (modePiece?.checked){
-    const pcs = +totalPiecesIn?.value || 0;
-    const before = pcs>0 ? raw/pcs : 0;
-    const packPerPiece = pcs>0 ? pack/pcs : 0;
-    if (prodCostKgIn) prodCostKgIn.value = before.toFixed(2);
-    if (totalExpenseIn) totalExpenseIn.value = (before + packPerPiece).toFixed(2);
-    } else {
-    const g = +weightWithLossIn?.value || 0; const kg = g/1000; const before = kg>0 ? raw/kg : 0;
-    if (prodCostKgIn) prodCostKgIn.value = before.toFixed(2);
-    if (totalExpenseIn) totalExpenseIn.value = (before + pack).toFixed(2);
-    }
-    recalcMargin();
-}
-function recalcMargin(){
-    const netSP = netPrice(+pricePerPiece?.value||0);
-    const netSK = netPrice(+pricePerKg?.value||0);
-    const costU = +totalExpenseIn?.value || 0;
-    if (modePiece?.checked){
-    const m = netSP - costU, pct = netSP>0 ? (m*100/netSP) : 0;
-    potentialMargin && (potentialMargin.innerText = `€${m.toFixed(2)} (${pct.toFixed(2)}%) / pieza`);
-    potentialInput && (potentialInput.value = m.toFixed(2));
-    potentialPctInput && (potentialPctInput.value = pct.toFixed(2));
-    } else {
-    const m = netSK - costU, pct = netSK>0 ? (m*100/netSK) : 0;
-    potentialMargin && (potentialMargin.innerText = `€${m.toFixed(2)} (${pct.toFixed(2)}%) / kg`);
-    potentialInput && (potentialInput.value = m.toFixed(2));
-    potentialPctInput && (potentialPctInput.value = pct.toFixed(2));
-    }
-}
-function updateMode(){
-    const beforeLabel = prodCostKgIn.closest('.input-group').querySelector('.input-group-text');
-    const afterLabel = totalExpenseIn.closest('.input-group').querySelector('.input-group-text');
-    if (modePiece?.checked){ beforeLabel.textContent = 'Coste por pieza antes del  Envase'; afterLabel.textContent = '€'; }
-    else { beforeLabel.textContent = 'Coste €/kg antes del  Envase'; afterLabel.textContent = '€'; }
-    document.getElementById('pieceInputs')?.classList.toggle('d-none', !modePiece?.checked);
-    document.getElementById('kgInputs')?.classList.toggle('d-none', !!modePiece?.checked);
-    recalcTotals(); if (modePiece?.checked) calcWeightPerPiece();
-}
-function setSellMode(mode){
-    if (mode==='kg'){ modeKg && (modeKg.checked = true); pieceWrap?.classList.add('d-none'); kgWrap?.classList.remove('d-none'); }
-    else { modePiece && (modePiece.checked = true); pieceWrap?.classList.remove('d-none'); kgWrap?.classList.add('d-none'); }
-    updateMode();
-}
-function lockKgIfIngredient(){
-    const lock = addAsIngredient && addAsIngredient.checked;
-    if (modePiece) modePiece.disabled = lock;
-    pieceFields?.forEach(el => el.disabled = lock);
-    if (lock) setSellMode('kg');
-}
+            const isEdit = {{ $isEdit ? 'true' : 'false' }};
+            const addAsIngredient = document.getElementById('addAsIngredient');
+            const pieceWrap = document.getElementById('pieceInputs');
+            const kgWrap = document.getElementById('kgInputs');
+            const pieceFields = pieceWrap ? pieceWrap.querySelectorAll('input,select,textarea,button') : [];
+            let weightEdited = {{ $isEdit ? 'true' : 'false' }};
+            let idx =
+                {{ count(old('ingredients', [])) > 0 ? count(old('ingredients')) : (isset($recipe) ? $recipe->ingredients->count() : 1) }};
 
-// listeners
-costModeShop?.addEventListener('change', updateCostPerMin);
-costModeExternal?.addEventListener('change', updateCostPerMin);
-laborTimeInput?.addEventListener('input', updateLaborCost);
-packingCostIn?.addEventListener('input', recalcExpense);
+            // Ajax añadir ingrediente
+            addForm?.addEventListener('submit', async e => {
+                e.preventDefault();
+                const fd = new FormData(addForm);
+                try {
+                    const res = await fetch(addForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        },
+                        body: fd
+                    });
+                    const json = await res.json();
+                    if (!res.ok) {
+                        alert(json.errors ? Object.values(json.errors).flat().join('\n') :
+                            'No se pudo guardar el ingrediente.');
+                        return;
+                    }
+                    const opt = document.createElement('option');
+                    opt.value = json.id;
+                    opt.textContent = `${json.ingredient_name} (€${json.price_per_kg}/kg)`;
+                    opt.dataset.price = json.price_per_kg;
+                    document.querySelectorAll('.ingredient-select').forEach(sel => {
+                        const prev = sel.value,
+                            clone = opt.cloneNode(true);
+                        let inserted = false,
+                            newName = json.ingredient_name.toLowerCase().trim();
+                        for (let i = 1; i < sel.options.length; i++) {
+                            const existingName = sel.options[i].textContent.split('(')[0]
+                                .toLowerCase().trim();
+                            if (newName.localeCompare(existingName) < 0) {
+                                sel.insertBefore(clone, sel.options[i]);
+                                inserted = true;
+                                break;
+                            }
+                        }
+                        if (!inserted) sel.appendChild(clone);
+                        const placeholder = sel.querySelector('option[value=""]');
+                        if (placeholder) {
+                            sel.removeChild(placeholder);
+                            sel.insertBefore(placeholder, sel.firstChild);
+                        }
+                        sel.value = prev || '';
+                        if (prev && sel.value !== prev) sel.selectedIndex = 0;
+                    });
+                    const bsModal = bootstrap.Modal.getInstance(modalEl);
+                    bsModal && bsModal.hide();
+                    addForm.reset();
+                    weightEdited = false;
+                } catch (err) {
+                    console.error(err);
+                    alert('Error inesperado al guardar el ingrediente.');
+                }
+            });
 
-// cuando cambian estos, recalcular filas y totales
-vatRateEl?.addEventListener('change', () => { recalcAllRows(); recalcTotals(); });
-pricePerPiece?.addEventListener('input', () => { recalcAllRows(); recalcMargin(); });
-pricePerKg?.addEventListener('input', () => { recalcAllRows(); recalcMargin(); });
-weightWithLossIn?.addEventListener('input', () => { weightEdited = true; calcWeightPerPiece(); recalcAllRows(); recalcTotals(); });
+            // === helpers
+            const netPrice = (gross) => {
+                const vat = parseFloat(vatRateEl?.value) || 0;
+                return gross / (1 + vat / 100)
+            };
+            const grossFromNet = (net) => {
+                const vat = parseFloat(vatRateEl?.value) || 0;
+                return net * (1 + vat / 100)
+            };
 
-// cambio de departamento → tarifas nuevas
-deptSelect?.addEventListener('change', fetchDeptRatesAndUpdate);
+            const calcWeightPerPiece = () => {
+                const pcs = parseFloat(totalPiecesIn?.value) || 0;
+                const totalG = parseFloat(weightWithLossIn?.value) || 0;
+                if (weightPerPieceIn) weightPerPieceIn.value = pcs > 0 ? (totalG / pcs).toFixed(2) : '';
+            };
+            const currentDeptRates = () => {
+                const id = deptSelect?.value || 'default';
+                if (ratesByDept?.[id]) return ratesByDept[id];
+                if (ratesByDept?.default) return ratesByDept.default;
+                return {
+                    shop: parseFloat(shopRateEl?.value) || 0,
+                    external: parseFloat(externalRateEl?.value) || 0
+                };
+            };
 
-totalPiecesIn?.addEventListener('input', () => { calcWeightPerPiece(); updateMode(); });
-modePiece?.addEventListener('change', () => { calcWeightPerPiece(); updateMode(); });
-modeKg?.addEventListener('change', updateMode);
+            // util → recalcular todas las filas
+            function recalcAllRows() {
+                document.querySelectorAll('.ingredient-row').forEach(r => recalcRow(r));
+            }
 
-// inputs por fila
-tableBody?.addEventListener('input', e => {
-    if (e.target.matches('.ingredient-select, .ingredient-quantity')){
-        weightEdited = false;
-        recalcRow(e.target.closest('.ingredient-row'));
-        recalcTotals();
-    }
-});
-document.getElementById('addIngredientBtn')?.addEventListener('click', e => {
-    e.preventDefault();
-    const first = tableBody.querySelector('.ingredient-row'); if (!first) return;
-    const clone = first.cloneNode(true); const newIdx = idx++;
-    clone.querySelectorAll('select[name], input[name]').forEach(el => {
-        el.name = el.name.replace(/\[\d+\]/, `[${newIdx}]`);
-        if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = el.classList.contains('ingredient-quantity') ? '0' : '';
-    });
-    tableBody.appendChild(clone);
-    weightEdited = false;
-    recalcRow(clone);
-    recalcTotals();
-});
-tableBody?.addEventListener('click', e => {
-    if (e.target.closest('.remove-ingredient') && tableBody.children.length>1){
-        e.target.closest('.ingredient-row').remove();
-        weightEdited = false;
-        recalcTotals();
-    }
-});
+            const ratesUrlTpl = deptSelect?.dataset.ratesUrl || '';
+            async function fetchDeptRatesAndUpdate() {
+                const id = deptSelect?.value;
+                if (!id) {
+                    updateCostPerMin();
+                    recalcAllRows();
+                    recalcTotals();
+                    return;
+                }
+                try {
+                    const url = ratesUrlTpl.replace('__ID__', id);
+                    const res = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (typeof data?.shop !== 'undefined' && typeof data?.external !== 'undefined') {
+                            ratesByDept[id] = {
+                                shop: parseFloat(data.shop) || 0,
+                                external: parseFloat(data.external) || 0
+                            };
+                        }
+                    }
+                } catch (err) {
+                    console.warn('No se pudieron obtener las tarifas del departamento, se usan las globales.',
+                        err);
+                }
+                updateCostPerMin();
+                recalcAllRows();
+                recalcTotals();
+            }
 
-// inicial
-if (!isEdit && modeKg) modeKg.checked = true;
-updateMode();
+            function updateCostPerMin() {
+                const r = currentDeptRates();
+                const rate = costModeShop?.checked ? (+r.shop || 0) : (+r.external || 0);
+                if (costPerMinIn) costPerMinIn.value = (rate || 0).toFixed(4);
+                updateLaborCost();
+            }
 
-// al cargar → tarifas (si hay dept) y calcula filas + totales
-if (deptSelect && deptSelect.value){
-    fetchDeptRatesAndUpdate();
-} else {
-    updateCostPerMin();
-    recalcAllRows();
-    calcWeightPerPiece();
-    recalcTotals();
-}
+            function updateLaborCost() {
+                const mins = parseFloat(laborTimeInput?.value) || 0;
+                const rate = parseFloat(costPerMinIn?.value) || 0;
+                if (laborCostIn) laborCostIn.value = (mins * rate).toFixed(2);
+                calculateLaborIncidence();
+                recalcTotals();
+            }
 
-if (addAsIngredient){ lockKgIfIngredient(); addAsIngredient.addEventListener('change', lockKgIfIngredient); }
+            function calculateLaborIncidence() {
+                const lc = parseFloat(laborCostIn?.value) || 0;
+                const g = parseFloat(weightWithLossIn?.value) || 0;
+                const kg = g / 1000;
+                const sell = modePiece?.checked ? ((+totalPiecesIn?.value || 0) * (+pricePerPiece?.value || 0)) : (+
+                    pricePerKg?.value || 0);
+                if (laborIncidenceIn) laborIncidenceIn.value = (kg > 0 && sell > 0 ? ((lc / kg) / netPrice(sell)) *
+                    100 : 0).toFixed(2);
+            }
 
-/* =======================
-* C) Acciones rail derecha
-* ======================= */
-document.querySelectorAll('.rail-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-    const act = btn.dataset.action;
-    if (act === 'fill-loss-from-ingredients'){
-        if (weightWithLossIn && totalWeightFt){ weightWithLossIn.value = totalWeightFt.value || 0; weightEdited = true; recalcAllRows(); recalcTotals(); }
-    }
-    if (act === 'set-mode-kg'){ setSellMode('kg'); }
-    if (act === 'set-mode-piece'){ setSellMode('piece'); }
-    if (act === 'suggest-margin'){
-        const costU = +totalExpenseIn?.value || 0;
-        const targetNet = costU * 2.2;
-        const targetGross = grossFromNet(targetNet);
-        if (modePiece?.checked && pricePerPiece){ pricePerPiece.value = targetGross.toFixed(2); }
-        else if (pricePerKg){ pricePerKg.value = targetGross.toFixed(2); }
-        recalcAllRows();
-        recalcMargin();
-    }
-    });
-});
+            function recalcRow(row) {
+                const sel = row.querySelector('.ingredient-select');
+                const selected = sel && sel.selectedOptions ? sel.selectedOptions[0] : null;
+                const price = parseFloat(selected ? selected.dataset.price : 0) || 0;
+                const qty = parseFloat(row.querySelector('.ingredient-quantity')?.value) || 0;
+                const costEl = row.querySelector('.ingredient-cost');
+                const cost = price / 1000 * qty;
+                if (costEl) costEl.value = isFinite(cost) ? cost.toFixed(2) : (costEl.value || '0.00');
+                const g = parseFloat(weightWithLossIn?.value) || 0,
+                    kg = g / 1000;
+                const sell = modePiece?.checked ? ((+totalPiecesIn?.value || 0) * (+pricePerPiece?.value || 0)) : (+
+                    pricePerKg?.value || 0);
+                const inc = (kg > 0 && sell > 0 ? (((isFinite(cost) ? cost : 0) / kg) / netPrice(sell)) * 100 : 0)
+                    .toFixed(2);
+                const incEl = row.querySelector('.ingredient-incidence');
+                if (incEl) incEl.value = inc;
+            }
 
-/* =======================
-* D) Scroll suave desde rail + ScrollSpy
-* ======================= */
-const smoothScrollTo = (hash) => {
-    const el = document.querySelector(hash);
-    if (!el) return;
-    const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-};
-document.body.addEventListener('click', (e)=>{
-    const a = e.target.closest('.js-scrollto');
-    if (!a || !a.hash) return;
-    e.preventDefault();
-    smoothScrollTo(a.hash);
-});
-const spyLinks = Array.from(document.querySelectorAll('#rail-stepper a.js-scrollto'));
-const sections = spyLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-const spy = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-    const id = '#' + entry.target.id;
-    const link = spyLinks.find(a => a.getAttribute('href') === id);
-    if (!link) return;
-    if (entry.isIntersecting){
-        spyLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-    }
-    });
-}, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
-sections.forEach(sec => spy.observe(sec));
+            function recalcTotals() {
+                calculateLaborIncidence();
+                let sW = 0,
+                    sC = 0,
+                    sI = 0;
+                document.querySelectorAll('.ingredient-row').forEach(r => {
+                    sW += +r.querySelector('.ingredient-quantity')?.value || 0;
+                    sC += +r.querySelector('.ingredient-cost')?.value || 0;
+                    sI += +r.querySelector('.ingredient-incidence')?.value || 0;
+                });
+                if (totalWeightFt) totalWeightFt.value = sW;
+                if (totalCostIn) totalCostIn.value = sC.toFixed(2);
+                if (totalIncidenceIn) totalIncidenceIn.value = sI.toFixed(2);
+                if (hiddenTotalWt) hiddenTotalWt.value = sW;
+                if (!weightEdited && weightWithLossIn) weightWithLossIn.value = sW;
+                recalcExpense();
+                recalcMargin();
+            }
 
-/* =======================
-* E) Mini banner (chips, scroll)
-* ======================= */
-(function initMiniBanner(){
-    const banner = document.querySelector('.mini-banner'); if (!banner) return;
-    const scroller = banner.querySelector('.scroller'); if (!scroller) return;
-    const left = banner.querySelector('.scroll-arrow.left');
-    const right = banner.querySelector('.scroll-arrow.right');
+            function recalcExpense() {
+                const ing = +totalCostIn?.value || 0;
+                const lab = +laborCostIn?.value || 0;
+                const raw = ing + lab;
+                const pack = +packingCostIn?.value || 0;
+                if (modePiece?.checked) {
+                    const pcs = +totalPiecesIn?.value || 0;
+                    const before = pcs > 0 ? raw / pcs : 0;
+                    const packPerPiece = pcs > 0 ? pack / pcs : 0;
+                    if (prodCostKgIn) prodCostKgIn.value = before.toFixed(2);
+                    if (totalExpenseIn) totalExpenseIn.value = (before + packPerPiece).toFixed(2);
+                } else {
+                    const g = +weightWithLossIn?.value || 0;
+                    const kg = g / 1000;
+                    const before = kg > 0 ? raw / kg : 0;
+                    if (prodCostKgIn) prodCostKgIn.value = before.toFixed(2);
+                    if (totalExpenseIn) totalExpenseIn.value = (before + pack).toFixed(2);
+                }
+                recalcMargin();
+            }
 
-    const hasOverflow = () => scroller.scrollWidth - scroller.clientWidth > 4;
-    const step = () => Math.max(200, Math.round(scroller.clientWidth * 0.6));
+            function recalcMargin() {
+                const netSP = netPrice(+pricePerPiece?.value || 0);
+                const netSK = netPrice(+pricePerKg?.value || 0);
+                const costU = +totalExpenseIn?.value || 0;
+                if (modePiece?.checked) {
+                    const m = netSP - costU,
+                        pct = netSP > 0 ? (m * 100 / netSP) : 0;
+                    potentialMargin && (potentialMargin.innerText =
+                    `€${m.toFixed(2)} (${pct.toFixed(2)}%) / pieza`);
+                    potentialInput && (potentialInput.value = m.toFixed(2));
+                    potentialPctInput && (potentialPctInput.value = pct.toFixed(2));
+                } else {
+                    const m = netSK - costU,
+                        pct = netSK > 0 ? (m * 100 / netSK) : 0;
+                    potentialMargin && (potentialMargin.innerText = `€${m.toFixed(2)} (${pct.toFixed(2)}%) / kg`);
+                    potentialInput && (potentialInput.value = m.toFixed(2));
+                    potentialPctInput && (potentialPctInput.value = pct.toFixed(2));
+                }
+            }
 
-    const updateArrows = () => {
-    if (!left || !right) return;
-    const max = scroller.scrollWidth - scroller.clientWidth - 2;
-    left.disabled  = scroller.scrollLeft <= 2;
-    right.disabled = scroller.scrollLeft >= max;
-    left.style.opacity  = left.disabled  ? .5 : 1;
-    right.style.opacity = right.disabled ? .5 : 1;
-    };
+            function updateMode() {
+                const beforeLabel = prodCostKgIn.closest('.input-group').querySelector('.input-group-text');
+                const afterLabel = totalExpenseIn.closest('.input-group').querySelector('.input-group-text');
+                if (modePiece?.checked) {
+                    beforeLabel.textContent = 'Coste por pieza antes del  Envase';
+                    afterLabel.textContent = '€';
+                } else {
+                    beforeLabel.textContent = 'Coste €/kg antes del  Envase';
+                    afterLabel.textContent = '€';
+                }
+                document.getElementById('pieceInputs')?.classList.toggle('d-none', !modePiece?.checked);
+                document.getElementById('kgInputs')?.classList.toggle('d-none', !!modePiece?.checked);
+                recalcTotals();
+                if (modePiece?.checked) calcWeightPerPiece();
+            }
 
-    left?.addEventListener('click',  () => { scroller.scrollBy({left: -step(), behavior: 'smooth'}); });
-    right?.addEventListener('click', () => { scroller.scrollBy({left:  step(), behavior: 'smooth'}); });
-    scroller.addEventListener('scroll', updateArrows, {passive:true});
-    window.addEventListener('resize', () => { updateArrows(); });
+            function setSellMode(mode) {
+                if (mode === 'kg') {
+                    modeKg && (modeKg.checked = true);
+                    pieceWrap?.classList.add('d-none');
+                    kgWrap?.classList.remove('d-none');
+                } else {
+                    modePiece && (modePiece.checked = true);
+                    pieceWrap?.classList.remove('d-none');
+                    kgWrap?.classList.add('d-none');
+                }
+                updateMode();
+            }
 
-    let rafId; const speed = 0.4;
-    const loop = () => {
-    if (document.hidden || !hasOverflow() || scroller.matches(':hover,:focus-within')) {
-        rafId = requestAnimationFrame(loop); return;
-    }
-    scroller.scrollLeft += speed;
-    const max = scroller.scrollWidth - scroller.clientWidth;
-    if (scroller.scrollLeft >= max - 1) scroller.scrollTo({left: 0});
-    rafId = requestAnimationFrame(loop);
-    };
-    loop();
-    document.addEventListener('visibilitychange', () => { if (document.hidden) cancelAnimationFrame(rafId); else loop(); });
-    updateArrows();
-})();
+            function lockKgIfIngredient() {
+                const lock = addAsIngredient && addAsIngredient.checked;
+                if (modePiece) modePiece.disabled = lock;
+                pieceFields?.forEach(el => el.disabled = lock);
+                if (lock) setSellMode('kg');
+            }
 
-/* =======================
-* F) Marco de vídeo (carga diferida YouTube)
-* ======================= */
-(function initVideo(){
-    const vf = document.querySelector('.video-frame'); if (!vf) return;
-    const btn = vf.querySelector('.play-btn');
-    btn?.addEventListener('click', ()=>{
-    const id = vf.getAttribute('data-youtube-id');
-    const src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
-    vf.innerHTML = `<iframe src="${src}" allow="autoplay; encrypted-media" allowfullscreen title="Video guía"></iframe>`;
-    });
-})();
-});
-</script>
+            // listeners
+            costModeShop?.addEventListener('change', updateCostPerMin);
+            costModeExternal?.addEventListener('change', updateCostPerMin);
+            laborTimeInput?.addEventListener('input', updateLaborCost);
+            packingCostIn?.addEventListener('input', recalcExpense);
+
+            // cuando cambian estos, recalcular filas y totales
+            vatRateEl?.addEventListener('change', () => {
+                recalcAllRows();
+                recalcTotals();
+            });
+            pricePerPiece?.addEventListener('input', () => {
+                recalcAllRows();
+                recalcMargin();
+            });
+            pricePerKg?.addEventListener('input', () => {
+                recalcAllRows();
+                recalcMargin();
+            });
+            weightWithLossIn?.addEventListener('input', () => {
+                weightEdited = true;
+                calcWeightPerPiece();
+                recalcAllRows();
+                recalcTotals();
+            });
+
+            // cambio de departamento → tarifas nuevas
+            deptSelect?.addEventListener('change', fetchDeptRatesAndUpdate);
+
+            totalPiecesIn?.addEventListener('input', () => {
+                calcWeightPerPiece();
+                updateMode();
+            });
+            modePiece?.addEventListener('change', () => {
+                calcWeightPerPiece();
+                updateMode();
+            });
+            modeKg?.addEventListener('change', updateMode);
+
+            // inputs por fila
+            tableBody?.addEventListener('input', e => {
+                if (e.target.matches('.ingredient-select, .ingredient-quantity')) {
+                    weightEdited = false;
+                    recalcRow(e.target.closest('.ingredient-row'));
+                    recalcTotals();
+                }
+            });
+            document.getElementById('addIngredientBtn')?.addEventListener('click', e => {
+                e.preventDefault();
+                const first = tableBody.querySelector('.ingredient-row');
+                if (!first) return;
+                const clone = first.cloneNode(true);
+                const newIdx = idx++;
+                clone.querySelectorAll('select[name], input[name]').forEach(el => {
+                    el.name = el.name.replace(/\[\d+\]/, `[${newIdx}]`);
+                    if (el.tagName === 'SELECT') el.selectedIndex = 0;
+                    else el.value = el.classList.contains('ingredient-quantity') ? '0' : '';
+                });
+                tableBody.appendChild(clone);
+                weightEdited = false;
+                recalcRow(clone);
+                recalcTotals();
+            });
+            tableBody?.addEventListener('click', e => {
+                if (e.target.closest('.remove-ingredient') && tableBody.children.length > 1) {
+                    e.target.closest('.ingredient-row').remove();
+                    weightEdited = false;
+                    recalcTotals();
+                }
+            });
+
+            // inicial
+            if (!isEdit && modeKg) modeKg.checked = true;
+            updateMode();
+
+            // al cargar → tarifas (si hay dept) y calcula filas + totales
+            if (deptSelect && deptSelect.value) {
+                fetchDeptRatesAndUpdate();
+            } else {
+                updateCostPerMin();
+                recalcAllRows();
+                calcWeightPerPiece();
+                recalcTotals();
+            }
+
+            if (addAsIngredient) {
+                lockKgIfIngredient();
+                addAsIngredient.addEventListener('change', lockKgIfIngredient);
+            }
+
+            /* =======================
+             * C) Acciones rail derecha
+             * ======================= */
+            document.querySelectorAll('.rail-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const act = btn.dataset.action;
+                    if (act === 'fill-loss-from-ingredients') {
+                        if (weightWithLossIn && totalWeightFt) {
+                            weightWithLossIn.value = totalWeightFt.value || 0;
+                            weightEdited = true;
+                            recalcAllRows();
+                            recalcTotals();
+                        }
+                    }
+                    if (act === 'set-mode-kg') {
+                        setSellMode('kg');
+                    }
+                    if (act === 'set-mode-piece') {
+                        setSellMode('piece');
+                    }
+                    if (act === 'suggest-margin') {
+                        const costU = +totalExpenseIn?.value || 0;
+                        const targetNet = costU * 2.2;
+                        const targetGross = grossFromNet(targetNet);
+                        if (modePiece?.checked && pricePerPiece) {
+                            pricePerPiece.value = targetGross.toFixed(2);
+                        } else if (pricePerKg) {
+                            pricePerKg.value = targetGross.toFixed(2);
+                        }
+                        recalcAllRows();
+                        recalcMargin();
+                    }
+                });
+            });
+
+            /* =======================
+             * D) Scroll suave desde rail + ScrollSpy
+             * ======================= */
+            const smoothScrollTo = (hash) => {
+                const el = document.querySelector(hash);
+                if (!el) return;
+                const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+                window.scrollTo({
+                    top: y,
+                    behavior: 'smooth'
+                });
+            };
+            document.body.addEventListener('click', (e) => {
+                const a = e.target.closest('.js-scrollto');
+                if (!a || !a.hash) return;
+                e.preventDefault();
+                smoothScrollTo(a.hash);
+            });
+            const spyLinks = Array.from(document.querySelectorAll('#rail-stepper a.js-scrollto'));
+            const sections = spyLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+            const spy = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = '#' + entry.target.id;
+                    const link = spyLinks.find(a => a.getAttribute('href') === id);
+                    if (!link) return;
+                    if (entry.isIntersecting) {
+                        spyLinks.forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                    }
+                });
+            }, {
+                rootMargin: '-40% 0px -55% 0px',
+                threshold: 0.01
+            });
+            sections.forEach(sec => spy.observe(sec));
+
+            /* =======================
+             * E) Mini banner (chips, scroll)
+             * ======================= */
+            (function initMiniBanner() {
+                const banner = document.querySelector('.mini-banner');
+                if (!banner) return;
+                const scroller = banner.querySelector('.scroller');
+                if (!scroller) return;
+                const left = banner.querySelector('.scroll-arrow.left');
+                const right = banner.querySelector('.scroll-arrow.right');
+
+                const hasOverflow = () => scroller.scrollWidth - scroller.clientWidth > 4;
+                const step = () => Math.max(200, Math.round(scroller.clientWidth * 0.6));
+
+                const updateArrows = () => {
+                    if (!left || !right) return;
+                    const max = scroller.scrollWidth - scroller.clientWidth - 2;
+                    left.disabled = scroller.scrollLeft <= 2;
+                    right.disabled = scroller.scrollLeft >= max;
+                    left.style.opacity = left.disabled ? .5 : 1;
+                    right.style.opacity = right.disabled ? .5 : 1;
+                };
+
+                left?.addEventListener('click', () => {
+                    scroller.scrollBy({
+                        left: -step(),
+                        behavior: 'smooth'
+                    });
+                });
+                right?.addEventListener('click', () => {
+                    scroller.scrollBy({
+                        left: step(),
+                        behavior: 'smooth'
+                    });
+                });
+                scroller.addEventListener('scroll', updateArrows, {
+                    passive: true
+                });
+                window.addEventListener('resize', () => {
+                    updateArrows();
+                });
+
+                let rafId;
+                const speed = 0.4;
+                const loop = () => {
+                    if (document.hidden || !hasOverflow() || scroller.matches(':hover,:focus-within')) {
+                        rafId = requestAnimationFrame(loop);
+                        return;
+                    }
+                    scroller.scrollLeft += speed;
+                    const max = scroller.scrollWidth - scroller.clientWidth;
+                    if (scroller.scrollLeft >= max - 1) scroller.scrollTo({
+                        left: 0
+                    });
+                    rafId = requestAnimationFrame(loop);
+                };
+                loop();
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) cancelAnimationFrame(rafId);
+                    else loop();
+                });
+                updateArrows();
+            })();
+
+            /* =======================
+             * F) Marco de vídeo (carga diferida YouTube)
+             * ======================= */
+            (function initVideo() {
+                const vf = document.querySelector('.video-frame');
+                if (!vf) return;
+                const btn = vf.querySelector('.play-btn');
+                btn?.addEventListener('click', () => {
+                    const id = vf.getAttribute('data-youtube-id');
+                    const src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+                    vf.innerHTML =
+                        `<iframe src="${src}" allow="autoplay; encrypted-media" allowfullscreen title="Video guía"></iframe>`;
+                });
+            })();
+        });
+    </script>
 @endsection
