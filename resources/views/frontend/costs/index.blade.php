@@ -120,9 +120,8 @@
                 </h5>
             </div>
             <div class="card-body table-responsive">
-                <table  data-page-length="25"id="costTable"
-                       class="table table-bordered table-striped table-hover align-middle text-center mb-0"
-                       data-page-length="25">
+                <table data-page-length="25" id="costTable"
+                       class="table table-bordered table-striped table-hover align-middle text-center mb-0">
                     <thead>
                         <tr>
                             <th class="sortable" style="width:20px;">Identificatore <span class="sort-indicator"></span></th>
@@ -211,7 +210,7 @@
       vertical-align: middle;
   }
 
-  /* Custom 2‑state sorting visuals */
+  /* Custom 2-state sorting visuals */
   #costTable thead th.sortable {
       cursor: pointer;
       user-select: none;
@@ -243,108 +242,114 @@
 </style>
 
 @section('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.$ && $.fn.DataTable) {
-                $.fn.dataTable.ext.errMode = 'none';
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.$ && $.fn.DataTable) {
+        $.fn.dataTable.ext.errMode = 'none';
 
-                const STORAGE_KEY = 'costs_sort_state';
+        const STORAGE_KEY = 'costs_sort_state';
 
-                var table = $('#costTable').DataTable({
-                    paging: true,
-                    ordering: true,
-                    orderMulti: false,          // single-column ordering only
-                    responsive: true,
-                    pageLength: $('#costTable').data('page-length') || 10,
-                    order: [[3, 'desc']],       // default: sort by Scadenza desc
-                    columnDefs: [
-                        { orderable: false, targets: 5 } // Azioni non ordinabile
-                    ],
-                    language: {
-                        search: "Cerca:",
-                        lengthMenu: "Mostra _MENU_ voci per pagina",
-                        info: "Visualizzati da _START_ a _END_ di _TOTAL_ costi",
-                        paginate: { previous: "«", next: "»" },
-                        zeroRecords: "Nessun costo trovato"
-                    }
-                });
-
-                // Restore previous 2‑state sort (if saved)
-                try {
-                    const saved = sessionStorage.getItem(STORAGE_KEY);
-                    if (saved) {
-                        const { col, dir } = JSON.parse(saved);
-                        if (typeof col === 'number' && (dir === 'asc' || dir === 'desc')) {
-                            table.order([col, dir]).draw();
-                        }
-                    }
-                } catch(e){}
-
-                function updateIndicators() {
-                    $('#costTable thead th.sortable')
-                        .removeAttr('data-sort-dir')
-                        .find('.sort-indicator').text('');
-                    const ord = table.order();
-                    if (!ord.length) return;
-                    const col = ord[0][0];
-                    const dir = ord[0][1];
-                    const th = $('#costTable thead th').eq(col);
-                    if (!th.hasClass('sortable')) return;
-                    th.attr('data-sort-dir', dir);
-                    th.find('.sort-indicator').text(dir === 'asc' ? '▲' : '▼');
-                }
-                updateIndicators();
-
-                // 2‑state (asc <-> desc) header click
-                $('#costTable thead').on('click', 'th.sortable', function() {
-                    const idx = $(this).index();
-                    const colSettings = table.settings()[0].aoColumns[idx];
-                    if (colSettings.bSortable === false) return;
-
-                    const current = table.order();
-                    const currentCol = current.length ? current[0][0] : null;
-                    const currentDir = current.length ? current[0][1] : 'asc';
-                    const newDir = (currentCol === idx && currentDir === 'asc') ? 'desc' : 'asc';
-
-                    table.order([idx, newDir]).draw();
-                    updateIndicators();
-
-                    try {
-                        const ord = table.order();
-                        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ col: ord[0][0], dir: ord[0][1] }));
-                    } catch(e){}
-                });
-
-                // Prevent shift multi-order
-                $('#costTable thead').on('mousedown', 'th', function(e) {
-                    if (e.shiftKey) e.preventDefault();
-                });
-
-                // Month filter
-                $.fn.dataTable.ext.search.push(function(settings, data) {
-                    if (settings.nTable.id !== 'costTable') return true;
-                    var selected = $('#filterMonth').val();
-                    if (!selected) return true;
-                    var dueDate = data[3];
-                    return dueDate && dueDate.substr(0, 7) === selected;
-                });
-
-                $('#filterMonth').on('change', function() {
-                    table.draw();
-                });
+        var table = $('#costTable').DataTable({
+            paging: true,
+            ordering: true,
+            orderMulti: false,
+            responsive: true,
+            pageLength: $('#costTable').data('page-length') || 10,
+            order: [[3, 'desc']],
+            columnDefs: [
+                { orderable: false, targets: 5 }
+            ],
+            language: {
+                search: "Cerca:",
+                lengthMenu: "Mostra _MENU_ voci per pagina",
+                info: "Visualizzati da _START_ a _END_ di _TOTAL_ costi",
+                paginate: { previous: "«", next: "»" },
+                zeroRecords: "Nessun costo trovato"
             }
-
-            // Bootstrap validation
-            const forms = document.querySelectorAll('.needs-validation');
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', e => {
-                    if (!form.checkValidity()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
         });
-    </script>
+
+        // ✅ Month filter (apply to this table only)
+        $.fn.dataTable.ext.search.push(function(settings, data) {
+            if (settings.nTable.id !== 'costTable') return true;
+
+            var selected = ($('#filterMonth').val() || '').trim();
+            if (!selected) return true;
+
+            var dueDate = (data[3] || '').trim(); // "YYYY-MM-DD"
+            return dueDate.substring(0, 7) === selected;
+        });
+
+        // Restore previous 2-state sort (if saved)
+        try {
+            const saved = sessionStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const { col, dir } = JSON.parse(saved);
+                if (typeof col === 'number' && (dir === 'asc' || dir === 'desc')) {
+                    table.order([col, dir]).draw(false);
+                }
+            }
+        } catch(e){}
+
+        function updateIndicators() {
+            $('#costTable thead th.sortable')
+                .removeAttr('data-sort-dir')
+                .find('.sort-indicator').text('');
+            const ord = table.order();
+            if (!ord.length) return;
+            const col = ord[0][0];
+            const dir = ord[0][1];
+            const th = $('#costTable thead th').eq(col);
+            if (!th.hasClass('sortable')) return;
+            th.attr('data-sort-dir', dir);
+            th.find('.sort-indicator').text(dir === 'asc' ? '▲' : '▼');
+        }
+        updateIndicators();
+
+        // 2-state (asc <-> desc) header click
+        $('#costTable thead').on('click', 'th.sortable', function() {
+            const idx = $(this).index();
+            const colSettings = table.settings()[0].aoColumns[idx];
+            if (colSettings.bSortable === false) return;
+
+            const current = table.order();
+            const currentCol = current.length ? current[0][0] : null;
+            const currentDir = current.length ? current[0][1] : 'asc';
+            const newDir = (currentCol === idx && currentDir === 'asc') ? 'desc' : 'asc';
+
+            table.order([idx, newDir]).draw();
+            updateIndicators();
+
+            try {
+                const ord = table.order();
+                sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ col: ord[0][0], dir: ord[0][1] }));
+            } catch(e){}
+        });
+
+        // Prevent shift multi-order
+        $('#costTable thead').on('mousedown', 'th', function(e) {
+            if (e.shiftKey) e.preventDefault();
+        });
+
+        // ✅ Apply default month filter on first load
+        table.draw();
+
+        // Month change
+        $('#filterMonth').on('change', function() {
+            table.draw();
+        });
+    }
+
+    // Bootstrap validation
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', e => {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+});
+</script>
 @endsection

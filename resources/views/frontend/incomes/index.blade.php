@@ -1,3 +1,4 @@
+{{-- resources/views/frontend/incomes/index.blade.php --}}
 @extends('frontend.layouts.app')
 
 @section('title','Tutte le Entrate')
@@ -96,9 +97,8 @@
       <h5 class="mb-0 fw-bold"><i class="bi bi-list-ul me-2"></i>Entrate Registrate</h5>
     </div>
     <div class="card-body table-responsive">
-      <table  data-page-length="25" id="incomesTable"
-             class="table table-bordered table-striped table-hover align-middle text-center mb-0"
-             data-page-length="25">
+      <table data-page-length="25" id="incomesTable"
+             class="table table-bordered table-striped table-hover align-middle text-center mb-0">
         <thead>
           <tr>
             <th class="sortable">Identificatore <span class="sort-indicator"></span></th>
@@ -181,24 +181,19 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // ensure jQuery + DataTables exist
   if (window.$ && $.fn.DataTable) {
-    // Silence DT errors in UI
     $.fn.dataTable.ext.errMode = 'none';
 
     const STORAGE_KEY = 'incomes_sort_state';
 
-    // Init DataTable
     const table = $('#incomesTable').DataTable({
       paging: true,
       ordering: true,
-      orderMulti: false, // single-column ordering only
+      orderMulti: false,
       responsive: true,
       pageLength: $('#incomesTable').data('page-length') || 10,
-      order: [[1, 'desc']], // default: sort by Date desc (column index 1)
-      columnDefs: [
-        { orderable: false, targets: 4 } // Azioni not orderable (zero-based index)
-      ],
+      order: [[1, 'desc']], // Date desc
+      columnDefs: [{ orderable: false, targets: 4 }],
       language: {
         search: "Cerca:",
         lengthMenu: "Mostra _MENU_ voci",
@@ -208,20 +203,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // Restore previously saved 2-state sort (if any)
+    // Restore previous 2-state sort
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
         const { col, dir } = JSON.parse(saved);
         if (typeof col === 'number' && (dir === 'asc' || dir === 'desc')) {
-          table.order([col, dir]).draw(false); // draw(false) keeps paging
+          table.order([col, dir]).draw(false);
         }
       }
-    } catch (e) {
-      // ignore restore errors
-    }
+    } catch (e) {}
 
-    // Update custom ▲/▼ indicators
     function updateIndicators() {
       $('#incomesTable thead th.sortable')
         .removeAttr('data-sort-dir')
@@ -236,12 +228,9 @@ document.addEventListener('DOMContentLoaded', function() {
       th.find('.sort-indicator').text(dir === 'asc' ? '▲' : '▼');
     }
 
-    // keep indicators in sync on order and draw
     table.on('order.dt draw.dt', updateIndicators);
-    // initial call (in case DataTable already drew)
     updateIndicators();
 
-    // 2-state header click handler (asc <-> desc only)
     $('#incomesTable thead').on('click', 'th.sortable', function() {
       const idx = $(this).index();
       const colSettings = table.settings()[0].aoColumns[idx];
@@ -254,31 +243,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
       table.order([idx, newDir]).draw();
 
-      // persist
       try {
         const ord = table.order();
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ col: ord[0][0], dir: ord[0][1] }));
       } catch (e) {}
     });
 
-    // Prevent shift multi-order
     $('#incomesTable thead').on('mousedown', 'th', function(e) {
       if (e.shiftKey) e.preventDefault();
     });
 
-    // Month filter using data-order attribute for robustness
+    // ✅ Month filter (apply to this table only)
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
       if (settings.nTable.id !== 'incomesTable') return true;
-      const selected = $('#filterMonth').val();
+
+      const selected = ($('#filterMonth').val() || '').trim();
       if (!selected) return true;
 
-      // get the row node and read the data-order attribute of the date cell (col index 1)
       const rowNode = table.row(dataIndex).node();
       if (!rowNode) return true;
-      const dateVal = $(rowNode).find('td').eq(1).attr('data-order') || $(rowNode).find('td').eq(1).text();
-      // dateVal expected like 'YYYY-MM-DD' — compare YYYY-MM
+
+      const dateVal = $(rowNode).find('td').eq(1).attr('data-order')
+        || $(rowNode).find('td').eq(1).text();
+
       return dateVal && dateVal.substr(0, 7) === selected;
     });
+
+    // ✅ Apply default month filter on first load
+    table.draw();
 
     $('#filterMonth').on('change', function() {
       table.draw();
