@@ -30,7 +30,7 @@
 
 
  
-
+ 
 
      // Test custom 403 page
      Route::get('/__error-403', function () {
@@ -213,3 +213,24 @@
      Route::get('profile', [UserController::class, 'profile'])->name('profile');
      Route::put('profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
           
+
+
+
+
+
+     // Invoice AI extraction routes  ← ADD BEFORE Route::resource('ingredients', ...)
+Route::post('ingredients/extract-invoice', [IngredientController::class, 'extractInvoice'])
+->name('ingredients.extractInvoice')
+->middleware('can:ingredients');
+
+Route::post('ingredients/process-invoice', [IngredientController::class, 'processInvoice'])
+->name('ingredients.processInvoice')
+->middleware('can:ingredients');
+
+Route::patch('ingredients/{ingredient}/aliases', [IngredientController::class, 'updateAliases'])
+->name('ingredients.updateAliases')
+->middleware('can:ingredients');
+
+// Existing resource route (unchanged)
+Route::resource('ingredients', IngredientController::class)
+->middleware('can:ingredients');

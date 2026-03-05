@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'google_vision' => [
+    'key' => env('GOOGLE_VISION_API_KEY'),
+],
+'anthropic' => [
+    'key' => env('ANTHROPIC_API_KEY'),
+],
+'openai' => [
+    'key' => env('OPENAI_API_KEY'),
+],
+
 ];

@@ -13,9 +13,18 @@ class Ingredient extends Model
 
     protected $fillable = [
         'ingredient_name',
+        'additional_names',
+
         'price_per_kg',
         'user_id', // ✅ allow mass assignment of user_id
          'recipe_id'
+,
+         'last_invoice_date',
+'last_invoice_code',
+    ];
+    protected $casts = [
+        'price_per_kg'     => 'decimal:4',
+        'additional_names' => 'array',
     ];
 
  
