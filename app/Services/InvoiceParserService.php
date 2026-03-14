@@ -26,7 +26,16 @@ class InvoiceParserService
             );
         }
 
-        return $this->callOpenAI($rawText);
+        // Guarantee C locale for this method even if AppServiceProvider fix is absent.
+        // Redundant when AppServiceProvider sets it globally, but harmless and safe.
+        $prevLocale = setlocale(LC_NUMERIC, '0');
+        setlocale(LC_NUMERIC, 'C');
+
+        try {
+            return $this->callOpenAI($rawText);
+        } finally {
+            setlocale(LC_NUMERIC, $prevLocale);
+        }
     }
 
     private function callOpenAI(string $rawText): array
@@ -52,7 +61,7 @@ International    → dot is decimal separator
 RULES:
 - If a number has BOTH dot and comma → the LAST one is the decimal separator
   "1.234,56" → 1234.56   "1,234.56" → 1234.56
-- If a number has ONLY a comma → it IS the decimal separator → remove it, replace with dot
+- If a number has ONLY a comma → it IS the decimal separator → replace with dot
   "12,50" → 12.50     "8,50" → 8.50     "3,25" → 3.25
 - If a number has ONLY a dot → it IS the decimal separator
   "12.50" → 12.50     "18.75" → 18.75
@@ -73,63 +82,35 @@ Item descriptions often include quantity like: "HARINA 00 25KG", "ACEITE OLIVA 1
 
 Extract:
   "HARINA 00 25KG"       → name="HARINA 00",      qty=25,   unit="kg"
-  "ACEITE OLIVA 10L"     → name="ACEITE OLIVA",    qty=10,   unit="L"
   "TOMATE PERA 5KG"      → name="TOMATE PERA",     qty=5,    unit="kg"
   "AZUCAR BLANCO 10KG"   → name="AZUCAR BLANCO",   qty=10,   unit="kg"
-  "SAL MARINA 5KG"       → name="SAL MARINA",      qty=5,    unit="kg"
-  "LECHE ENTERA 20L"     → name="LECHE ENTERA",    qty=20,   unit="L"
-  "MANTEQUILLA 2KG"      → name="MANTEQUILLA",     qty=2,    unit="kg"
-  "QUESO MOZZARELLA 3KG" → name="QUESO MOZZARELLA",qty=3,   unit="kg"
-  "HUEVOS FRESCOS 360UN" → name="HUEVOS FRESCOS",  qty=360,  unit="piece"
 
 Rules:
-  - Strip the quantity+unit from the ingredient name
-  - The clean name must NOT contain numbers or units
+  - Strip the quantity+unit from the ingredient name — the clean name must NOT contain numbers or units
   - For liquids (L, litre): treat 1L = 1kg for price/kg purposes
   - For pieces/units (UN, PZ, PCS): include but note in original_unit
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 STEP 4 — CALCULATE price_per_kg
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-If the price column is for total quantity (PRECIO / PRICE / IMPORTE):
+If price column is for total quantity:
   price_per_kg = parsed_price / quantity
 
-Example with European decimals:
-  "TOMATE PERA 5KG" → 12,50€
-  → parsed_price = 12.50  (comma was decimal separator)
-  → quantity = 5 kg
-  → price_per_kg = 12.50 / 5 = 2.50   ✓
-
-  "HARINA 00 25KG" → 18,75€
-  → parsed_price = 18.75
-  → quantity = 25 kg
-  → price_per_kg = 18.75 / 25 = 0.75  ✓
-
-  "AZUCAR BLANCO 10KG" → 8,50€
-  → parsed_price = 8.50
+Example: "AZUCAR BLANCO 10KG" → 8,50€
+  → parsed_price = 8.50  (comma = decimal)
   → quantity = 10 kg
-  → price_per_kg = 8.50 / 10 = 0.85   ✓
-
-If the price column is already per kg:
-  price_per_kg = parsed_price (no division)
+  → price_per_kg = 8.50 / 10 = 0.85  ✓
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 5 — EXTRACT HEADER FIELDS
+STEP 5 — HEADER FIELDS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  supplier_name  → the seller/company name (top of invoice)
-  invoice_code   → invoice number/reference (e.g. FAC-2025-001234, or "" if missing)
-  date           → invoice date in YYYY-MM-DD format (today={$today} if missing)
+  supplier_name → seller company name (top of invoice)
+  invoice_code  → invoice number/reference (or "" if missing)
+  date          → invoice date in YYYY-MM-DD (today={$today} if missing)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-EXCLUSIONS — skip completely:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  - SUBTOTAL, IVA, VAT, TAX, TOTAL, DESCUENTO, SCONTO, DISCOUNT
-  - Shipping, delivery, packaging, labels
-  - Any line with price = 0
+EXCLUSIONS — skip: SUBTOTAL, IVA, VAT, TAX, TOTAL, DISCOUNTS, shipping, price=0
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-OUTPUT — return ONLY this JSON, nothing else:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OUTPUT — return ONLY this JSON:
 {
   "supplier_name": "...",
   "invoice_code": "...",
@@ -185,7 +166,6 @@ PROMPT;
         $items = [];
         foreach ($parsed['items'] as $item) {
             $name    = trim($item['name'] ?? '');
-            // Sanitise price: force string→float, handle any stray comma
             $priceKg = $this->parseEuropeanNumber((string)($item['price_per_kg'] ?? '0'));
 
             if ($name === '' || $priceKg <= 0) {
@@ -193,19 +173,23 @@ PROMPT;
             }
 
             $origUnit  = trim($item['original_unit']  ?? 'kg');
-            $origQty   = (float)($item['original_qty']   ?? 1);
+            $origQty   = (float)($item['original_qty'] ?? 1);
             $origPrice = $this->parseEuropeanNumber((string)($item['original_price'] ?? $priceKg));
             $origRaw   = trim($item['original_price_raw'] ?? '');
 
+            // Always use number_format with EXPLICIT separators.
+            // dot as decimal, empty string as thousands — never rely on LC_NUMERIC locale.
+            $priceFormatted = number_format($priceKg, 4, '.', '');
+
             $items[] = [
-                'name'             => $name,
-                'price_per_kg'     => round($priceKg, 4),
-                'original_unit'    => $origUnit,
-                'original_qty'     => $origQty,
-                'original_price'   => $origPrice,
+                'name'               => $name,
+                'price_per_kg'       => round($priceKg, 4),
+                'original_unit'      => $origUnit,
+                'original_qty'       => $origQty,
+                'original_price'     => round($origPrice, 4),
                 'original_price_raw' => $origRaw,
-                'notes'            => $origQty > 1
-                    ? "{$origRaw} ÷ {$origQty}{$origUnit} = €".number_format($priceKg,4)."/kg"
+                'notes'              => $origQty > 1
+                    ? "{$origRaw} ÷ {$origQty}{$origUnit} = €{$priceFormatted}/kg"
                     : '',
             ];
         }
@@ -220,34 +204,41 @@ PROMPT;
     }
 
     /**
-     * Convert a European-format number string to float.
-     * "12,50" → 12.50   "1.234,56" → 1234.56   "18.75" → 18.75
+     * Convert a European-format number string to a clean PHP float.
+     *
+     * "12,50"      → 12.50
+     * "1.234,56"   → 1234.56
+     * "18.75"      → 18.75
+     * "1,234.56"   → 1234.56
      */
     private function parseEuropeanNumber(string $value): float
     {
         $v = trim($value);
-        // Remove currency symbols and spaces
         $v = preg_replace('/[€$£\s]/u', '', $v);
 
-        // Both dot and comma present
+        if ($v === '' || $v === '-') {
+            return 0.0;
+        }
+
         if (str_contains($v, '.') && str_contains($v, ',')) {
+            // Both present: the LAST one is the decimal separator
             $lastDot   = strrpos($v, '.');
             $lastComma = strrpos($v, ',');
             if ($lastComma > $lastDot) {
-                // European: 1.234,56 → remove dots (thousands), replace comma with dot
+                // European: "1.234,56" → remove dots, replace comma with dot
                 $v = str_replace('.', '', $v);
                 $v = str_replace(',', '.', $v);
             } else {
-                // International: 1,234.56 → remove commas (thousands)
+                // International: "1,234.56" → remove commas
                 $v = str_replace(',', '', $v);
             }
         } elseif (str_contains($v, ',')) {
-            // Only comma → it's the decimal separator
+            // Only comma present → it's the decimal separator
             $v = str_replace(',', '.', $v);
         }
-        // Only dot → already correct decimal format
+        // Only dot present → already valid float string
 
-        return (float)$v;
+        return (float) $v;
     }
 
     private function emptyResult(): array

@@ -107,6 +107,10 @@
      Route::post('recipes/{recipe}/duplicate', [RecipeController::class, 'duplicate'])
           ->name('recipes.duplicate')
           ->middleware('can:recipe');
+          // Export Recipe to Excel
+Route::get('recipes/{recipe}/export-excel', [RecipeController::class, 'exportExcel'])
+     ->name('recipes.exportExcel')
+     ->middleware('can:recipe');
           Route::get('/departments/{department}/labor-rates', [RecipeController::class, 'departmentRates'])
      ->name('departments.rates')
      ->middleware('auth');
@@ -234,3 +238,6 @@ Route::patch('ingredients/{ingredient}/aliases', [IngredientController::class, '
 // Existing resource route (unchanged)
 Route::resource('ingredients', IngredientController::class)
 ->middleware('can:ingredients');
+
+ 
+ 

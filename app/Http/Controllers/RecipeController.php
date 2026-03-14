@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Services\LaborCostCalculator; // (lasciato per altri punti del progetto che lo usano ancora)
 use Illuminate\Http\RedirectResponse;
-
+use App\Exports\RecipeExport;
+use Maatwebsite\Excel\Facades\Excel;
+ 
 class RecipeController extends Controller
 {
     /**
@@ -663,4 +665,11 @@ class RecipeController extends Controller
 
         return ['shop' => $baseShop, 'external' => $baseExt];
     }
+
+
+   public function exportExcel(Recipe $recipe, Request $request)
+{
+    $multiplier = max((float) $request->get('multiplier', 1), 0.01);
+    return (new \App\Exports\RecipeExport($recipe, $multiplier))->download();
+}
 }

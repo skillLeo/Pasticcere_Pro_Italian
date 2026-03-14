@@ -224,6 +224,9 @@
         <button type="button" id="btn-save-pdf" class="btn btn-outline-gold me-2">
           Save as PDF
         </button>
+        <button type="button" id="btn-save-excel" class="btn btn-outline-deepblue me-2">
+  Save as Excel
+</button>
 
         <a href="{{ route('recipes.edit',$recipe->id) }}" class="btn btn-outline-gold">Modifica</a>
         <a href="{{ route('recipes.index') }}" class="btn btn-outline-deepblue">Indietro</a>
@@ -416,6 +419,29 @@
       btn.disabled = false;
       btn.textContent = oldText;
     }
+  });
+})();
+</script>
+
+
+
+<script>
+(function () {
+  const btn = document.getElementById('btn-save-excel');
+  const multiplierInput = document.getElementById('multiplier');
+
+  if (!btn || !multiplierInput) return;
+
+  btn.addEventListener('click', function () {
+    let multiplier = parseFloat(multiplierInput.value);
+    if (!isFinite(multiplier) || multiplier <= 0) {
+      multiplier = 1;
+    }
+
+    const url = new URL(@json(route('recipes.exportExcel', $recipe->id)), window.location.origin);
+    url.searchParams.set('multiplier', multiplier);
+
+    window.location.href = url.toString();
   });
 })();
 </script>
